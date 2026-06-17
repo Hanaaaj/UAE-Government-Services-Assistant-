@@ -342,14 +342,6 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 # =========================
-# FEATURE IMAGE SECTION
-# =========================
-st.markdown("<br>", unsafe_allow_html=True)
-st.image(
-    "service_banner.png",   # replace with your image file name
-    use_container_width=True
-)
-# =========================
 # QUICK SERVICES
 # =========================
 st.markdown("### 🚀 Quick Services")
@@ -412,7 +404,14 @@ with col5:
         icon="❓",
         title="FAQs"
     ), unsafe_allow_html=True)    
-
+# =========================
+# FEATURE IMAGE SECTION
+# =========================
+st.markdown("<br>", unsafe_allow_html=True)
+st.image(
+    "service_banner.png",   # replace with your image file name
+    use_container_width=True
+)
 # Sidebar
 with st.sidebar:
     st.header("🔑 Configuration")
