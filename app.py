@@ -5,12 +5,6 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import google.generativeai as genai
 import base64
-
-import base64
-
-def img_to_base64(path):
-    with open(path, "rb") as f:
-        return base64.b64encode(f.read()).decode()
         
 # Page Configuration Settings
 st.set_page_config(
@@ -350,25 +344,25 @@ st.markdown(f"""
 # =========================
 # QUICK SERVICES
 # =========================
-visa_icon = img_to_base64("visa_services.png")
-car_icon = img_to_base64("driving_license.png")
-business_icon = img_to_base64("business_license.png")
-renew_icon = img_to_base64("renewals.png")
-faq_icon = img_to_base64("faqs.png")
-st.markdown("### Quick Service Section")
+st.markdown("### 🚀 Quick Services")
 card_style = """
 <div style="
-    background:{bg};
-    border:2px solid {border};
-    border-radius:16px;
-    padding:20px;
-    text-align:center;
+    background: {bg};
+    border-radius: 18px;
+    padding: 18px;
+    text-align: center;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    border: 2px solid {border};
+    transition: 0.3s ease;
+    cursor: pointer;
 ">
-    <img src="data:image/png;base64,{icon}" width="40" style="margin-bottom:10px;"/>
+    <div style="font-size: 32px; margin-bottom: 8px;">
+        {icon}
+    </div>
     <div style="
-        font-weight:700;
-        font-size:14px;
-        color:#1E293B;
+        font-weight: 700;
+        font-size: 15px;
+        color: #1E293B;
     ">
         {title}
     </div>
@@ -377,39 +371,39 @@ card_style = """
 col1, col2, col3, col4, col5 = st.columns(5)
 with col1:
     st.markdown(card_style.format(
-        bg="#FFF7E6",
-        border="#D4AF37",
-        icon="visa_services",
+        bg="#FFF7E6",              # light gold tint (ACTIVE CARD)
+        border="#D4AF37",          # gold border
+        icon="🛂",
         title="Visa Services"
     ), unsafe_allow_html=True)
 with col2:
     st.markdown(card_style.format(
         bg="#FFFFFF",
         border="#E5E7EB",
-        icon="driving_license",
+        icon="🚗",
         title="Driving License"
     ), unsafe_allow_html=True)
 with col3:
     st.markdown(card_style.format(
         bg="#FFFFFF",
         border="#E5E7EB",
-        icon="business_license",
+        icon="🏢",
         title="Business License"
     ), unsafe_allow_html=True)
 with col4:
     st.markdown(card_style.format(
         bg="#FFFFFF",
         border="#E5E7EB",
-        icon="renewals",
+        icon="🔄",
         title="Renewals"
     ), unsafe_allow_html=True)
 with col5:
     st.markdown(card_style.format(
         bg="#FFFFFF",
         border="#E5E7EB",
-        icon="faqs",
+        icon="❓",
         title="FAQs"
-    ), unsafe_allow_html=True)
+    ), unsafe_allow_html=True)    
 # Sidebar
 with st.sidebar:
     st.header("🔑 Configuration")
