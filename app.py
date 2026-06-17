@@ -321,7 +321,7 @@ div.stButton > button {
     background-color:#006C4C !important;
     color:white !important;
     border-radius:10px !important;
-    padding:20px 30px !important;
+    padding:10px 30px !important;
     font-size:16px !important;
     border:none !important;
 }
