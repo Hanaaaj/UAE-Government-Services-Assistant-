@@ -425,12 +425,11 @@ st.markdown(f"""
         top: 10%;
         left: 50%;
         transform: translateX(-50%);
-        background: rgba(0,0,0,0.45);
         padding: 10px 20px;
         border-radius: 12px;
     ">
         <h2 style="
-            color: white;
+            color: black;
             margin: 0;
             font-size: 28px;
             font-weight: 700;
