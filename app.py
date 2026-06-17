@@ -291,23 +291,46 @@ st.markdown("""
 st.image("hero_banner.png", use_container_width=True)
 st.markdown("""
 <div style="
-    margin-top:-350px;
+    margin-top:-320px;
     padding:40px;
-    color:white;
+    max-width:650px;
     background:rgba(0,0,0,0.45);
     border-radius:20px;
-    max-width:650px;
+    color:white;
     position:relative;
 ">
-<h1 style="font-size:42px; font-weight:800;">
-UAE Government Services Assistant
-</h1>
-<p style="font-size:18px;">
-AI-Powered Guidance for Visas, Licenses and Government Services
-</p>
+    <h1 style="
+        font-size:42px;
+        font-weight:800;
+        margin-bottom:10px;
+    ">
+        UAE Government Services Assistant
+    </h1>
+    <p style="
+        font-size:18px;
+        margin-bottom:20px;
+    ">
+        AI-Powered Guidance for Visas, Licenses and Government Services
+    </p>
 </div>
 """, unsafe_allow_html=True)
-st.button("🚀 Start Chat", type="primary")
+# CTA BUTTON (inside hero section visually)
+st.markdown("""
+<style>
+div.stButton > button {
+    background-color:#006C4C !important;
+    color:white !important;
+    border-radius:10px !important;
+    padding:10px 20px !important;
+    font-size:16px !important;
+    border:none !important;
+}
+div.stButton > button:hover {
+    background-color:#00513A !important;
+}
+</style>
+""", unsafe_allow_html=True)
+st.button("Start Chat")
 # =========================
 # POPULAR SERVICES
 # =========================
