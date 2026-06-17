@@ -345,65 +345,70 @@ st.markdown(f"""
 # QUICK SERVICES
 # =========================
 st.markdown("### 🚀 Quick Services")
+
 card_style = """
 <div style="
-    background: {bg};
-    border-radius: 18px;
-    padding: 18px;
-    text-align: center;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-    border: 2px solid {border};
-    transition: 0.3s ease;
-    cursor: pointer;
+    background:{bg};
+    border-radius:18px;
+    padding:18px;
+    text-align:center;
+    box-shadow:0 6px 18px rgba(0,0,0,0.08);
+    border:2px solid {border};
 ">
-    <div style="font-size: 32px; margin-bottom: 8px;">
-        {icon}
-    </div>
+
     <div style="
-        font-weight: 700;
-        font-size: 15px;
-        color: #1E293B;
+        font-weight:700;
+        font-size:15px;
+        color:#1E293B;
+        margin-top:5px;
     ">
         {title}
     </div>
+
 </div>
 """
+
 col1, col2, col3, col4, col5 = st.columns(5)
+
 with col1:
+    st.image("visa_services.png", width=45)
     st.markdown(card_style.format(
-        bg="#FFF7E6",              # light gold tint (ACTIVE CARD)
-        border="#D4AF37",          # gold border
-        icon="🛂",
+        bg="#FFF7E6",
+        border="#D4AF37",
         title="Visa Services"
     ), unsafe_allow_html=True)
+
 with col2:
+    st.image("assets/driving.png", width=45)
     st.markdown(card_style.format(
         bg="#FFFFFF",
         border="#E5E7EB",
-        icon="🚗",
         title="Driving License"
     ), unsafe_allow_html=True)
+
 with col3:
+    st.image("assets/business.png", width=45)
     st.markdown(card_style.format(
         bg="#FFFFFF",
         border="#E5E7EB",
-        icon="🏢",
         title="Business License"
     ), unsafe_allow_html=True)
+
 with col4:
+    st.image("assets/renewals.png", width=45)
     st.markdown(card_style.format(
         bg="#FFFFFF",
         border="#E5E7EB",
-        icon="🔄",
         title="Renewals"
     ), unsafe_allow_html=True)
+
 with col5:
+    st.image("assets/faq.png", width=45)
     st.markdown(card_style.format(
         bg="#FFFFFF",
         border="#E5E7EB",
-        icon="❓",
         title="FAQs"
-    ), unsafe_allow_html=True)    
+    ), unsafe_allow_html=True)
 # Sidebar
 with st.sidebar:
     st.header("🔑 Configuration")
