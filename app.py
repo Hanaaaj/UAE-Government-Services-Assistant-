@@ -344,7 +344,17 @@ st.markdown(f"""
 # =========================
 # QUICK SERVICES
 # =========================
-st.markdown("### 🚀 Quick Services")
+st.markdown("""
+<div style="
+    text-align: center;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 20px 0;
+    color: #1E293B;
+">
+Quick Service Section
+</div>
+""", unsafe_allow_html=True)
 card_style = """
 <div style="
     background: {bg};
