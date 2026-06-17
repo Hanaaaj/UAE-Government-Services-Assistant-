@@ -288,7 +288,7 @@ st.markdown("""
 # =========================
 # PREMIUM HERO SECTION
 # =========================
-hero_base64 = open("hero_banner.png", "rb").read()
+hero_base64 = open("hero_banner2.png", "rb").read()
 hero_encoded = base64.b64encode(hero_base64).decode()
 st.markdown(f"""
 <div style="
