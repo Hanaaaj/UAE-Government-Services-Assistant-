@@ -287,41 +287,48 @@ st.markdown("""
 # =========================
 # PREMIUM HERO SECTION
 # =========================
-
-left, right = st.columns([1.4, 1])
-with left:
-    st.markdown("""
+# =========================
+# PREMIUM HERO (FINAL VERSION)
+# =========================
+st.markdown("""
+<div style="
+    position:relative;
+    width:100%;
+    height:420px;
+    border-radius:25px;
+    background-image:url('hero_banner.png');
+    background-size:cover;
+    background-position:center;
+    display:flex;
+    align-items:center;
+    padding:50px;
+">
+    <!-- dark overlay box -->
     <div style="
-        padding:50px 30px;
-        border-radius:25px;
-        background:linear-gradient(135deg, #F7F9FA, #FFFFFF);
+        background:rgba(0, 0, 0, 0.5);
+        padding:30px;
+        border-radius:20px;
+        max-width:600px;
+        color:white;
     ">
         <h1 style="
-            color:#006C4C;
-            font-size:52px;
+            font-size:42px;
             font-weight:800;
-            line-height:1.1;
-            margin-bottom:15px;
+            margin-bottom:10px;
         ">
         UAE Government Services Assistant
         </h1>
         <p style="
-            font-size:20px;
-            color:#475569;
-            margin-bottom:25px;
+            font-size:18px;
+            margin-bottom:20px;
         ">
-        AI-Powered Guidance for Visas, Licenses<br>
-        and Government Services
+        AI-Powered Guidance for Visas, Licenses and Government Services
         </p>
     </div>
-    """, unsafe_allow_html=True)
-    st.markdown("<div style='height:15px'></div>", unsafe_allow_html=True)
-    st.button(
-        "🚀 Start Chat",
-        type="primary"
-    )
-with right:
-     st.image("hero_banner.png", use_container_width=True)  
+</div>
+""", unsafe_allow_html=True)
+# CTA button (Streamlit-native, clickable)
+st.button("🚀 Start Chat", type="primary")
 # =========================
 # POPULAR SERVICES
 # =========================
