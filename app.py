@@ -6,6 +6,12 @@ from sklearn.metrics.pairwise import cosine_similarity
 import google.generativeai as genai
 import base64
 
+import base64
+
+def img_to_base64(path):
+    with open(path, "rb") as f:
+        return base64.b64encode(f.read()).decode()
+        
 # Page Configuration Settings
 st.set_page_config(
     page_title="UAE Gov Services AI Assistant",
@@ -344,25 +350,25 @@ st.markdown(f"""
 # =========================
 # QUICK SERVICES
 # =========================
+visa_icon = img_to_base64("visa_services.png")
+car_icon = img_to_base64("driving_license.png")
+business_icon = img_to_base64("business_license.png")
+renew_icon = img_to_base64("renewals.png")
+faq_icon = img_to_base64("faqs.png")
 st.markdown("### Quick Service Section")
 card_style = """
 <div style="
-    background: {bg};
-    border-radius: 18px;
-    padding: 18px;
-    text-align: center;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-    border: 2px solid {border};
+    background:{bg};
+    border:2px solid {border};
+    border-radius:16px;
+    padding:20px;
+    text-align:center;
 ">
-    <img src="{icon}" style="
-        width: 42px;
-        height: 42px;
-        margin-bottom: 10px;
-    "/>
+    <img src="data:image/png;base64,{icon}" width="40" style="margin-bottom:10px;"/>
     <div style="
-        font-weight: 700;
-        font-size: 15px;
-        color: #1E293B;
+        font-weight:700;
+        font-size:14px;
+        color:#1E293B;
     ">
         {title}
     </div>
@@ -373,35 +379,35 @@ with col1:
     st.markdown(card_style.format(
         bg="#FFF7E6",
         border="#D4AF37",
-        icon="visa_services.png",
+        icon="visa_services",
         title="Visa Services"
     ), unsafe_allow_html=True)
 with col2:
     st.markdown(card_style.format(
         bg="#FFFFFF",
         border="#E5E7EB",
-        icon="driving_license.png",
+        icon="driving_license",
         title="Driving License"
     ), unsafe_allow_html=True)
 with col3:
     st.markdown(card_style.format(
         bg="#FFFFFF",
         border="#E5E7EB",
-        icon="business_license.png",
+        icon="business_license",
         title="Business License"
     ), unsafe_allow_html=True)
 with col4:
     st.markdown(card_style.format(
         bg="#FFFFFF",
         border="#E5E7EB",
-        icon="renewals.png",
+        icon="renewals",
         title="Renewals"
     ), unsafe_allow_html=True)
 with col5:
     st.markdown(card_style.format(
         bg="#FFFFFF",
         border="#E5E7EB",
-        icon="faqs.png",
+        icon="faqs",
         title="FAQs"
     ), unsafe_allow_html=True)
 # Sidebar
