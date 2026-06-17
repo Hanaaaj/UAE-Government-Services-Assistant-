@@ -308,12 +308,13 @@ st.markdown(f"""
         max-width: 60%;
     ">
         <div style="
-            font-size: 52px;
+            font-size: 45px;
             font-weight: 800;
             line-height: 1.05;
             margin-bottom: 10px;
         ">
-            UAE Government Services Assistant
+            UAE Government<br>
+            Services Assistant
         </div>
         <div style="
             font-size: 20px;
