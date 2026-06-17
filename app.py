@@ -294,7 +294,6 @@ st.markdown("""
     margin-top:-300px;
     padding:40px;
     color:white;
-    background:rgba(0,0,0,0.45);
     border-radius:20px;
     max-width:650px;
     position:relative;
