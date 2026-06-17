@@ -288,48 +288,58 @@ st.markdown("""
 # =========================
 # PREMIUM HERO SECTION
 # =========================
-st.image("hero_banner.png", use_container_width=True)
-st.markdown("""
+hero_base64 = open("hero_banner.png", "rb").read()
+hero_encoded = base64.b64encode(hero_base64).decode()
+st.markdown(f"""
 <div style="
-    margin-top:-480px;
-    padding:40px;
-    max-width:650px;
-    border-radius:20px;
-    color:#000000;
-    position:relative;
+    position: relative;
+    width: 100%;
+    border-radius: 25px;
+    overflow: hidden;
 ">
-    <h1 style="
-        font-size:42px;
-        font-weight:800;
-        margin-bottom:10px;
+    <img src="data:image/png;base64,{hero_encoded}"
+         style="width:100%; border-radius:25px;">
+    <!-- TEXT OVERLAY -->
+    <div style="
+        position: absolute;
+        top: 18%;
+        left: 6%;
+        color: black;
+        max-width: 60%;
     ">
-        UAE Government Services Assistant
-    </h1>
-    <p style="
-        font-size:18px;
-        margin-bottom:20px;
-    ">
-        AI-Powered Guidance for Visas, Licenses and Government Services
-    </p>
+        <div style="
+            font-size: 52px;
+            font-weight: 800;
+            line-height: 1.05;
+            margin-bottom: 10px;
+        ">
+            UAE Government Services Assistant
+        </div>
+        <div style="
+            font-size: 20px;
+            font-weight: 500;
+            line-height: 1.2;
+            color: #111;
+        ">
+            AI-Powered Guidance for Visas, Licenses<br>
+            Government Services
+        </div>
+        <div style="margin-top: 18px;">
+            <button style="
+                background-color: #006C4C;
+                color: white;
+                padding: 10px 18px;
+                border-radius: 10px;
+                border: none;
+                font-weight: 600;
+                cursor: pointer;
+            ">
+                 Start Chat
+            </button>
+        </div>
+    </div>
 </div>
 """, unsafe_allow_html=True)
-# CTA BUTTON (inside hero section visually)
-st.markdown("""
-<style>
-div.stButton > button {
-    background-color:#006C4C !important;
-    color:white !important;
-    border-radius:10px !important;
-    padding:10px 30px !important;
-    font-size:16px !important;
-    border:none !important;
-}
-div.stButton > button:hover {
-    background-color:#00513A !important;
-}
-</style>
-""", unsafe_allow_html=True)
-st.button("Start Chat")
 # =========================
 # POPULAR SERVICES
 # =========================
