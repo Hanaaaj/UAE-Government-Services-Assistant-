@@ -344,51 +344,66 @@ st.markdown(f"""
 # =========================
 # QUICK SERVICES
 # =========================
-
-st.markdown("### Quick Service Section")
-
-c1,c2,c3,c4,c5 = st.columns(5)
-
-with c1:
-    st.markdown("""
-    <div class="service-card">
-    <h3>🛂 Visa Service </h3>
-    <b>Visa Services</b>
+st.markdown("### 🚀 Quick Services")
+card_style = """
+<div style="
+    background: {bg};
+    border-radius: 18px;
+    padding: 18px;
+    text-align: center;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    border: 2px solid {border};
+    transition: 0.3s ease;
+    cursor: pointer;
+">
+    <div style="font-size: 32px; margin-bottom: 8px;">
+        {icon}
     </div>
-    """, unsafe_allow_html=True)
-
-with c2:
-    st.markdown("""
-    <div class="service-card">
-    <h3>🚗 Driving License</h3>
-    <b>Driving License</b>
+    <div style="
+        font-weight: 700;
+        font-size: 15px;
+        color: #1E293B;
+    ">
+        {title}
     </div>
-    """, unsafe_allow_html=True)
-
-with c3:
-    st.markdown("""
-    <div class="service-card">
-    <h3>🏢 Business License</h3>
-    <b>Business License</b>
-    </div>
-    """, unsafe_allow_html=True)
-
-with c4:
-    st.markdown("""
-    <div class="service-card">
-    <h3>🔄 Renewable</h3>
-    <b>Renewals</b>
-    </div>
-    """, unsafe_allow_html=True)
-
-with c5:
-    st.markdown("""
-    <div class="service-card">
-    <h3>❓FAQs</h3>
-    <b>FAQs</b>
-    </div>
-    """, unsafe_allow_html=True)
-    
+</div>
+"""
+col1, col2, col3, col4, col5 = st.columns(5)
+with col1:
+    st.markdown(card_style.format(
+        bg="#FFF7E6",              # light gold tint (ACTIVE CARD)
+        border="#D4AF37",          # gold border
+        icon="🛂",
+        title="Visa Services"
+    ), unsafe_allow_html=True)
+with col2:
+    st.markdown(card_style.format(
+        bg="#FFFFFF",
+        border="#E5E7EB",
+        icon="🚗",
+        title="Driving License"
+    ), unsafe_allow_html=True)
+with col3:
+    st.markdown(card_style.format(
+        bg="#FFFFFF",
+        border="#E5E7EB",
+        icon="🏢",
+        title="Business License"
+    ), unsafe_allow_html=True)
+with col4:
+    st.markdown(card_style.format(
+        bg="#FFFFFF",
+        border="#E5E7EB",
+        icon="🔄",
+        title="Renewals"
+    ), unsafe_allow_html=True)
+with col5:
+    st.markdown(card_style.format(
+        bg="#FFFFFF",
+        border="#E5E7EB",
+        icon="❓",
+        title="FAQs"
+    ), unsafe_allow_html=True)    
 
 # Sidebar
 with st.sidebar:
