@@ -293,14 +293,14 @@ with col5:
 # QUICK SERVICES
 # =========================
 
-st.markdown("### 🚀 Quick Services")
+st.markdown("### Quick Service Section")
 
 c1,c2,c3,c4,c5 = st.columns(5)
 
 with c1:
     st.markdown("""
     <div class="service-card">
-    <h3>🛂</h3>
+    <h3>🛂 Visa Service </h3>
     <b>Visa Services</b>
     </div>
     """, unsafe_allow_html=True)
@@ -308,7 +308,7 @@ with c1:
 with c2:
     st.markdown("""
     <div class="service-card">
-    <h3>🚗</h3>
+    <h3>🚗 Driving License</h3>
     <b>Driving License</b>
     </div>
     """, unsafe_allow_html=True)
@@ -316,7 +316,7 @@ with c2:
 with c3:
     st.markdown("""
     <div class="service-card">
-    <h3>🏢</h3>
+    <h3>🏢 Business License</h3>
     <b>Business License</b>
     </div>
     """, unsafe_allow_html=True)
@@ -324,7 +324,7 @@ with c3:
 with c4:
     st.markdown("""
     <div class="service-card">
-    <h3>🔄</h3>
+    <h3>🔄 Renewable</h3>
     <b>Renewals</b>
     </div>
     """, unsafe_allow_html=True)
@@ -332,7 +332,7 @@ with c4:
 with c5:
     st.markdown("""
     <div class="service-card">
-    <h3>❓</h3>
+    <h3>❓FAQs</h3>
     <b>FAQs</b>
     </div>
     """, unsafe_allow_html=True)
