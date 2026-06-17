@@ -23,6 +23,49 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+# =========================
+# NAVIGATION BAR
+# =========================
+
+st.markdown("""
+<div style="
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 30px;
+background:white;
+border-radius:18px;
+box-shadow:0 2px 10px rgba(0,0,0,0.05);
+margin-bottom:25px;
+">
+
+<div style="
+font-size:24px;
+font-weight:700;
+color:#006C4C;
+">
+🇦🇪 UAE Gov Assistant
+</div>
+
+<div style="
+display:flex;
+gap:30px;
+font-weight:500;
+color:#1E293B;
+">
+
+<span>Home</span>
+<span>Visa Services</span>
+<span>Driving License</span>
+<span>Business License</span>
+<span>About</span>
+
+</div>
+
+</div>
+""",
+unsafe_allow_html=True)
+
 SYSTEM_PROMPT = """You are the UAE Government Services Assistant, a friendly prototype AI agent that helps residents, tourists, and people relocating to the UAE understand visa and license requirements, processes, fees, and timelines.
 
 GREETING AND CONVERSATION STYLE
@@ -242,23 +285,59 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # =========================
-# HERO SECTION
+# PREMIUM HERO SECTION
 # =========================
 
-st.markdown("""
-<div class="hero-section">
+left,right = st.columns([1.4,1])
 
-<h1 class="hero-title">
-🇦🇪 UAE Government Services Assistant
-</h1>
+with left:
 
-<p class="hero-subtitle">
-AI-Powered Guidance for Visas, Licenses and Government Services
-</p>
+    st.markdown("""
+    <div style="padding-top:40px;">
+    <h1 style="
+    color:#006C4C;
+    font-size:56px;
+    font-weight:800;
+    line-height:1.1;
+    ">
+    UAE Government Services Assistant
+    </h1>
 
-</div>
-""", unsafe_allow_html=True)
+    <p style="
+    font-size:20px;
+    color:#475569;
+    margin-top:15px;
+    ">
+    AI-Powered Guidance for Visas,
+    Licenses and Government Services
+    </p>
+    </div>
+    """,
+    unsafe_allow_html=True)
 
+    st.button(
+        "🚀 Start Chat",
+        use_container_width=False
+    )
+
+with right:
+
+    st.markdown("""
+    <div style="
+    background:linear-gradient(135deg,#006C4C,#0A8A64);
+    height:320px;
+    border-radius:30px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:white;
+    font-size:90px;
+    ">
+    🤖
+    </div>
+    """,
+    unsafe_allow_html=True)
+    
 # =========================
 # POPULAR SERVICES
 # =========================
