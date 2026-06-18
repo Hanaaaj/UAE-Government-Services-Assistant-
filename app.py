@@ -25,24 +25,6 @@ st.set_page_config(
     layout="wide",
 )
 
-# ─────────────────────────────────────────────
-# FREE-TIER RATE LIMIT RESILIENCE & KEY ROTATION SETUP
-# ─────────────────────────────────────────────
-# Gathers all team keys from Secrets to share limits and bypass 429 rate limit exceptions
-API_KEYS_POOL = []
-for secret_key in ["GEMINI_API_KEY", "GEMINI_API_KEY_MEMBER_1", "GEMINI_API_KEY_MEMBER_2", "GEMINI_API_KEY_MEMBER_3"]:
-    if secret_key in st.secrets and st.secrets[secret_key]:
-        API_KEYS_POOL.append(st.secrets[secret_key])
-if not API_KEYS_POOL and os.getenv("GEMINI_API_KEY"):
-    API_KEYS_POOL.append(os.getenv("GEMINI_API_KEY"))
-
-def get_rotated_api_key(manual_key: str = "") -> str:
-    """Returns a random key from the active keys pool, falling back to manual input."""
-    if manual_key:
-        return manual_key
-    if API_KEYS_POOL:
-        return random.choice(API_KEYS_POOL)
-    return ""
 
 # ─────────────────────────────────────────────
 # LANGUAGE STATE  (must be before any UI render)
