@@ -6,6 +6,7 @@ import base64
 import streamlit as st
 import random  # Added for key rotation
 import os      # Added for key extraction
+
 # ── Import everything from the agent layer ──────────────────
 from agent import (
     load_knowledge_base,
@@ -24,6 +25,7 @@ st.set_page_config(
     page_icon="🇦🇪",
     layout="wide",
 )
+
 # ─────────────────────────────────────────────
 # FREE-TIER RATE LIMIT RESILIENCE & KEY ROTATION SETUP
 # ─────────────────────────────────────────────
@@ -34,6 +36,7 @@ for secret_key in ["GEMINI_API_KEY", "GEMINI_API_KEY_MEMBER_1", "GEMINI_API_KEY_
         API_KEYS_POOL.append(st.secrets[secret_key])
 if not API_KEYS_POOL and os.getenv("GEMINI_API_KEY"):
     API_KEYS_POOL.append(os.getenv("GEMINI_API_KEY"))
+
 def get_rotated_api_key(manual_key: str = "") -> str:
     """Returns a random key from the active keys pool, falling back to manual input."""
     if manual_key:
@@ -41,6 +44,7 @@ def get_rotated_api_key(manual_key: str = "") -> str:
     if API_KEYS_POOL:
         return random.choice(API_KEYS_POOL)
     return ""
+
 # ─────────────────────────────────────────────
 # CSS
 # ─────────────────────────────────────────────
@@ -333,7 +337,4 @@ st.markdown(
     "</div>",
     unsafe_allow_html=True,
 )
-requirement.txt
-streamlit
-scikit-learn
-google-generativeai
+
