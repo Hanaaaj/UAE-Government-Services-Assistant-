@@ -163,21 +163,6 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 # ─────────────────────────────────────────────
-# NAV BAR
-# ─────────────────────────────────────────────
-st.markdown("""
-<div class="nav-bar">
-    <div class="nav-logo">🇦🇪 UAE Gov Assistant</div>
-    <div class="nav-links">
-        <span>Home</span>
-        <span>Visa Services</span>
-        <span>Driving License</span>
-        <span>Business License</span>
-        <span>About</span>
-    </div>
-</div>
-""", unsafe_allow_html=True)
-# ─────────────────────────────────────────────
 # HERO BANNER
 # ─────────────────────────────────────────────
 try:
