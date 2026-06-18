@@ -216,23 +216,6 @@ for col, (icon, label, active) in zip(cols, services):
         """, unsafe_allow_html=True)
 st.markdown("<br>", unsafe_allow_html=True)
 # ─────────────────────────────────────────────
-# SERVICE BANNER (optional second image)
-# ─────────────────────────────────────────────
-try:
-    svc_enc = img_to_b64("service_banner1.png")
-    st.markdown(f"""
-    <div style="position:relative; width:100%; border-radius:20px; overflow:hidden; margin-bottom:24px;">
-        <img src="data:image/png;base64,{svc_enc}" style="width:100%; display:block;">
-        <div style="position:absolute; top:10%; left:50%; transform:translateX(-50%);
-                    padding:10px 20px; border-radius:12px; white-space:nowrap;">
-            <h2 style="color:black; margin:0; font-size:26px; font-weight:700;">Main AI Chat Section</h2>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-except FileNotFoundError:
-    st.markdown("---")
-    st.markdown("### 💬 AI Chat")
-# ─────────────────────────────────────────────
 # SESSION STATE
 # ─────────────────────────────────────────────
 if "messages" not in st.session_state:
