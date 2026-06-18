@@ -17,6 +17,9 @@ from agent import (
     generate_greeting,
     generate_grounded_response,
 )
+if "lang" not in st.session_state:
+    st.session_state.lang = "English"
+
 # ─────────────────────────────────────────────
 # PAGE CONFIG
 # ─────────────────────────────────────────────
@@ -98,8 +101,22 @@ html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
     margin: 3px 4px 3px 0;
     font-weight: 500;
 }
+
+
 </style>
 """, unsafe_allow_html=True)
+
+if st.session_state.lang == "Arabic":
+    st.markdown("""
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
+    html, body, [class*="css"] {
+        font-family: 'Cairo', sans-serif !important;
+        direction: rtl;
+        text-align: right;
+    }
+    </style>
+    """, unsafe_allow_html=True)
 # ─────────────────────────────────────────────
 # HELPERS
 # ─────────────────────────────────────────────
@@ -151,6 +168,29 @@ with st.sidebar:
         st.session_state.messages = []
         st.session_state.pop("chat_session", None)
         st.rerun()
+
+#NAVBAR
+nav_col, toggle_col = st.columns([11, 1])
+
+with toggle_col:
+    if st.button("🌐 العربية" if st.session_state.lang == "English" else "🌐 English"):
+        st.session_state.lang = "Arabic" if st.session_state.lang == "English" else "English"
+        st.rerun()
+
+with nav_col:
+    st.markdown("""
+    <div class="nav-bar">
+        <div class="nav-logo">🇦🇪 UAE Gov Assistant</div>
+        <div class="nav-links">
+            <span>Home</span>
+            <span>Visa Services</span>
+            <span>Driving License</span>
+            <span>Business License</span>
+            <span>About</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
 # ─────────────────────────────────────────────
 # DISCLAIMER BANNER
 # ─────────────────────────────────────────────
