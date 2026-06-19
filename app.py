@@ -567,21 +567,6 @@ else:
                 </div>
             </div>
             
-            <div class="hero-right-dashboard">
-                <div class="system-health-card-unified">
-                    <div class="health-header-unified">
-                        <div class="health-title-text">SYSTEM HEALTH</div>
-                        <div class="health-badge-secure">SECURE</div>
-                    </div>
-                    <div class="health-skeleton-line l1"></div>
-                    <div class="health-skeleton-line l2"></div>
-                    <div class="health-skeleton-line l3"></div>
-                    <div class="health-footer-unified">
-                        <span style="color:#A4B5CD;">Server-side retrieval:</span>
-                        <span style="color:#FBBF24; font-family:monospace; font-weight:700;">TF-IDF Vectorizer</span>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
     """
