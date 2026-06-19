@@ -10,7 +10,6 @@ import google.generativeai as genai
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-
 # ─────────────────────────────────────────────
 # SYSTEM PROMPT
 # ─────────────────────────────────────────────
@@ -50,7 +49,6 @@ DISCLAIMER
 If the user thinks this is an official government tool, clarify: "I'm a prototype assistant, not an official UAE government service. Always confirm details with the official source before taking action."
 """
 
-
 # ─────────────────────────────────────────────
 # UI STRINGS — English & Arabic
 # ─────────────────────────────────────────────
@@ -59,12 +57,12 @@ UI = {
     "English": {
         # Sidebar
         "config_header":     "🔑 Configuration",
-        "api_label":         "Enter Google Gemini API Key",
-        "api_help":          "Free-tier key from Google AI Studio.",
-        "api_loaded":        "🔒 API key loaded from secrets.",
-        "api_info":          "💡 Paste your Gemini API key above to begin.",
+        "api_label":          "Enter Google Gemini API Key",
+        "api_help":           "Free-tier key from Google AI Studio.",
+        "api_loaded":         "🔒 API key loaded from secrets.",
+        "api_info":           "💡 Paste your Gemini API key above to begin.",
         "verify_hubs":       "### Trusted Verification Hubs",
-        "clear_chat":        "🗑️ Clear Chat",
+        "clear_chat":         "🗑️ Clear Chat",
         # Disclaimer
         "disclaimer":        "⚠️ <strong>Prototype Disclaimer:</strong> This application is an independent prototype. It is <strong>NOT</strong> an official government portal. Always confirm details at the official source links provided.",
         # Nav
@@ -108,12 +106,12 @@ UI = {
     "Arabic": {
         # Sidebar
         "config_header":     "🔑 الإعدادات",
-        "api_label":         "أدخل مفتاح Google Gemini API",
-        "api_help":          "مفتاح مجاني من Google AI Studio.",
-        "api_loaded":        "🔒 تم تحميل مفتاح API من الأسرار.",
-        "api_info":          "💡 الصق مفتاح Gemini API أعلاه للبدء.",
+        "api_label":          "أدخل مفتاح Google Gemini API",
+        "api_help":           "مفتاح مجاني من Google AI Studio.",
+        "api_loaded":         "🔒 تم تحميل مفتاح API من الأسرار.",
+        "api_info":           "💡 الصق مفتاح Gemini API أعلاه للبدء.",
         "verify_hubs":       "### روابط التحقق الرسمية",
-        "clear_chat":        "🗑️ مسح المحادثة",
+        "clear_chat":         "🗑️ مسح المحادثة",
         # Disclaimer
         "disclaimer":        "⚠️ <strong>إخلاء مسؤولية:</strong> هذا التطبيق نموذج أولي مستقل. إنه <strong>ليس</strong> بوابة حكومية رسمية. يرجى دائمًا التحقق من التفاصيل عبر روابط المصادر الرسمية.",
         # Nav
@@ -156,7 +154,6 @@ UI = {
     },
 }
 
-
 # ─────────────────────────────────────────────
 # KNOWLEDGE BASE
 # ─────────────────────────────────────────────
@@ -167,7 +164,6 @@ def load_knowledge_base(path: str = "knowledge_base.json") -> list:
         with open(path, "r", encoding="utf-8") as f:
             return json.load(f)
     return []
-
 
 # ─────────────────────────────────────────────
 # RETRIEVAL
@@ -236,7 +232,6 @@ def retrieve_context(
 
     return matched_docs, "\n\n".join(context_parts)
 
-
 # ─────────────────────────────────────────────
 # GEMINI MODEL & CHAT SESSION
 # ─────────────────────────────────────────────
@@ -277,6 +272,20 @@ def generate_grounded_response(
         return response.text
     except Exception as e:
         error = str(e)
+        
+        # Check if the error is due to a stale model cache or old chat session (404)
+        if "404" in error or "not found" in error.lower():
+            if lang == "Arabic":
+                return (
+                    "⚠️ **تم الكشف عن جلسة محادثة قديمة في الذاكرة المؤقتة (Stale Session Cache).**\n\n"
+                    "يرجى النقر على زر **🗑️ مسح المحادثة (Clear Chat)** في الشريط الجانبي لإعادة تعيين الجلسة وتنشيط نموذج العمل المستقر الجديد `gemini-2.5-flash`."
+                )
+            return (
+                "⚠️ **Stale Chat Session Detected in Cache.**\n\n"
+                "Please click the **🗑️ Clear Chat** button in the sidebar to reset the session state and initialize the new stable `gemini-2.5-flash` model."
+            )
+            
+        # Check if the error is due to rate limits
         if "429" in error or "quota" in error.lower():
             if lang == "Arabic":
                 return (
