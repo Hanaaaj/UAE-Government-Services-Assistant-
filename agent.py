@@ -19,37 +19,142 @@ SYSTEM_PROMPT = """You are the UAE Government Services Assistant, a friendly pro
 
 GREETING AND CONVERSATION STYLE
 - When a conversation begins, greet the user warmly before diving into business. A natural UAE-style welcome works well — for example, opening with a warm "Marhaba" or "Welcome" alongside an English greeting feels appropriate, but keep it light and optional rather than a fixed script every time.
-- Be genuinely conversational. If the user makes small talk, asks how you are, or chats casually, respond naturally and warmly before or alongside addressing their actual question — you don't need to force every message into a visa/license topic.
-- Reflect UAE hospitality and warmth in your tone: welcoming, respectful, patient, and generous with reassurance, the way a helpful local friend or government service-center staff member known for good service would speak.
-- At the same time, keep your language, references, and humor universally comfortable for people of any nationality, background, or religion. Avoid assuming the user's nationality, faith, or background, and avoid region-specific cultural references that could feel exclusionary or unfamiliar to a newcomer or tourist. Warmth should feel inclusive, not insider-only.
-- Adapt formality to the user: if they're casual, be a bit more relaxed; if they write formally, match that register. Always remain respectful regardless.
+- Be genuinely conversational. If the user makes small talk, asks how you are, or chats casually, respond naturally and warmly before or alongside addressing their actual question.
+- Reflect UAE hospitality and warmth in your tone: welcoming, respectful, patient, and generous with reassurance.
+- Keep language universally comfortable for people of any nationality, background, or religion.
+- Adapt formality to the user: if they're casual, be a bit more relaxed; if they write formally, match that register.
 
 YOUR ROLE
-You answer ONLY using the information provided to you in the "RETRIEVED CONTEXT" section of the user's message when present. This context comes from a curated, manually-verified knowledge base of UAE visa and license workflows. Treat your own training knowledge on this topic as unreliable and unusable for factual claims — rely solely on provided context.
+You answer ONLY using the information provided to you in the "RETRIEVED CONTEXT" section of the user's message when present. Treat your own training knowledge on this topic as unreliable — rely solely on provided context.
+
+LANGUAGE INSTRUCTION
+- You will receive a LANGUAGE INSTRUCTION in every message. Follow it strictly.
+- If told to respond in Arabic, respond entirely in Arabic including all labels, steps, and source references.
+- If told to respond in English, respond entirely in English.
 
 STRICT RULES
-1. Ground every factual claim (fees, durations, document lists, eligibility rules, step order) in the RETRIEVED CONTEXT provided. Never invent or estimate a fee, document requirement, or processing time that is not present in the context.
-2. If the RETRIEVED CONTEXT does not contain enough information to answer the user's question, say so directly and suggest checking the official source. Do not guess.
-3. If no relevant context was provided at all and the question is a factual visa/license question, do not answer from general knowledge. Say you're not certain and ask a clarifying question or point to official sources.
-4. Always end every substantive factual answer with the official source link(s) provided in the context, framed as "Verify on official source: [link]".
-5. Never state or imply that you are an official government service, system, or representative. If asked who you are or whether you're official, clarify simply that you are an independent prototype assistant, not affiliated with any UAE government entity.
-6. Do not give legal advice, immigration legal opinions, or guarantees about approval outcomes. Frame eligibility information as "based on the typical requirements" rather than a guarantee.
-7. If eligibility data indicates the user does not meet a requirement, or flags a blocker (e.g., outstanding fines), state this clearly and supportively, and explain the next concrete step to resolve it.
+1. Ground every factual claim in the RETRIEVED CONTEXT. Never invent fees, documents, or timelines.
+2. If context is insufficient, say so and suggest the official source. Do not guess.
+3. Always end factual answers with the official source link framed as "Verify on official source: [link]".
+4. Never claim to be an official government service.
+5. Do not give legal advice or guarantee approval outcomes.
+6. If the user does not meet a requirement, state this clearly and explain the next step.
 
 TONE AND STYLE
-- Be warm, clear, and practical — like a knowledgeable, friendly guide explaining a bureaucratic process, not a legal document.
-- Use plain language. Avoid jargon unless it's an official term (e.g., "Emirates ID", "GDRFA") the user needs to know.
-- Structure longer answers with short steps or numbered lists when explaining a process.
-- Keep tone reassuring but accurate.
+- Warm, clear, and practical.
+- Use plain language; avoid jargon unless it's an official term.
+- Use numbered lists for process steps.
 - Do not over-elaborate. Answer what was asked, then offer to go deeper.
 
-OUTPUT FORMAT
-- Respond in natural conversational text, not raw JSON.
-- When listing steps, documents, or fees, use a clearly structured short list.
-
 DISCLAIMER
-If the user asks something that suggests they think this is an official government tool, gently clarify: "Just to set expectations — I'm a prototype assistant, not an official UAE government service. Always confirm details with the official source link before taking action."
+If the user thinks this is an official government tool, clarify: "I'm a prototype assistant, not an official UAE government service. Always confirm details with the official source before taking action."
 """
+
+
+# ─────────────────────────────────────────────
+# UI STRINGS — English & Arabic
+# ─────────────────────────────────────────────
+
+UI = {
+    "English": {
+        # Sidebar
+        "config_header":     "🔑 Configuration",
+        "api_label":         "Enter Google Gemini API Key",
+        "api_help":          "Free-tier key from Google AI Studio.",
+        "api_loaded":        "🔒 API key loaded from secrets.",
+        "api_info":          "💡 Paste your Gemini API key above to begin.",
+        "verify_hubs":       "### Trusted Verification Hubs",
+        "clear_chat":        "🗑️ Clear Chat",
+        # Disclaimer
+        "disclaimer":        "⚠️ <strong>Prototype Disclaimer:</strong> This application is an independent prototype. It is <strong>NOT</strong> an official government portal. Always confirm details at the official source links provided.",
+        # Nav
+        "nav_logo":          "🇦🇪 UAE Gov Assistant",
+        "nav_home":          "Home",
+        "nav_visa":          "Visa Services",
+        "nav_driving":       "Driving License",
+        "nav_business":      "Business License",
+        "nav_about":         "About",
+        "toggle_btn":        "🌐 العربية",
+        # Hero
+        "hero_title":        "UAE Government<br>Services Assistant",
+        "hero_subtitle":     "AI-Powered Guidance for Visas, Licenses,<br>and Government Services",
+        # Service cards
+        "quick_services":    "Quick Services",
+        "svc_visa":          "Visa Services",
+        "svc_driving":       "Driving License",
+        "svc_business":      "Business License",
+        "svc_renewals":      "Renewals",
+        "svc_faq":           "FAQs",
+        # Chat section
+        "chat_section":      "Main AI Chat Section",
+        "quick_queries":     "⚡ Quick Queries",
+        "btn_student":       "🎓 Student Visa Info",
+        "btn_driving":       "🚗 Convert Driving License",
+        "btn_golden":        "💼 Golden Visa Options",
+        "placeholder":       "Ask about UAE visas, driving renewals, or business licenses...",
+        "verify_source":     "**Verify on official source:**",
+        "thinking":          "Thinking...",
+        # Greeting
+        "greeting":          "Marhaba! Welcome 🇦🇪 I'm your UAE Government Services Assistant. Ask me anything about visas, driving licenses, or business licenses.",
+        # Footer
+        "footer":            "🏆 Hackathon Prototype · Not affiliated with any UAE government authority · Always verify at <a href='https://u.ae' target='_blank'>u.ae</a>",
+        # Quick query text sent to agent
+        "q_student":         "What are the requirements and process steps for a Student Visa?",
+        "q_driving":         "How can I convert my foreign driving license to a UAE license?",
+        "q_golden":          "What is the eligibility for a Golden Visa?",
+        # Lang instruction for agent
+        "lang_instruction":  "Respond in English.",
+    },
+    "Arabic": {
+        # Sidebar
+        "config_header":     "🔑 الإعدادات",
+        "api_label":         "أدخل مفتاح Google Gemini API",
+        "api_help":          "مفتاح مجاني من Google AI Studio.",
+        "api_loaded":        "🔒 تم تحميل مفتاح API من الأسرار.",
+        "api_info":          "💡 الصق مفتاح Gemini API أعلاه للبدء.",
+        "verify_hubs":       "### روابط التحقق الرسمية",
+        "clear_chat":        "🗑️ مسح المحادثة",
+        # Disclaimer
+        "disclaimer":        "⚠️ <strong>إخلاء مسؤولية:</strong> هذا التطبيق نموذج أولي مستقل. إنه <strong>ليس</strong> بوابة حكومية رسمية. يرجى دائمًا التحقق من التفاصيل عبر روابط المصادر الرسمية.",
+        # Nav
+        "nav_logo":          "🇦🇪 مساعد الحكومة الإماراتية",
+        "nav_home":          "الرئيسية",
+        "nav_visa":          "خدمات التأشيرة",
+        "nav_driving":       "رخصة القيادة",
+        "nav_business":      "الرخصة التجارية",
+        "nav_about":         "عن التطبيق",
+        "toggle_btn":        "🌐 English",
+        # Hero
+        "hero_title":        "مساعد الخدمات<br>الحكومية الإماراتية",
+        "hero_subtitle":     "إرشادات مدعومة بالذكاء الاصطناعي للتأشيرات<br>والتراخيص والخدمات الحكومية",
+        # Service cards
+        "quick_services":    "الخدمات السريعة",
+        "svc_visa":          "خدمات التأشيرة",
+        "svc_driving":       "رخصة القيادة",
+        "svc_business":      "الرخصة التجارية",
+        "svc_renewals":      "التجديدات",
+        "svc_faq":           "الأسئلة الشائعة",
+        # Chat section
+        "chat_section":      "قسم المحادثة مع الذكاء الاصطناعي",
+        "quick_queries":     "⚡ أسئلة سريعة",
+        "btn_student":       "🎓 تأشيرة الطالب",
+        "btn_driving":       "🚗 تحويل رخصة القيادة",
+        "btn_golden":        "💼 التأشيرة الذهبية",
+        "placeholder":       "اسأل عن التأشيرات أو رخص القيادة أو التراخيص التجارية...",
+        "verify_source":     "**تحقق من المصدر الرسمي:**",
+        "thinking":          "جارٍ التفكير...",
+        # Greeting
+        "greeting":          "مرحباً! أهلاً وسهلاً 🇦🇪 أنا مساعدك للخدمات الحكومية الإماراتية. اسألني عن أي شيء يتعلق بالتأشيرات أو رخص القيادة أو التراخيص التجارية.",
+        # Footer
+        "footer":            "🏆 نموذج أولي للهاكاثون · غير تابع لأي جهة حكومية إماراتية · تحقق دائمًا على <a href='https://u.ae' target='_blank'>u.ae</a>",
+        # Quick query text sent to agent
+        "q_student":         "ما هي متطلبات وخطوات الحصول على تأشيرة الطالب؟",
+        "q_driving":         "كيف يمكنني تحويل رخصة القيادة الأجنبية إلى رخصة إماراتية؟",
+        "q_golden":          "ما هي شروط الحصول على التأشيرة الذهبية؟",
+        # Lang instruction for agent
+        "lang_instruction":  "Respond entirely in Arabic (العربية). All text, steps, labels, and source references must be in Arabic.",
+    },
+}
 
 
 # ─────────────────────────────────────────────
@@ -137,10 +242,7 @@ def retrieve_context(
 # ─────────────────────────────────────────────
 
 def get_gemini_model(api_key: str):
-    """
-    Configure and return a Gemini GenerativeModel.
-    Call once per unique API key; cache the result externally (e.g. st.cache_resource).
-    """
+    """Configure and return a Gemini GenerativeModel."""
     genai.configure(api_key=api_key)
     return genai.GenerativeModel(
         model_name="gemini-2.5-flash",
@@ -153,38 +255,40 @@ def start_chat_session(model):
     return model.start_chat(history=[])
 
 
-def generate_greeting(chat_session) -> str:
+def generate_grounded_response(
+    query: str,
+    context_string: str,
+    chat_session,
+    lang: str = "English",
+) -> str:
     """
-    Ask the model to produce the opening greeting so tone stays consistent
-    with the system prompt instead of being hardcoded.
+    Send a RAG-grounded message to the active chat session and return reply text.
+    lang: "English" or "Arabic" — controls response language instruction.
     """
+    lang_instruction = UI[lang]["lang_instruction"]
+
     try:
-        response = chat_session.send_message(
-            "SYSTEM_EVENT: A new user has just opened the chat. No question has been asked yet. "
-            "Greet them warmly and briefly introduce what you can help with (UAE visas and licenses)."
+        full_message = (
+            f"LANGUAGE INSTRUCTION: {lang_instruction}\n\n"
+            f"RETRIEVED CONTEXT:\n{context_string or '(none found for this message)'}\n\n"
+            f"USER QUESTION:\n{query}"
         )
-        return response.text
-    except Exception as e:
-        return f"Marhaba! Welcome 🇦🇪 — I can help with UAE visa and license questions. (Error: {e})"
-
-
-def generate_grounded_response(query: str, context_string: str, chat_session) -> str:
-    """
-    Send a RAG-grounded message to the active chat session and return the reply text.
-    context_string should be the formatted output of retrieve_context().
-    """
-    try:
-        if context_string:
-            full_message = (
-                f"RETRIEVED CONTEXT:\n{context_string}\n\n"
-                f"USER QUESTION:\n{query}"
-            )
-        else:
-            full_message = (
-                f"RETRIEVED CONTEXT:\n(none found for this message)\n\n"
-                f"USER QUESTION:\n{query}"
-            )
         response = chat_session.send_message(full_message)
         return response.text
     except Exception as e:
-        return f"Something went wrong while generating a response: {e}"
+        error = str(e)
+        if "429" in error or "quota" in error.lower():
+            if lang == "Arabic":
+                return (
+                    "⚠️ **تم الوصول إلى الحد اليومي لطلبات API.**\n\n"
+                    "يُرجى المحاولة لاحقاً أو التحقق مباشرة من:\n"
+                    "- [u.ae](https://u.ae)\n"
+                    "- [icp.gov.ae](https://icp.gov.ae)"
+                )
+            return (
+                "⚠️ **API quota reached for today.**\n\n"
+                "Please try again later or verify directly at:\n"
+                "- [u.ae](https://u.ae)\n"
+                "- [icp.gov.ae](https://icp.gov.ae)"
+            )
+        return f"Something went wrong: {error}"
