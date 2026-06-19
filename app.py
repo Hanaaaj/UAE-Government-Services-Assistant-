@@ -70,7 +70,7 @@ kb_data, vectorizer, tfidf_matrix = initialize_agent_backend()
 # ─────────────────────────────────────────────
 # ADVANCED CUSTOM CSS FOR TARGET DESIGN
 # ─────────────────────────────────────────────
-st.markdown("""
+st.html("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght=300;400;500;600;700;800&family=Cairo:wght=300;400;600;700;800&display=swap');
  
@@ -479,11 +479,11 @@ html, body, [class*="css"], .stApp {
     text-transform: uppercase;
 }
 </style>
-""", unsafe_allow_html=True)
+""")
  
 # Handle RTL / Arabic Styles Dynamic Loading
 if is_arabic:
-    st.markdown("""
+    st.html("""
     <style>
     html, body, [class*="css"], .stApp { font-family: 'Cairo', sans-serif !important; direction: rtl; text-align: right; }
     .custom-header, .hero-wrapper, .library-header-row { flex-direction: row-reverse; }
@@ -495,7 +495,7 @@ if is_arabic:
     .hero-btn-group { flex-direction: row-reverse; }
     .select-filter-label-group { flex-direction: row-reverse; }
     </style>
-    """, unsafe_allow_html=True)
+    """)
 
 # ─────────────────────────────────────────────
 # STATE TRACKING
@@ -525,12 +525,11 @@ with st.sidebar:
         st.rerun()
  
 # ─────────────────────────────────────────────
-# UNIFIED NAV BAR WITH INTEGRATED RIGHT-ALIGNED LANGUAGE TOGGLE
+# UNIFIED NAV BAR WITH NATIVE STREAMLIT HTML ENGINE
 # ─────────────────────────────────────────────
 lang_toggle_text = "English" if is_arabic else "العربية"
 current_filter = st.session_state.selected_library_filter
 
-# Pre-calculate active CSS indicators cleanly to protect string parser states
 active_all = "active" if current_filter == "All" else ""
 active_visa = "active" if current_filter == "Visa Services" else ""
 active_driving = "active" if current_filter == "Driving License" else ""
@@ -584,14 +583,13 @@ navbar_html = f"""
 </div>
 <div style="margin-bottom: 25px;"></div>
 """
-st.markdown(navbar_html, unsafe_allow_html=True)
+st.html(navbar_html)
 
 # ─────────────────────────────────────────────
 # PARSE ACTION & LANGUAGE HOOKS FROM URL PARAMS
 # ─────────────────────────────────────────────
 url_params = st.query_params
 
-# Handle top bar filter shortcuts seamlessly
 if "filter" in url_params:
     requested_filter = url_params.get("filter")
     if requested_filter in ["All", "Visa Services", "Driving License", "Business License"]:
@@ -599,7 +597,6 @@ if "filter" in url_params:
     st.query_params.clear()
     st.rerun()
 
-# Intercept lang_toggle switch click parameters
 if url_params.get("click") == "lang_toggle":
     st.query_params.clear()
     st.session_state.lang = "Arabic" if st.session_state.lang == "English" else "English"
@@ -618,7 +615,7 @@ if url_params.get("action") == "start_chat":
     st.rerun()
 
 # ─────────────────────────────────────────────
-# PIXEL-PERFECT UNIFIED HERO BANNER 
+# HERO BANNER LAYOUT VIA NATIVE STREAMLIT HTML
 # ─────────────────────────────────────────────
 hero_raw_html = f"""
 <div class="hero-wrapper">
@@ -653,12 +650,12 @@ hero_raw_html = f"""
     </div>
 </div>
 """
-st.markdown(hero_raw_html, unsafe_allow_html=True)
+st.html(hero_raw_html)
  
 # ─────────────────────────────────────────────
 # DYNAMIC CONFIGURABLE CARDS LAYOUT
 # ─────────────────────────────────────────────
-st.markdown(f"""
+st.html(f"""
 <div class="cards-row">
     <div class="target-card {'active-card' if current_filter == 'Visa Services' else ''}">
         <div class="card-icon">🛂</div>
@@ -686,7 +683,7 @@ st.markdown(f"""
         <div class="card-subtext">Check the full library</div>
     </div>
 </div>
-""", unsafe_allow_html=True)
+""")
  
 # ─────────────────────────────────────────────
 # SPLIT INTERACTIVE CONTEXT LAYOUT (Chat + Details Panels)
@@ -702,13 +699,11 @@ if not st.session_state.messages:
         "sources": [],
     })
 
-# Setting up layout columns
 chat_col, sidebar_col = st.columns([2, 1])
 
 with chat_col:
     st.markdown(f"#### 🤖 {t['chat_section']}")
     
-    # Render Quick Action Queries inside conversational window
     st.markdown(f"<span style='font-size:13px; font-weight:600; color:#6B7280;'>{t['quick_queries']}</span>", unsafe_allow_html=True)
     q_btn_cols = st.columns(3)
     quick_query = None
@@ -726,14 +721,12 @@ with chat_col:
         st.session_state.messages.append({"role": "assistant", "content": reply, "sources": matched_docs})
         st.rerun()
 
-    # Chat Log interface box
     st.markdown('<div style="background:white; border:1px solid #E5E7EB; border-radius:16px; padding:20px; margin-top:10px;">', unsafe_allow_html=True)
     for msg in st.session_state.messages:
         with st.chat_message(msg["role"]):
             st.write(msg["content"])
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # User Input Control
     if user_input := st.chat_input(t["placeholder"]):
         if not api_key_input:
             st.warning(t["api_info"])
@@ -746,18 +739,16 @@ with chat_col:
             st.rerun()
 
 with sidebar_col:
-    # Prototype Disclaimer Card
-    st.markdown(f"""
+    st.html(f"""
     <div class="side-disclaimer">
         <div class="side-disclaimer-icon">🛈</div>
         <div class="side-disclaimer-text">
             <strong>Prototype Disclaimer:</strong> This website is an independent AI prototype built for research and demonstration. It is NOT an official UAE government portal. Always consult and verify regulations directly on official gov source links.
         </div>
     </div>
-    """, unsafe_allow_html=True)
+    """)
 
-    # Verification Hub Links Card
-    st.markdown(f"""
+    st.html(f"""
     <div class="side-panel">
         <div class="panel-title">🗂️ Trusted Verification Hubs</div>
         <a href="https://u.ae" target="_blank" class="hub-link-item">
@@ -776,27 +767,26 @@ with sidebar_col:
             <span>MOHRE Labour Agency</span><span class="hub-link-arrow">↗</span>
         </a>
     </div>
-    """, unsafe_allow_html=True)
+    """)
 
 # ─────────────────────────────────────────────
 # PIXEL-PERFECT VERIFIED SERVICES LIBRARY MATRIX 
 # ─────────────────────────────────────────────
-st.markdown('<div id="verified-library"></div>', unsafe_allow_html=True)
-st.markdown('<div class="library-wrapper">', unsafe_allow_html=True)
+st.html('<div id="verified-library"></div>')
+st.html('<div class="library-wrapper">')
 
 lib_header_left, lib_header_right = st.columns([3, 2])
 
 with lib_header_left:
-    st.markdown(f'<div class="library-title">📚 Verified Services Library ({st.session_state.selected_library_filter})</div>', unsafe_allow_html=True)
-    st.markdown(
+    st.html(f'<div class="library-title">📚 Verified Services Library ({st.session_state.selected_library_filter})</div>')
+    st.html(
         '<p style="font-size:13px; color:#6B7280; margin-top: 4px; margin-bottom:0;">'
         'Verify criteria, checklists, fee lists, and wait times loaded securely from the agent source.'
-        '</p>', 
-        unsafe_allow_html=True
+        '</p>'
     )
 
 with lib_header_right:
-    st.markdown('<div class="select-filter-label-group">🔍 Filter Dataset Directory:</div>', unsafe_allow_html=True)
+    st.html('<div class="select-filter-label-group">🔍 Filter Dataset Directory:</div>')
     filter_options = ["All", "Visa Services", "Driving License", "Business License"]
     try:
         current_index = filter_options.index(st.session_state.selected_library_filter)
@@ -814,7 +804,7 @@ with lib_header_right:
         st.session_state.selected_library_filter = selected_option
         st.rerun()
 
-st.markdown("<br>", unsafe_allow_html=True)
+st.html("<br>")
 
 all_library_items = [
     {
@@ -874,7 +864,6 @@ filtered_items = [
     if st.session_state.selected_library_filter == "All" or item["category"] == st.session_state.selected_library_filter
 ]
 
-# 1. Loop and generate the raw row items cleanly
 table_rows = []
 for item in filtered_items:
     row_html = (
@@ -889,13 +878,11 @@ for item in filtered_items:
     )
     table_rows.append(row_html)
 
-# Fallback if no rows exist
 if not table_rows:
     table_rows_html = "<tr><td colspan='5' style='text-align:center; padding:40px; color:#9CA3AF;'>No records available for this filter group.</td></tr>"
 else:
     table_rows_html = "".join(table_rows)
 
-# 2. Build the final HTML container safely
 full_matrix_html = (
     "<div class='custom-table-container'>"
     "<table class='custom-table'>"
@@ -916,13 +903,12 @@ full_matrix_html = (
     "</div>"
 )
 
-# 3. Render directly using unsafe_allow_html
-st.markdown(full_matrix_html, unsafe_allow_html=True)
+st.html(full_matrix_html)
 
 # ─────────────────────────────────────────────
 # PROTOTYPE DARK BOTTOM FOOTER BAR
 # ─────────────────────────────────────────────
-st.markdown("""
+st.html("""
 <style>
 .custom-footer-bar {
     background-color: #0B132B;
@@ -986,4 +972,4 @@ st.markdown("""
         <a class="footer-link-anchor" href="https://u.ae" target="_blank">Official Directory Portal</a>
     </div>
 </div>
-""", unsafe_allow_html=True)
+""")
