@@ -111,7 +111,7 @@ UI = {
         "verify_source":     "**Verify on official source:**",
         "thinking":          "Thinking...",
         # Greeting
-        "greeting":          "Marhaba! Welcome 🇦🇪 I'm your UAE Government Services Assistant. Ask me anything about visas, driving licenses, or business licenses.",
+        "greeting":          "Marhaba! I'm Daleel 🇦🇪, your guide to UAE visas and licenses. Ask me anything about visas, driving licenses, or business licenses.",
         # Footer
         "footer":            "🏆 Hackathon Prototype · Not affiliated with any UAE government authority · Always verify at <a href='https://u.ae' target='_blank'>u.ae</a>",
         # Quick query text sent to agent
@@ -160,7 +160,7 @@ UI = {
         "verify_source":     "**تحقق من المصدر الرسمي:**",
         "thinking":          "جارٍ التفكير...",
         # Greeting
-        "greeting":          "مرحباً! أهلاً وسهلاً 🇦🇪 أنا مساعدك للخدمات الحكومية الإماراتية. اسألني عن أي شيء يتعلق بالتأشيرات أو رخص القيادة أو التراخيص التجارية.",
+        "greeting":          "مرحباً! أنا دليل 🇦🇪، مرشدك لتأشيرات ورخص الإمارات. اسألني عن أي شيء يتعلق بالتأشيرات أو رخص القيادة أو التراخيص التجارية.",
         # Footer
         "footer":            "🏆 نموذج أولي للهاكاثون · غير تابع لأي جهة حكومية إماراتية · تحقق دائمًا على <a href='https://u.ae' target='_blank'>u.ae</a>",
         # Quick query text sent to agent
