@@ -521,35 +521,62 @@ with st.sidebar:
         st.rerun()
  
 # ─────────────────────────────────────────────
-# CUSTOM NAVBAR UI WITH INLINE LANG TOGGLE
+# CUSTOM NAVBAR UI WITH CENTRALIZED CATEGORIES & RIGHT LANG TOGGLE
 # ─────────────────────────────────────────────
-nav_html = f"""
-<div class="custom-header">
-    <div class="brand-block">
-        <div class="brand-badge">AE</div>
-        <div>
-            <div class="brand-name">{t["nav_logo"]}</div>
-            <div class="brand-tag">Prototype Agent</div>
+lang_toggle_text = "English" if is_arabic else "العربية"
+current_filter = st.session_state.selected_library_filter
+
+# Column grid boundaries to anchor sections precisely
+nav_left, nav_center, nav_right = st.columns([1.5, 4.5, 1], gap="small")
+
+with nav_left:
+    st.markdown(f"""
+    <div class="custom-header" style="padding-bottom: 0px; margin-bottom: 0px;">
+        <div class="brand-block">
+            <div class="brand-badge">AE</div>
+            <div>
+                <div class="brand-name">{t["nav_logo"]}</div>
+                <div class="brand-tag">Prototype Agent</div>
+            </div>
         </div>
     </div>
-    <div class="custom-nav-links">
-        <span class="active">{t["nav_home"]}</span>
-        <span>{t["nav_visa"]}</span>
-        <span>{t["nav_driving"]}</span>
-        <span>{t["nav_business"]}</span>
-    </div>
-</div>
-"""
-st.markdown(nav_html, unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
 
-# Language Toggle Layer Integration
-cols_lang = st.columns([12, 1])
-with cols_lang[1]:
-    if st.button(t["toggle_btn"], key="lang_toggle"):
+with nav_center:
+    st.markdown(f"""
+    <div class="custom-header" style="justify-content: center; padding-bottom: 0px; margin-bottom: 0px; height: 100%;">
+        <div class="custom-nav-links" style="gap: 32px; font-size: 14.5px;">
+            <a href="#verified-library" target="_self" style="text-decoration: none; color: inherit;">
+                <span class="{'active' if current_filter == 'All' else ''}">All</span>
+            </a>
+            <a href="#verified-library" target="_self" style="text-decoration: none; color: inherit;">
+                <span class="{'active' if current_filter == 'Visa Services' else ''}">{t["svc_visa"]}</span>
+            </a>
+            <a href="#verified-library" target="_self" style="text-decoration: none; color: inherit;">
+                <span class="{'active' if current_filter == 'Driving License' else ''}">{t["svc_driving"]}</span>
+            </a>
+            <a href="#verified-library" target="_self" style="text-decoration: none; color: inherit;">
+                <span class="{'active' if current_filter == 'Business License' else ''}">{t["svc_business"]}</span>
+            </a>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+with nav_right:
+    st.markdown("""
+        <div style="display: flex; justify-content: flex-end; align-items: center; height: 55px;">
+    """, unsafe_allow_html=True)
+    
+    if st.button(lang_toggle_text, key="lang_toggle", use_container_width=False):
         st.session_state.lang = "Arabic" if st.session_state.lang == "English" else "English"
         st.session_state.pop("chat_session", None)
         st.session_state.messages = []
         st.rerun()
+        
+    st.markdown("</div>", unsafe_allow_html=True)
+
+# Structural margin cleanup
+st.markdown("<div style='margin-bottom: 30px;'></div>", unsafe_allow_html=True)
 
 # ─────────────────────────────────────────────
 # PARSE ACTION HOOKS FROM URL PARAMS
@@ -606,7 +633,6 @@ st.markdown(hero_raw_html, unsafe_allow_html=True)
 # ─────────────────────────────────────────────
 # DYNAMIC CONFIGURABLE CARDS LAYOUT
 # ─────────────────────────────────────────────
-current_filter = st.session_state.selected_library_filter
 st.markdown(f"""
 <div class="cards-row">
     <div class="target-card {'active-card' if current_filter == 'Visa Services' else ''}">
@@ -738,7 +764,7 @@ lib_header_left, lib_header_right = st.columns([3, 2])
 with lib_header_left:
     st.markdown(f'<div class="library-title">📚 Verified Services Library ({st.session_state.selected_library_filter})</div>', unsafe_allow_html=True)
     st.markdown(
-        '<p style="font-size:13px; color:#6B7280; margin-top: 4px; margin-bottom:0;">'
+        <p style="font-size:13px; color:#6B7280; margin-top: 4px; margin-bottom:0;">'
         'Verify criteria, checklists, fee lists, and wait times loaded securely from the agent source.'
         '</p>', 
         unsafe_allow_html=True
@@ -936,5 +962,3 @@ st.markdown("""
     </div>
 </div>
 """, unsafe_allow_html=True)
-
-
