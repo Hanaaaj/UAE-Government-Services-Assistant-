@@ -149,9 +149,13 @@ html, body, [class*="css"], .stApp {
 .custom-nav-links {
     display: flex;
     gap: 24px;
-    font-size: 14px;
+    font-size: 14.5px;
     font-weight: 500;
     color: #4B5563;
+}
+.custom-nav-links a {
+    text-decoration: none !important;
+    color: inherit !important;
 }
 .custom-nav-links span.active {
     color: #0F5A41;
@@ -521,40 +525,81 @@ with st.sidebar:
         st.rerun()
  
 # ─────────────────────────────────────────────
-# CUSTOM NAVBAR UI WITH INLINE LANG TOGGLE
+# UNIFIED NAV BAR WITH INTEGRATED RIGHT-ALIGNED LANGUAGE TOGGLE
 # ─────────────────────────────────────────────
-nav_html = f"""
-<div class="custom-header">
-    <div class="brand-block">
+lang_toggle_text = "English" if is_arabic else "العربية"
+current_filter = st.session_state.selected_library_filter
+
+st.markdown(f"""
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 15px 0; margin-bottom: 20px; width: 100%;">
+    
+    <div class="brand-block" style="flex: 1; display: flex; justify-content: flex-start;">
         <div class="brand-badge">AE</div>
         <div>
             <div class="brand-name">{t["nav_logo"]}</div>
             <div class="brand-tag">Prototype Agent</div>
         </div>
     </div>
-    <div class="custom-nav-links">
-        <span class="active">{t["nav_home"]}</span>
-        <span>{t["nav_visa"]}</span>
-        <span>{t["nav_driving"]}</span>
-        <span>{t["nav_business"]}</span>
+    
+    <div style="flex: 2; display: flex; justify-content: center; align-items: center;">
+        <div class="custom-nav-links" style="gap: 32px; font-size: 14.5px; display: flex; align-items: center;">
+            <a href="?filter=All#verified-library" target="_self">
+                <span class="{'active' if current_filter == 'All' else ''}">{t["nav_home"]}</span>
+            </a>
+            <a href="?filter=Visa+Services#verified-library" target="_self">
+                <span class="{'active' if current_filter == 'Visa Services' else ''}">{t["nav_visa"]}</span>
+            </a>
+            <a href="?filter=Driving+License#verified-library" target="_self">
+                <span class="{'active' if current_filter == 'Driving License' else ''}">{t["nav_driving"]}</span>
+            </a>
+            <a href="?filter=Business+License#verified-library" target="_self">
+                <span class="{'active' if current_filter == 'Business License' else ''}">{t["nav_business"]}</span>
+            </a>
+        </div>
     </div>
+    
+    <div style="flex: 1; display: flex; justify-content: flex-end; align-items: center;">
+        <a href="?click=lang_toggle" target="_self" style="
+            text-decoration: none; 
+            color: #0F5A41; 
+            font-weight: 600; 
+            font-size: 15px; 
+            padding: 6px 14px; 
+            border: 1px solid #E5E7EB; 
+            border-radius: 10px; 
+            background-color: #FFFFFF;
+            box-shadow: 0px 1px 2px rgba(0,0,0,0.05);
+            transition: background 0.2s;
+        " onmouseover="this.style.backgroundColor='#F9FAFB'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+            {lang_toggle_text}
+        </a>
+    </div>
+    
 </div>
-"""
-st.markdown(nav_html, unsafe_allow_html=True)
-
-# Language Toggle Layer Integration
-cols_lang = st.columns([12, 1])
-with cols_lang[1]:
-    if st.button(t["toggle_btn"], key="lang_toggle"):
-        st.session_state.lang = "Arabic" if st.session_state.lang == "English" else "English"
-        st.session_state.pop("chat_session", None)
-        st.session_state.messages = []
-        st.rerun()
+<div style="margin-bottom: 25px;"></div>
+""", unsafe_allow_html=True)
 
 # ─────────────────────────────────────────────
-# PARSE ACTION HOOKS FROM URL PARAMS
+# PARSE ACTION & LANGUAGE HOOKS FROM URL PARAMS
 # ─────────────────────────────────────────────
 url_params = st.query_params
+
+# Handle top bar filter shortcuts seamlessly
+if "filter" in url_params:
+    requested_filter = url_params.get("filter")
+    if requested_filter in ["All", "Visa Services", "Driving License", "Business License"]:
+        st.session_state.selected_library_filter = requested_filter
+    st.query_params.clear()
+    st.rerun()
+
+# Intercept lang_toggle switch click parameters
+if url_params.get("click") == "lang_toggle":
+    st.query_params.clear()
+    st.session_state.lang = "Arabic" if st.session_state.lang == "English" else "English"
+    st.session_state.pop("chat_session", None)
+    st.session_state.messages = []
+    st.rerun()
+
 if url_params.get("action") == "start_chat":
     st.query_params.clear()
     if len(st.session_state.messages) <= 1:
@@ -606,7 +651,6 @@ st.markdown(hero_raw_html, unsafe_allow_html=True)
 # ─────────────────────────────────────────────
 # DYNAMIC CONFIGURABLE CARDS LAYOUT
 # ─────────────────────────────────────────────
-current_filter = st.session_state.selected_library_filter
 st.markdown(f"""
 <div class="cards-row">
     <div class="target-card {'active-card' if current_filter == 'Visa Services' else ''}">
@@ -936,5 +980,3 @@ st.markdown("""
     </div>
 </div>
 """, unsafe_allow_html=True)
-
-
