@@ -456,7 +456,6 @@ with cols_lang[1]:
 hero_html = f"""
 <div class="hero-container">
     <div class="hero-left">
-        <div class="hero-badge">AE Powered by Gemini AI & Grounded Retrieval</div>
         <div class="hero-title">UAE Government<br><span>Services Assistant</span></div>
         <div class="hero-subtitle">Get instant, reliable guidance on visas, residency rules, driving conversions, step checklists, and company registrations. Handled via fully private server-side retrieval and secure grounded AI.</div>
     </div>
