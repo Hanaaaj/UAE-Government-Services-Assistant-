@@ -1,230 +1,364 @@
 [
-{
-"id": "kb1_gcc_resident_visa",
-"category": "Visa",
-"subcategory": "Visit Visa",
-"title": "Entry Visa for Residents of GCC Countries and Their Companions",
-"eligibility": "Must be a resident of a GCC country with a valid GCC residence permit. Profession must be among the approved professions, and the applicant must not have any entry restrictions to the UAE.",
-"documents": "Passport or travel document (valid for at least 6 months), Copy of GCC residence permit, Recent passport-size photo with white background.",
-"steps": "1. Log in to https://smart.gdrfad.gov.ae and register as a user. 2. Choose the required service. 3. Fill in the application details. 4. Pay the required fees. 5. After approval, the visa is sent to the user's email.",
-"fees": "Application Fee: AED 250 | VAT: 5% | Extension: Can be extended once for an additional 30 days.",
-"processing_time": "48 hours",
-"official_url": "https://smart.gdrfad.gov.ae"
-},
-{
-"id": "kb1_job_seeker_visa",
-"category": "Visa",
-"subcategory": "Visit Visa",
-"title": "Job Seeker Visit Visa",
-"eligibility": "Hold a Bachelor's degree or equivalent qualification. Be a skilled professional in Skill Level 1, 2, or 3 according to MOHRE, OR be a graduate from a top 500 university within the last 2 years. Meet financial guarantee requirements.",
-"documents": "Recent coloured passport-size photo, Passport copy (valid for at least 6 months), Bachelor's degree or equivalent qualification certificate.",
-"steps": "1. Apply online via smart services system using UAE Pass, or visit an Amer Center / Customer Happiness Centre. 2. Fill out application data and upload documents. 3. Pay fees and submit.",
-"fees": "60 Days: AED 200 | 90 Days: AED 300 | 120 Days: AED 400 | Security Deposit: AED 1000 | VAT: 5%",
-"processing_time": "48 hours",
-"official_url": "https://gdrfad.gov.ae"
-},
-{
-"id": "kb1_business_exploration_visa",
-"category": "Visa",
-"subcategory": "Visit Visa",
-"title": "Visit Visa for Exploring Business Opportunities",
-"eligibility": "Applicant must be an entrepreneur, investor, or business professional. Must meet financial requirements set by UAE authorities, and passport must be valid for at least 6 months.",
-"documents": "Recent coloured passport-size photo, Passport copy (valid for at least 6 months), Proof of financial solvency, Documents supporting business or investment activity (if applicable).",
-"steps": "1. Apply online via GDRFA website/app or visit an Amer center / Customer Happiness Center. 2. Fill out application details and upload financial verification. 3. Pay fees and submit.",
-"fees": "60 Days: AED 200 | 90 Days: AED 300 | 120 Days: AED 400 | Security Deposit: AED 1000 | VAT: 5%",
-"processing_time": "48 to 72 hours",
-"official_url": "https://gdrfad.gov.ae"
-},
-{
-"id": "kb1_medical_visa",
-"category": "Visa",
-"subcategory": "Visit Visa",
-"title": "Medical Visa",
-"eligibility": "Must require medical treatment in the UAE and be sponsored by a licensed healthcare facility in the UAE. Must have valid health insurance and required medical documents.",
-"documents": "Passport copy (valid for at least 6 months), Recent passport-size photo, Medical report, Letter from the healthcare facility stating the reason for the visit, Valid health insurance, Travel ticket.",
-"steps": "1. Apply through GDRFA digital portal. 2. Log in using UAE Pass or credentials. 3. Fill out medical details and upload hospital letter + report. 4. Pay fees and submit.",
-"fees": "90-Day Single: AED 200 | 180-Day Single: AED 500 | 90-Day Multiple: AED 300 | 180-Day Multiple: AED 900 | Security Deposit (Single): AED 1000 | Security Deposit (Multiple): AED 2000 | Inside country fee: AED 500 | Knowledge & Innovation Dirham: AED 20",
-"processing_time": "48 hours",
-"official_url": "https://icp.gov.ae"
-},
-{
-"id": "kb1_residence_private_sector",
-"category": "Visa",
-"subcategory": "Residence Visa",
-"title": "Residence Visa - Private Sector",
-"eligibility": "Must have a job offer or employment with a UAE private sector company. Employer must sponsor the residence visa. Must pass the required medical fitness test (age 18+).",
-"documents": "Passport copy, Recent passport-size photo with white background, Medical fitness certificate.",
-"steps": "1. Employer registers the request on GDRFA. 2. Undergo medical fitness test and apply for Emirates ID. 3. Pay fees and complete processing. 4. Grace period after expiry or cancellation is 60 days.",
-"fees": "Residence Permit Fee: AED 200 | Inside Country Fee: AED 500 | Delivery Fee: AED 20 | Knowledge & Innovation Dirham: AED 20 | Note: Issuance fee increases by AED 100 annually for periods over 2 years.",
-"processing_time": "48 hours",
-"official_url": "https://gdrfad.gov.ae"
-},
-{
-"id": "kb1_residence_public_sector",
-"category": "Visa",
-"subcategory": "Residence Visa",
-"title": "Residence Visa - Public Sector",
-"eligibility": "Must be employed in the UAE public sector. Must pass the required medical examination. Passport must be valid for more than 6 months.",
-"documents": "Passport copy, Recent personal photo with white background, Medical examination report approved by relevant authorities (valid for 3 months).",
-"steps": "1. Log in to GDRFA/ICP smart services. 2. Fill in application details and upload medical report. 3. Pay fees. 4. Grace period after expiry or cancellation is 60 days.",
-"fees": "Residence Permit Fee: AED 200 | Inside Country Fee: AED 500 | Delivery Fee: AED 20 | Knowledge & Innovation Dirham: AED 20 | Note: Issuance fee increases by AED 100 annually for periods over 2 years.",
-"processing_time": "48 hours",
-"official_url": "https://gdrfad.gov.ae"
-},
-{
-"id": "kb1_new_work_permit",
-"category": "License",
-"subcategory": "Work Permit",
-"title": "New Work Permit",
-"eligibility": "Employee must be 18 years or older. Establishment must have an available electronic quota and a valid trade license with no violations. Applicant must not already hold an active work permit.",
-"documents": "Signed job offer from the employer, Passport copy of the employee, Professional license (if applicable), Additional documents as requested by MOHRE.",
-"steps": "1. Log in to MOHRE portal using credentials or UAE Pass. 2. Submit the work permit application. 3. MOHRE reviews. 4. Upon approval, pay federal fees and bank guarantees.",
-"fees": "Federal Application Fee: AED 50 | Category 1 Permit Fee: AED 250 | Category 2 Permit Fee: AED 1200 | Category 3 Permit Fee: AED 3450 | Business Center Service Fee Cap: AED 72",
-"processing_time": "2 working days",
-"official_url": "https://mohre.gov.ae"
-},
-{
-"id": "kb1_student_residence_visa",
-"category": "Visa",
-"subcategory": "Residence Visa",
-"title": "Student Residence Visa",
-"eligibility": "International students enrolled in an accredited educational institution in the UAE. Must be sponsored by the university or an eligible parent. Passport must be valid for at least 6 months.",
-"documents": "Passport copy (valid for at least 6 months), Recent passport-size photo with white background, University admission letter or study certificate, Medical fitness certificate (if required), Health insurance, Emirates ID application.",
-"steps": "1. Log in to GDRFA/ICP system. 2. Search for Student Residence Visa service. 3. Fill in application data and upload university admission letter. 4. Pay fees. 5. Student is allowed to remain in the UAE for up to 180 days after completing studies.",
-"fees": "University processing fees vary | Standard Gov fees apply (approx. AED 500 - 1,200 depending on location).",
-"processing_time": "48 hours",
-"official_url": "https://gdrfad.gov.ae"
-},
-{
-"id": "kb1_golden_visa_students",
-"category": "Visa",
-"subcategory": "Golden Visa",
-"title": "Golden Residence Permit - Top Students and Graduates",
-"eligibility": "Top High School Students (minimum 95% score, certificate attested by Ministry of Education); Top UAE University Graduates (GPA Classification A min 3.5, Classification B min 3.8, graduated within 2 years); Top International University Graduates (top 100 global university ranking, GPA min 3.5, graduated within 2 years).",
-"documents": "Passport copy, Attested academic certificates, Current UAE residency file copy (Dubai-issued), UAEICP nomination approval.",
-"steps": "1. Apply for eligibility nomination via ICP or GDRFA. 2. Submit verified academic records. 3. Upon approval, apply for 10-year residency via GDRFA/Amer.",
-"fees": "Residence Permit Fee: AED 1100 | Inside Country Fee: AED 500 | Knowledge & Innovation Dirham: AED 20 | Delivery Fee: AED 20 | Total Service Cost: AED 2790",
-"processing_time": "5 days",
-"official_url": "https://gdrfad.gov.ae"
-},
-{
-"id": "kb1_golden_visa_humanitarian",
-"category": "Visa",
-"subcategory": "Golden Visa",
-"title": "Golden Residence Permit - Pioneers of Humanitarian Work",
-"eligibility": "Must obtain recommendation from Ministry of Community Empowerment. Minimum 5 years as member/employee of an international/regional humanitarian organization or public benefit association, OR receive humanitarian awards, OR provide financial support of min AED 2M, OR hold a university degree.",
-"documents": "Passport copy, Recommendation letter from the Ministry of Community Empowerment, Current residence permit copy (Dubai-issued).",
-"steps": "1. Obtain nomination from the Ministry. 2. Receive approval via UAEICP system. 3. Apply via GDRFA portal or Amer center. 4. Pay fees.",
-"fees": "Residence Permit: AED 1100 | Inside Country Fee: AED 500 | Knowledge & Innovation Dirham: AED 20 | Delivery Fee: AED 20 | Golden holders are exempt from the 180-day stay abroad rule.",
-"processing_time": "48 hours",
-"official_url": "https://gdrfad.gov.ae"
-},
-{
-"id": "kb1_golden_visa_scientists",
-"category": "Visa",
-"subcategory": "Golden Visa",
-"title": "Golden Residence Permit - Specialized Scientists and Professionals",
-"eligibility": "Scientists, researchers, specialists, healthcare professionals, educators, industrial experts, and highly skilled workers. Skilled workers require a Bachelor's degree or higher, active employment contract, and a minimum monthly basic salary of AED 30,000 (excluding allowances).",
-"documents": "Passport copy, UAEICP approval, Nomination letter from relevant UAE authority, Bachelor's degree or higher qualification, Employment contract, 6-month bank statements showing salary transfers.",
-"steps": "1. Obtain nomination from relevant authority. 2. Receive UAEICP approval. 3. Apply via GDRFA or Amer center. 4. Submit contracts and bank statement.",
-"fees": "Residence Permit Fee: AED 1100 | Inside Country Fee: AED 500 | Knowledge & Innovation Dirham: AED 20 | Delivery Fee: AED 20 | Total Service Cost: AED 2790 | Golden holders are exempt from the 180-day stay abroad rule.",
-"processing_time": "48 hours",
-"official_url": "https://gdrfad.gov.ae"
-},
-{
-"id": "kb1_golden_visa_entrepreneurs",
-"category": "Visa",
-"subcategory": "Golden Visa",
-"title": "Golden Residence Permit - Entrepreneurs",
-"eligibility": "Must be nominated by Dubai Future Foundation. Project must be registered with Ministry of Economy or DED and generate at least AED 1 million annual revenue, OR have established business with at least AED 2 million revenue, OR have sold a startup/business for at least AED 7 million.",
-"documents": "Passport copy, Nomination letter from Dubai Future Foundation, Startup valuation financial tracking.",
-"steps": "1. Secure nomination from Dubai Future Foundation. 2. Submit request online via GDRFA or at Amer Center. 3. Pay fees and wait for approval.",
-"fees": "Residence Permit Fee: AED 1100 | Inside Country Fee: AED 500 | Knowledge & Innovation Dirham: AED 20 | Delivery Fee: AED 20 | Total Service Cost: AED 2280 | Golden holders are exempt from the 180-day stay abroad rule.",
-"processing_time": "5 days",
-"official_url": "https://gdrfad.gov.ae"
-},
-{
-"id": "kb1_golden_visa_investors",
-"category": "Visa",
-"subcategory": "Golden Visa",
-"title": "Golden Residence Permit - Investors",
-"eligibility": "Own a company investment worth at least AED 2 million, OR own real estate worth at least AED 2 million (must maintain ownership during the visa period), OR hold bank deposit of at least AED 2 million in a UAE bank, OR pay taxes of at least AED 250,000 annually.",
-"documents": "Passport copy, Proof of investment (property deed, company trade license showing share valuation, bank certificate), Supporting financial audited accounts.",
-"steps": "1. Log in to GDRFA/ICP. 2. Select Investors Golden Residency. 3. Upload property deeds or company registration details. 4. Pay fees and wait for approval.",
-"fees": "Residence Permit Fee: AED 1100 | Inside Country Fee: AED 500 | Knowledge & Innovation Dirham: AED 20 | Delivery Fee: AED 20 | Total Service Cost: AED 2790 | Golden holders are exempt from the 180-day stay abroad rule.",
-"processing_time": "5 days",
-"official_url": "https://gdrfad.gov.ae"
-},
-{
-"id": "kb1_golden_visa_talented",
-"category": "Visa",
-"subcategory": "Golden Visa",
-"title": "Golden Residence Permit - Talented Individuals",
-"eligibility": "Exceptional talent in culture and arts, innovators/inventors, elite athletes, or digital technology talent. Requires nomination or recommendation from a relevant UAE ministry or authority.",
-"documents": "Passport copy, Nomination letter from the relevant UAE authority, Supporting portfolio showing achievements, awards, or patent certifications.",
-"steps": "1. Secure official nomination. 2. Fill in application on GDRFA. 3. Submit credentials and achievements portfolio. 4. Wait for approval.",
-"fees": "Residence Permit Fee: AED 1100 | Inside Country Fee: AED 500 | Knowledge & Innovation Dirham: AED 20 | Delivery Fee: AED 20 | Total Service Cost: AED 2790 | Golden holders are exempt from the 180-day stay abroad rule.",
-"processing_time": "5 days",
-"official_url": "https://gdrfad.gov.ae"
-},
-{
-"id": "kb1_driving_license_new",
-"category": "License",
-"subcategory": "Driving License",
-"title": "New Driving Licence",
-"eligibility": "UAE citizens and residents. Must meet minimum age requirement for vehicle category (Motorcycle: 17, Light Vehicle: 18, Heavy Vehicle: 20, Light/Heavy Bus: 21). Must pass eye test and be medically fit.",
-"documents": "Valid Emirates ID, Valid eye test report, Existing foreign license (if applicable for evaluation classes).",
-"steps": "1. Select a driving institute and open a file. 2. Pass eye test. 3. Complete theoretical lectures and pass the theory test. 4. Complete practical training hours. 5. Pass internal, yard, and road tests. 6. Pay fees and collect license.",
-"fees": "Traffic File: AED 200 | Learning Permit (Light): AED 100 | Learning Permit (Heavy): AED 200 | Eye Test: AED 140 - AED 180 | License Issuance (<21 yrs): AED 100 | License Issuance (21+ yrs): AED 300 | Knowledge & Innovation Fee: AED 20",
-"processing_time": "Instant after passing tests and paying fees",
-"official_url": "https://rta.ae"
-},
-{
-"id": "kb1_driving_license_renewal",
-"category": "License",
-"subcategory": "Driving License",
-"title": "Driving Licence Renewal",
-"eligibility": "Must hold valid or expired UAE driving license. Must pay all outstanding traffic fines. Eye test is mandatory. Medical fitness test required for professional drivers.",
-"documents": "Valid Emirates ID, Valid eye test report, Medical fitness report (for professional drivers).",
-"steps": "1. Complete eye test at approved center (valid for 3 years). 2. Log in using Emirates ID/Passport on RTA. 3. Pay fines and renewal fees. 4. Choose license delivery method. (Licences expired for more than 10 years require an Evaluation Test).",
-"fees": "License Issuance (<21 yrs): AED 100 | License Issuance (21+ yrs): AED 300 | Eye Test: AED 140 - 180 | Late Renewal Fine: AED 10 per month (max AED 500) | Knowledge & Innovation Fee: AED 20",
-"processing_time": "Instant",
-"official_url": "https://rta.ae"
-},
-{
-"id": "kb1_driving_license_exchange",
-"category": "License",
-"subcategory": "Driving License",
-"title": "Exchange of Foreign Driving Licence",
-"eligibility": "At least 18 years old. Citizens of approved exempt countries holding a valid foreign license and valid UAE residency status. Must pass eye test.",
-"documents": "Valid original foreign driving license, Legal translation of license, Eye test report, Valid Emirates ID / residence visa, Passport copy.",
-"steps": "1. Undergo eye test. 2. Submit exchange application via MOI website/app or visit local licensing center. 3. Pay fees and receive instant converted UAE license.",
-"fees": "Federal Service Fee: AED 600 | Knowledge & Innovation Fee: AED 20",
-"processing_time": "Instant (about 1 minute after online approval)",
-"official_url": "https://moi.gov.ae"
-},
-{
-"id": "kb1_trade_license_new",
-"category": "License",
-"subcategory": "Business License",
-"title": "Request to Issue Trade Licence",
-"eligibility": "Entrepreneurs establishing standard, fast-track, or home-based businesses. Activity must be approved under local DED regulations. Normal license requires a physical lease (Ejari), Instant/eTrader do not.",
-"documents": "Emirates ID copy, Reserved trade name certificate, Initial approval certificate, MOA (for Normal LLC), Ejari lease agreement (for Normal LLC).",
-"steps": "1. Select license type (Normal, Instant, or eTrader). 2. Submit trade name registration at DED/Invest in Dubai. 3. Select activity and pay fees. 4. Retrieve digital trade license.",
-"fees": "eTrader License: AED 1070 + AED 300 (Dubai Chamber membership) | Normal LLC License fees vary based on company legal form and commercial activities.",
-"processing_time": "Instant License: 5 minutes | eTrader License: 5 minutes | Normal License: up to 10 minutes (varies by external approvals)",
-"official_url": "https://www.investindubai.gov.ae"
-},
-{
-"id": "kb1_relative_friends_visit",
-"category": "Visa",
-"subcategory": "Visit Visa",
-"title": "Visit Visa for Visiting Relatives and Friends",
-"eligibility": "Sponsors must meet monthly salary requirements depending on relationship category: First-degree (father/mother/spouse/children) requires AED 4,000; Second/Third-degree (siblings/grandparents/uncles/cousins) requires AED 8,000; Friends (non-relatives) requires AED 15,000.",
-"documents": "Passport copy (valid min 6 months), Personal photo, Proof of kinship/relationship certificate (for relatives), Return flight ticket, Sponsor's residence permit & salary certificate.",
-"steps": "1. Log in to UAE smart services or GDRFA portal. 2. Complete sponsor and applicant data. 3. Upload proof of relationship and salary cert. 4. Pay application fees and financial guarantee deposit.",
-"fees": "Application Fee: AED 100 | Smart Service Fee: AED 100 | Single entry visa (per month): AED 100 | Multiple entry visa (per month): AED 200 | Single-entry guarantee deposit: AED 1000 | Multiple-entry guarantee deposit: AED 2000 | Overstay fine: AED 50/day",
-"processing_time": "48 to 72 hours",
-"official_url": "https://gdrfad.gov.ae"
-}
-]
+
+  {
+
+    "id": "v1",
+
+    "category": "Visa",
+
+    "subcategory": "Golden Visa",
+
+    "title": "Golden Visa for Outstanding Students",
+
+    "eligibility": "High school students with top grades nationwide (min 95%) or university graduates from top UAE/global universities with a GPA of at least 3.5 or 3.8 depending on classification.",
+
+    "documents": "Academic transcripts, graduation certificate attested by Ministry of Education, Emirates ID copy.",
+
+    "steps": "1. Apply for eligibility nomination via ICP or GDRFA. 2. Submit academic records for verification. 3. Upon approval, apply for the 10-year residence visa online.",
+
+    "fees": "Approx. AED 2,800 to AED 3,800 (Subject to change)",
+
+    "processing_time": "7 to 30 business days",
+
+    "official_url": "https://u.ae/en/information-and-services/visa-and-emirates-id/golden-visa"
+
+  },
+
+  {
+
+    "id": "v2",
+
+    "category": "Visa",
+
+    "subcategory": "Student Visa",
+
+    "title": "Student Visa Residency Requirements",
+
+    "eligibility": "Expatriate students studying at an accredited university or college in the UAE. Must be sponsored by an official educational institution or a parent.",
+
+    "documents": "Official admission letter, medical fitness certificate, passport copy, visa photo, sponsor's documents.",
+
+    "steps": "1. Receive admission letter. 2. Register for visa sponsorship through the university administration. 3. Pass medical fitness test. 4. Apply for Emirates ID and visa stamping.",
+
+    "fees": "Approx. AED 1,000 to AED 3,000 depending on university/emirate (Subject to change)",
+
+    "processing_time": "10 to 15 business days",
+
+    "official_url": "https://u.ae/en/information-and-services/visa-and-emirates-id/residence-visa/student-visa"
+
+  },
+
+  {
+
+    "id": "v3",
+
+    "category": "Visa",
+
+    "subcategory": "Tourist Visa",
+
+    "title": "Tourist Visa and Standard Visit Extensions",
+
+    "eligibility": "Tourists from non-visa-on-arrival countries. Must be sponsored by a UAE travel agency, airline, or hotel.",
+
+    "documents": "Passport copy (valid min 6 months), passport-size photograph, confirmed return flight ticket.",
+
+    "steps": "1. Apply via travel agent, hotel, or ICP/GDRFA portals before arrival. 2. Receive electronic entry permit. 3. Extend within the country via ICP application if needed.",
+
+    "fees": "Approx. AED 300 to AED 600 depending on duration (30/60 days) (Subject to change)",
+
+    "processing_time": "2 to 4 business days",
+
+    "official_url": "https://smartservices.icp.gov.ae/"
+
+  },
+
+  {
+
+    "id": "v4",
+
+    "category": "Visa",
+
+    "subcategory": "Job Seeker Visa",
+
+    "title": "Job Explorer Visa Eligibility",
+
+    "eligibility": "Graduates from the top 500 universities in the world (Ministry of Education classification), holding a bachelor's degree or equivalent, or workers in the 1st, 2nd, or 3rd skill levels of MOHRE.",
+
+    "documents": "Attested degree certificate, passport copy, clear passport photo, financial guarantee deposit.",
+
+    "steps": "1. Log into ICP smart services portal. 2. Select Job Explorer Visa (60, 90, or 120 days). 3. Upload documents and pay security deposit + fees.",
+
+    "fees": "Approx. AED 1,000 to AED 1,500 including deposit (Subject to change)",
+
+    "processing_time": "2 to 5 business days",
+
+    "official_url": "https://u.ae/en/information-and-services/visa-and-emirates-id/visit-visas/job-explorer-visa"
+
+  },
+
+  {
+
+    "id": "v5",
+
+    "category": "Visa",
+
+    "subcategory": "Green Visa",
+
+    "title": "Green Visa for Skilled Employees",
+
+    "eligibility": "Freelancers, self-employed individuals, or skilled employees. Requires a valid employment contract, bachelor's degree, and a minimum monthly salary of AED 15,000.",
+
+    "documents": "MOHRE employment contract, attested degree certificate, bank statements showing salary history.",
+
+    "steps": "1. Apply on ICP or GDRFA portal. 2. Upload proof of skill level and income tracking. 3. Cancel previous visa if internal change of status is needed.",
+
+    "fees": "Approx. AED 2,200 (Subject to change)",
+
+    "processing_time": "5 to 10 business days",
+
+    "official_url": "https://www.mohre.gov.ae/"
+
+  },
+
+  {
+
+    "id": "v6",
+
+    "category": "Visa",
+
+    "subcategory": "Fines",
+
+    "title": "Overstay Fines and Grace Periods",
+
+    "eligibility": "Any tourist, visitor, or resident who remains in the UAE after their visa validity or official grace period has expired.",
+
+    "documents": "Passport copy, unified number (UID), expired visa copy.",
+
+    "steps": "1. Check fines online via ICP or GDRFA portal. 2. Pay fines online or at immigration offices/airports prior to departure.",
+
+    "fees": "Standardized at AED 50 per day of overstaying (Subject to change)",
+
+    "processing_time": "Instant digital payment processing",
+
+    "official_url": "https://gdrfad.gov.ae/"
+
+  },
+
+  {
+
+    "id": "v7",
+
+    "category": "Visa",
+
+    "subcategory": "Dependent Visa",
+
+    "title": "Sponsoring Family Members (Dependent Visa)",
+
+    "eligibility": "Residents (employers or employees) with a minimum salary of AED 4,000 or AED 3,000 plus accommodation. Can sponsor spouse and unmarried daughters of any age, and sons up to 25.",
+
+    "documents": "Attested marriage certificate, attested birth certificates, registered tenancy contract, salary certificate.",
+
+    "steps": "1. Apply for entry permit for family. 2. Family enters UAE or performs status change. 3. Medical fitness test for members over 18. 4. Complete Emirates ID and residency stamping.",
+
+    "fees": "Approx. AED 1,500 to AED 2,500 per dependent excluding deposits (Subject to change)",
+
+    "processing_time": "5 to 7 business days",
+
+    "official_url": "https://u.ae/en/information-and-services/visa-and-emirates-id/residence-visa/sponsor-family-residency"
+
+  },
+
+  {
+
+    "id": "l1",
+
+    "category": "License",
+
+    "subcategory": "Driving License",
+
+    "title": "Driving License Conversion for Foreign License Holders",
+
+    "eligibility": "Citizens of approved countries (e.g., GCC, UK, US, Canada, Australia, specific EU states) holding a valid driving license from their home country and a valid UAE residency visa.",
+
+    "documents": "Original foreign driving license, legal translation of license (if not in English/Arabic), eye test certificate, passport copy, Emirates ID copy.",
+
+    "steps": "1. Complete an eye test at an authorized center. 2. Visit an RTA center (Dubai) or local licensing authority. 3. Submit documents, pay fees, and receive converted UAE driving license instantly.",
+
+    "fees": "Approx. AED 850 to AED 1,000 (Subject to change)",
+
+    "processing_time": "Same day / 1 hour",
+
+    "official_url": "https://www.rta.ae"
+
+  },
+
+  {
+
+    "id": "l2",
+
+    "category": "License",
+
+    "subcategory": "Driving License",
+
+    "title": "Opening a New Driving License File",
+
+    "eligibility": "UAE residents aged 18 or above who do not hold a license from an exempt/convertible country.",
+
+    "documents": "Emirates ID copy, eye test results, no-objection certificate (NOC) if required by your emirate category.",
+
+    "steps": "1. Register at an authorized driving school. 2. Complete theoretical lectures and pass the theory test. 3. Complete practical training hours. 4. Pass internal and city road tests.",
+
+    "fees": "Approx. AED 4,500 to AED 8,000 depending on training school (Subject to change)",
+
+    "processing_time": "2 to 3 months depending on test availability",
+
+    "official_url": "https://www.rta.ae"
+
+  },
+
+  {
+
+    "id": "l3",
+
+    "category": "License",
+
+    "subcategory": "Business License",
+
+    "title": "Mainland Business License (DED)",
+
+    "eligibility": "Individuals or corporations intending to conduct commercial, professional, or industrial business operations anywhere within the UAE mainland.",
+
+    "documents": "Trade name reservation certificate, initial approval certificate, memorandum of association (MOA), lease agreement (Ejari), passports of partners.",
+
+    "steps": "1. Select business activity and legal form. 2. Register trade name at the Department of Economy and Tourism (DED). 3. Apply for initial approval. 4. Draft MOA and rent an office space. 5. Collect license.",
+
+    "fees": "Approx. AED 10,000 to AED 25,000+ depending on activities and location (Subject to change)",
+
+    "processing_time": "3 to 7 business days",
+
+    "official_url": "https://ded.ae"
+
+  },
+
+  {
+
+    "id": "l4",
+
+    "category": "License",
+
+    "subcategory": "Business License",
+
+    "title": "Free Zone Business Setup",
+
+    "eligibility": "Foreign investors wanting 100% ownership, tax exemptions, and zero customs duty without needing a mainland office footprint.",
+
+    "documents": "Passport copies of shareholders, proof of address, business plan summary, application forms unique to the specific Free Zone Authority.",
+
+    "steps": "1. Choose a specific Free Zone (e.g., DAFZA, JAFZA, ADGM, Shams). 2. Submit application for name and activity approval. 3. Sign corporate registry documents. 4. Open corporate bank account.",
+
+    "fees": "Approx. AED 5,000 to AED 20,000 registration packages (Subject to change)",
+
+    "processing_time": "3 to 10 business days",
+
+    "official_url": "https://u.ae/en/information-and-services/business/steps-to-start-a-business-on-mainland/licensing-in-free-zones"
+
+  },
+
+  {
+
+    "id": "l5",
+
+    "category": "License",
+
+    "subcategory": "Professional License",
+
+    "title": "Professional Services and Artisans License",
+
+    "eligibility": "Professionals, consultants, or artisans whose business relies on intellectual or physical skills (e.g., IT consultancy, legal, design). Allows 100% foreign ownership with a local service agent.",
+
+    "documents": "Passport copy, academic degrees or qualification certificates relevant to the profession, initial approval paperwork.",
+
+    "steps": "1. Reserve trade name at DED. 2. Sign a Local Service Agent (LSA) agreement. 3. Establish a physical office or virtual desk contract. 4. Pay fees and issue professional license.",
+
+    "fees": "Approx. AED 8,000 to AED 15,000 (Subject to change)",
+
+    "processing_time": "2 to 5 business days",
+
+    "official_url": "https://ded.ae"
+
+  },
+
+  {
+
+    "id": "l6",
+
+    "category": "License",
+
+    "subcategory": "Emirates ID",
+
+    "title": "Emirates ID Linkage and Verification",
+
+    "eligibility": "All citizens and residents of the UAE must hold a valid Emirates ID issued by the ICP.",
+
+    "documents": "Valid passport, valid residency visa or entry permit, original birth certificate for minors.",
+
+    "steps": "1. Fill out form via ICP website or typing center. 2. Pay fees. 3. Receive SMS for biometric data capture (fingerprints/photo) at an ICP center. 4. Collect card via post.",
+
+    "fees": "Approx. AED 100 per year of visa validity + processing fees (Subject to change)",
+
+    "processing_time": "5 to 10 business days post-biometrics",
+
+    "official_url": "https://icp.gov.ae"
+
+  },
+
+  {
+
+    "id": "v8",
+
+    "category": "Visa",
+
+    "subcategory": "Visa Renewal",
+
+    "title": "Residency Visa Renewal Timeline",
+
+    "eligibility": "Current residency holders who wish to extend their stay under the same sponsor before or within the grace period after expiry.",
+
+    "documents": "Sponsored passport (valid > 6 months), sponsor's Emirates ID, new medical fitness test, health insurance card.",
+
+    "steps": "1. Undergo medical screening. 2. Renew health insurance policy. 3. File renewal request via ICP or GDRFA portal. 4. Print updated virtual visa / receive new Emirates ID.",
+
+    "fees": "Approx. AED 500 to AED 1,200 (Subject to change)",
+
+    "processing_time": "2 to 4 business days",
+
+    "official_url": "https://smartservices.icp.gov.ae/"
+
+  },
+
+  {
+
+    "id": "v9",
+
+    "category": "Visa",
+
+    "subcategory": "Visa Cancellation",
+
+    "title": "Residency Visa Cancellation Process",
+
+    "eligibility": "Sponsors or employers who intend to terminate an individual's residency status owing to job resignation, termination, or leaving the country.",
+
+    "documents": "Cancellation form signed by sponsor, original Emirates ID or police report if lost, labor clearance from MOHRE.",
+
+    "steps": "1. Employer submits cancellation to MOHRE. 2. Settlement of all labor dues. 3. Application forwarded to ICP/GDRFA for final cancellation. 4. Grace period starts.",
+
+    "fees": "Approx. AED 150 to AED 300 (Subject to change)",
+
+    "processing_time": "1 to 2 business days",
+
+    "official_url": "https://www.mohre.gov.ae/"
+
+  }
+
+] 
+
