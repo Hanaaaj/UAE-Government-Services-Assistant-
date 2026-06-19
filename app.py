@@ -18,7 +18,6 @@ from agent import (
 )
 
 from welcome import show_welcome_screen
-from hero_slider import render_hero_slider
 
 # ─────────────────────────────────────────────
 # PAGE CONFIG
@@ -477,8 +476,40 @@ else:
             })
         st.rerun()
 
-    render_hero_slider(lang=st.session_state.lang)
-    
+    # ─────────────────────────────────────────────
+    # HERO BANNER LAYOUT
+    # ─────────────────────────────────────────────
+    hero_raw_html = f"""
+    <div class="hero-wrapper">
+        <div class="hero-left-content">
+            <div class="hero-main-title">UAE Government<br><span>Services Assistant</span></div>
+            <div class="hero-description">
+                Get instant, reliable guidance on visas, residency rules, driving conversions, step checklists, and company registrations. Handled via fully private server-side retrieval and secure grounded AI.
+            </div>
+            <div class="hero-btn-group">
+                <a href="?action=start_chat" target="_self" class="btn-dynamic-chat">Start Dynamic Chat &nbsp;➔</a>
+                <a href="#verified-library" class="btn-browse-library">Browse Verification Library</a>
+            </div>
+        </div>
+        <div class="hero-right-dashboard">
+            <div class="system-health-card-unified">
+                <div class="health-header-unified">
+                    <div class="health-title-text">SYSTEM HEALTH</div>
+                    <div class="health-badge-secure">SECURE</div>
+                </div>
+                <div class="health-skeleton-line l1"></div>
+                <div class="health-skeleton-line l2"></div>
+                <div class="health-skeleton-line l3"></div>
+                <div class="health-footer-unified">
+                    <span style="color:#64748B;">Server-side retrieval:</span>
+                    <span style="color:#FBBF24; font-family:monospace; font-weight:700;">TF-IDF Vectorizer</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    """
+    st.html(hero_raw_html)
+     
     # ─────────────────────────────────────────────
     # SERVICE CARDS STRIP
     # ─────────────────────────────────────────────
