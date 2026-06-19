@@ -85,11 +85,15 @@ html, body, [class*="css"], .stApp {
     color: #111827 !important;
 }
 
-/* Fix main padding */
+/* CRITICAL FIX FOR FULL-WIDTH EDGE-TO-EDGE VIEWPORT
+   Unsets max-width restraints and strips default framework bounding gutters
+*/
 .block-container {
-    padding-top: 2rem !important;
+    padding-top: 0rem !important;
     padding-bottom: 0rem !important;
-    max-width: 1300px !important;
+    padding-left: 3rem !important;
+    padding-right: 3rem !important;
+    max-width: 100% !important;
 }
 
 /* Custom Side Disclaimer Panel Style */
@@ -535,11 +539,9 @@ active_visa = "active" if current_filter == "Visa Services" else ""
 active_driving = "active" if current_filter == "Driving License" else ""
 active_business = "active" if current_filter == "Business License" else ""
 
-# Added padding-top: 25px to shift the bar downwards
 navbar_html = f"""
 <div style="display: flex; justify-content: space-between; align-items: center; padding: 25px 0 15px 0; margin-bottom: 20px; width: 100%;">
     
-    <!-- LEFT SIDE: Brand Identity -->
     <div class="brand-block" style="flex: 1; display: flex; justify-content: flex-start;">
         <div class="brand-badge">AE</div>
         <div>
@@ -548,7 +550,6 @@ navbar_html = f"""
         </div>
     </div>
     
-    <!-- CENTER: Centralized Navigation Links -->
     <div style="flex: 2; display: flex; justify-content: center; align-items: center;">
         <div class="custom-nav-links" style="gap: 32px; font-size: 14.5px; display: flex; align-items: center;">
             <a href="?filter=All#verified-library" target="_self">
@@ -566,7 +567,6 @@ navbar_html = f"""
         </div>
     </div>
     
-    <!-- RIGHT SIDE: Fixed Position Language Switcher -->
     <div style="flex: 1; display: flex; justify-content: flex-end; align-items: center;">
         <a href="?click=lang_toggle" target="_self" style="
             text-decoration: none; 
@@ -977,5 +977,3 @@ st.html("""
     </div>
 </div>
 """)
-
-
