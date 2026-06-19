@@ -44,11 +44,15 @@ if "selected_library_filter" not in st.session_state:
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
+# ─────────────────────────────────────────────
+# CONDITIONAL VIEW ROUTING
+# ─────────────────────────────────────────────
+if not st.session_state.started:
+    # 1. SHOWS YOUR WELCOME SCREEN CARD
+    show_welcome_screen()
 
-# ─────────────────────────────────────────────
-# FREE-TIER RATE LIMIT RESILIENCE & KEY ROTATION SETUP
-# ─────────────────────────────────────────────
-API_KEYS_POOL = []
+else:
+ API_KEYS_POOL = []
 for secret_key in ["GEMINI_API_KEY", "GEMINI_API_KEY_MEMBER_1", "GEMINI_API_KEY_MEMBER_2", "GEMINI_API_KEY_MEMBER_3"]:
     try:
         if secret_key in st.secrets and st.secrets[secret_key]:
@@ -64,6 +68,13 @@ def get_rotated_api_key(manual_key: str = "") -> str:
     if "active_api_key" not in st.session_state:
         st.session_state.active_api_key = random.choice(API_KEYS_POOL) if API_KEYS_POOL else ""
     return st.session_state.active_api_key
+ 
+# ─────────────────────────────────────────────
+# LANGUAGE STATE
+# ─────────────────────────────────────────────
+if "lang" not in st.session_state:
+    st.session_state.lang = "English"
+ 
 t = UI[st.session_state.lang]         
 is_arabic = st.session_state.lang == "Arabic"
 
@@ -77,16 +88,11 @@ def initialize_agent_backend():
     return kb_data, vectorizer, tfidf_matrix
 
 kb_data, vectorizer, tfidf_matrix = initialize_agent_backend()
-
+ 
 # ─────────────────────────────────────────────
-# CONDITIONAL VIEW ROUTING
+# ADVANCED CUSTOM CSS FOR TARGET DESIGN
 # ─────────────────────────────────────────────
-if not st.session_state.started:
-    # 1. SHOWS YOUR WELCOME SCREEN CARD
-    show_welcome_screen()
-
-else:
- st.html("""
+st.html("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght=300;400;500;600;700;800&family=Cairo:wght=300;400;600;700;800&display=swap');
  
@@ -993,6 +999,3 @@ st.html("""
     </div>
 </div>
 """)
-
-
-
