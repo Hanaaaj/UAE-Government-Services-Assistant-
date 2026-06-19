@@ -193,7 +193,6 @@ def build_retrieval_index(data: list):
     tfidf_matrix = vectorizer.fit_transform(documents)
     return vectorizer, tfidf_matrix
 
-
 def retrieve_context(
     query: str,
     vectorizer,
@@ -249,7 +248,6 @@ def start_chat_session(model):
     """Start a fresh Gemini chat session (stateful multi-turn memory)."""
     return model.start_chat(history=[])
 
-
 def generate_grounded_response(
     query: str,
     context_string: str,
@@ -277,15 +275,15 @@ def generate_grounded_response(
         if "404" in error or "not found" in error.lower():
             if lang == "Arabic":
                 return (
-                    "⚠️ **تم الكشف عن جلسة محادثة قديمة في الذاكرة المؤقتة (Stale Session Cache).**\n\n"
-                    "يرجى النقر على زر **🗑️ مسح المحادثة (Clear Chat)** في الشريط الجانبي لإعادة تعيين الجلسة وتنشيط نموذج العمل المستقر الجديد `gemini-2.5-flash`."
+                    "⚠️ **تم الكشف عن جلسة عمل غير صالحة.**\n\n"
+                    "يرجى تحديث الصفحة في المتصفح لإعادة تنشيط نموذج العمل المستقر الجديد `gemini-2.5-flash`."
                 )
             return (
-                "⚠️ **Stale Chat Session Detected in Cache.**\n\n"
-                "Please click the **🗑️ Clear Chat** button in the sidebar to reset the session state and initialize the new stable `gemini-2.5-flash` model."
+                "⚠️ **Stale Chat Session Detected.**\n\n"
+                "Please refresh the browser page to initialize the active, stable `gemini-2.5-flash` model."
             )
             
-        # Check if the error is due to rate limits
+        # Check if the error is due to rate limits (429)
         if "429" in error or "quota" in error.lower():
             if lang == "Arabic":
                 return (
