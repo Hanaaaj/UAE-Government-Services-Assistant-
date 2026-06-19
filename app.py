@@ -523,46 +523,34 @@ with st.sidebar:
 # ─────────────────────────────────────────────
 # CUSTOM NAVBAR UI WITH INLINE LANG TOGGLE
 # ─────────────────────────────────────────────
-# Create clear structural layout alignment for the navbar layer
-nav_col_left, nav_col_right = st.columns([3, 1])
-
-with nav_col_left:
-    # Render the left-aligned branding and navigation link arrays seamlessly
-    nav_html = f"""
-    <div class="custom-header" style="padding-bottom: 0px; margin-bottom: 0px;">
-        <div class="brand-block">
-            <div class="brand-badge">AE</div>
-            <div>
-                <div class="brand-name">{t["nav_logo"]}</div>
-                <div class="brand-tag">Prototype Agent</div>
-            </div>
-        </div>
-        <div class="custom-nav-links" style="margin-left: 40px;">
-            <span class="active">{t["nav_home"]}</span>
-            <span>{t["nav_visa"]}</span>
-            <span>{t["nav_driving"]}</span>
-            <span>{t["nav_business"]}</span>
+nav_html = f"""
+<div class="custom-header">
+    <div class="brand-block">
+        <div class="brand-badge">AE</div>
+        <div>
+            <div class="brand-name">{t["nav_logo"]}</div>
+            <div class="brand-tag">Prototype Agent</div>
         </div>
     </div>
-    """
-    st.markdown(nav_html, unsafe_allow_html=True)
+    <div class="custom-nav-links">
+        <span class="active">{t["nav_home"]}</span>
+        <span>{t["nav_visa"]}</span>
+        <span>{t["nav_driving"]}</span>
+        <span>{t["nav_business"]}</span>
+    </div>
+</div>
+"""
+st.markdown(nav_html, unsafe_allow_html=True)
 
-with nav_col_right:
-    # Flexibly containerize the dynamic language toggle interaction button to float right
-    st.markdown("""
-        <div style="display: flex; justify-content: flex-end; align-items: center; height: 60px; padding-top: 10px;">
-    """, unsafe_allow_html=True)
-    
-    if st.button(t["toggle_btn"], key="lang_toggle", use_container_width=False):
+# Language Toggle Layer Integration
+cols_lang = st.columns([12, 1])
+with cols_lang[1]:
+    if st.button(t["toggle_btn"], key="lang_toggle"):
         st.session_state.lang = "Arabic" if st.session_state.lang == "English" else "English"
         st.session_state.pop("chat_session", None)
         st.session_state.messages = []
         st.rerun()
-        
-    st.markdown("</div>", unsafe_allow_html=True)
 
-# Add standard separation margin below the modern structural navbar matrix row
-st.markdown("<div style='margin-bottom: 25px;'></div>", unsafe_allow_html=True)
 # ─────────────────────────────────────────────
 # PARSE ACTION HOOKS FROM URL PARAMS
 # ─────────────────────────────────────────────
@@ -948,3 +936,5 @@ st.markdown("""
     </div>
 </div>
 """, unsafe_allow_html=True)
+
+
