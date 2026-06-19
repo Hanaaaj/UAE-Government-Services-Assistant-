@@ -453,51 +453,29 @@ with cols_lang[1]:
 # ─────────────────────────────────────────────
 # EMERALD HERO BANNER SYSTEM 
 # ─────────────────────────────────────────────
-hero_col_left, hero_col_right = st.columns([1.6, 1])
-
-with hero_col_left:
-    hero_text_html = f"""
-    <div class="hero-container" style="box-shadow: none; margin-bottom: 0; padding-right: 20px; border-top-right-radius: 0; border-bottom-right-radius: 0;">
-        <div class="hero-left" style="max-width: 100%;">
-            <div class="hero-title">UAE Government<br><span>Services Assistant</span></div>
-            <div class="hero-subtitle" style="margin-bottom: 24px;">Get instant, reliable guidance on visas, residency rules, driving conversions, step checklists, and company registrations. Handled via fully private server-side retrieval and secure grounded AI.</div>
+hero_html = f"""
+<div class="hero-container">
+    <div class="hero-left">
+        <div class="hero-title">UAE Government<br><span>Services Assistant</span></div>
+        <div class="hero-subtitle">Get instant, reliable guidance on visas, residency rules, driving conversions, step checklists, and company registrations. Handled via fully private server-side retrieval and secure grounded AI.</div>
+    </div>
+    <div class="system-health-card">
+        <div class="health-header">
+            <div class="health-title">SYSTEM HEALTH</div>
+            <div class="health-status">SECURE</div>
+        </div>
+        <div class="health-line fill"></div>
+        <div class="health-line fill-short"></div>
+        <div class="health-line"></div>
+        <div class="health-footer">
+            <span style="color:#94A3B8;">Server-side retrieval:</span>
+            <span style="color:#FBBF24; font-family:monospace; font-weight:700;">TF-IDF Vectorizer</span>
         </div>
     </div>
-    """
-    st.markdown(hero_text_html, unsafe_allow_html=True)
-    
-    # Custom Styled Native Button that hooks straight into your chat pipeline execution context
-    if st.button("🚀 Start Dynamic Chat", key="hero_start_chat", use_container_width=False):
-        # Programmatically focuses or initializes focus onto the message structure 
-        if "messages" in st.session_state and len(st.session_state.messages) <= 1:
-            st.session_state.messages.append({
-                "role": "assistant", 
-                "content": "How can I assist you today? I'm ready to parse the dynamic library for you.",
-                "sources": []
-            })
-            st.rerun()
-
-with hero_col_right:
-    hero_health_html = f"""
-    <div class="hero-container" style="box-shadow: none; margin-bottom: 0; padding-left: 20px; border-top-left-radius: 0; border-bottom-left-radius: 0; justify-content: flex-end;">
-        <div class="system-health-card" style="width: 100%;">
-            <div class="health-header">
-                <div class="health-title">SYSTEM HEALTH</div>
-                <div class="health-status">SECURE</div>
-            </div>
-            <div class="health-line fill"></div>
-            <div class="health-line fill-short"></div>
-            <div class="health-line"></div>
-            <div class="health-footer">
-                <span style="color:#94A3B8;">Server-side retrieval:</span>
-                <span style="color:#FBBF24; font-family:monospace; font-weight:700;">TF-IDF Vectorizer</span>
-            </div>
-        </div>
-    </div>
-    """
-    st.markdown(hero_health_html, unsafe_allow_html=True)
-# Spacing patch adjustment to clear cleanly into the next dynamic cards layer
-st.markdown("<div style='margin-bottom: 40px;'></div>", unsafe_allow_html=True)
+</div>
+"""
+st.markdown(hero_html, unsafe_allow_html=True)
+ 
 # ─────────────────────────────────────────────
 # DYNAMIC CONFIGURABLE CARDS LAYOUT
 # ─────────────────────────────────────────────
