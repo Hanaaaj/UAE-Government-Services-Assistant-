@@ -567,7 +567,7 @@ with sidebar_col:
         <div class="panel-title">🤖 Agent Context Details</div>
         <div class="metadata-row">
             <span class="metadata-label">API INTEGRATION</span>
-            <span class="metadata-value" style="color:black;">Secure Server Mode</span>
+            <span class="metadata-value" style="color:#0F5A41;">Secure Server Mode</span>
         </div>
         <div class="metadata-row">
             <span class="metadata-label">RETRIEVAL ENGINE</span>
