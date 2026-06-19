@@ -1,6 +1,6 @@
 """
 app.py — UAE Government Services Assistant
-Pure Streamlit UI custom-tailored to a pixel-perfect design system matching.
+Pure Streamlit UI custom-tailored to a pixel-perfect design system.
 """
 import base64
 import streamlit as st
@@ -397,49 +397,82 @@ html, body, [class*="css"], .stApp {
     border: 1px solid #E5E7EB;
     border-radius: 16px;
     padding: 24px;
-    margin-top: 20px;
+    margin-top: 30px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
 }
 .library-header-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
 }
 .library-title {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 700;
     color: #111827;
+    letter-spacing: -0.3px;
+}
+.select-filter-label-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #4B5563;
 }
 
-/* Data Table Styling */
+/* Custom Table Layout Array styling */
+.custom-table-container {
+    border: 1px solid #E2E8F0;
+    border-radius: 12px;
+    overflow: hidden;
+}
 .custom-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 13px;
+    font-size: 13.5px;
     text-align: left;
 }
 .custom-table th {
-    text-transform: uppercase;
-    font-size: 11px;
-    letter-spacing: 0.5px;
-    color: #6B7280;
-    padding: 12px;
-    border-bottom: 1px solid #E5E7EB;
-    font-weight: 600;
+    background-color: #F8FAFC;
+    color: #1F2937;
+    font-weight: 700;
+    padding: 16px 18px;
+    border-bottom: 1px solid #E2E8F0;
+    border-right: 1px solid #E2E8F0;
+    font-size: 12.5px;
+    letter-spacing: 0.2px;
+}
+.custom-table th:last-child {
+    border-right: none;
 }
 .custom-table td {
-    padding: 16px 12px;
-    border-bottom: 1px solid #F3F4F6;
+    padding: 20px 18px;
+    border-bottom: 1px solid #E2E8F0;
+    border-right: 1px solid #E2E8F0;
     vertical-align: top;
+    line-height: 1.6 !important;
+}
+.custom-table td:last-child {
+    border-right: none;
+}
+.custom-table tbody tr:last-child td {
+    border-bottom: none;
+}
+.custom-table tbody tr:nth-child(even) {
+    background-color: #F8FAFC;
+}
+.custom-table tbody tr:nth-child(odd) {
+    background-color: #FFFFFF;
 }
 .table-badge {
     display: inline-block;
-    padding: 4px 8px;
-    border-radius: 6px;
+    padding: 6px 12px;
+    border-radius: 20px;
     font-size: 11px;
-    font-weight: 600;
-    background: #FEF3C7;
-    color: #D97706;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -451,11 +484,23 @@ if is_arabic:
     html, body, [class*="css"], .stApp { font-family: 'Cairo', sans-serif !important; direction: rtl; text-align: right; }
     .custom-header, .hero-wrapper, .library-header-row { flex-direction: row-reverse; }
     .custom-table { text-align: right; }
+    .custom-table th, .custom-table td { border-left: 1px solid #E2E8F0; border-right: none; }
+    .custom-table th:last-child, .custom-table td:last-child { border-left: none; }
     .hub-link-item { flex-direction: row-reverse; }
     .side-disclaimer { flex-direction: row-reverse; }
     .hero-btn-group { flex-direction: row-reverse; }
+    .select-filter-label-group { flex-direction: row-reverse; }
     </style>
     """, unsafe_allow_html=True)
+
+# ─────────────────────────────────────────────
+# STATE TRACKING
+# ─────────────────────────────────────────────
+if "selected_library_filter" not in st.session_state:
+    st.session_state.selected_library_filter = "All"
+
+if "messages" not in st.session_state:
+    st.session_state.messages = []
 
 # ─────────────────────────────────────────────
 # CONFIGURATION/SIDEBAR ACCESS
@@ -511,9 +556,8 @@ with cols_lang[1]:
 # ─────────────────────────────────────────────
 url_params = st.query_params
 if url_params.get("action") == "start_chat":
-    # Reset parameter hooks safely to avoid endless rerun loops
     st.query_params.clear()
-    if "messages" in st.session_state and len(st.session_state.messages) <= 1:
+    if len(st.session_state.messages) <= 1:
         st.session_state.messages.append({
             "role": "assistant",
             "content": "Dynamic chat initialized! How can I guide you through UAE government services today?",
@@ -562,19 +606,20 @@ st.markdown(hero_raw_html, unsafe_allow_html=True)
 # ─────────────────────────────────────────────
 # DYNAMIC CONFIGURABLE CARDS LAYOUT
 # ─────────────────────────────────────────────
+current_filter = st.session_state.selected_library_filter
 st.markdown(f"""
 <div class="cards-row">
-    <div class="target-card active-card">
+    <div class="target-card {'active-card' if current_filter == 'Visa Services' else ''}">
         <div class="card-icon">🛂</div>
         <div class="card-title">{t["svc_visa"]}</div>
         <div class="card-subtext">Golden, Student, Resident</div>
     </div>
-    <div class="target-card">
+    <div class="target-card {'active-card' if current_filter == 'Driving License' else ''}">
         <div class="card-icon">🚗</div>
         <div class="card-title">{t["svc_driving"]}</div>
         <div class="card-subtext">Convert, Renew, Eye Tests</div>
     </div>
-    <div class="target-card">
+    <div class="target-card {'active-card' if current_filter == 'Business License' else ''}">
         <div class="card-icon">🏢</div>
         <div class="card-title">{t["svc_business"]}</div>
         <div class="card-subtext">Freezone, Virtual Licenses</div>
@@ -584,7 +629,7 @@ st.markdown(f"""
         <div class="card-title">{t["svc_renewals"]}</div>
         <div class="card-subtext">Emirates ID, Fine Clearance</div>
     </div>
-    <div class="target-card">
+    <div class="target-card {'active-card' if current_filter == 'All' else ''}">
         <div class="card-icon">❓</div>
         <div class="card-title">Full Directory</div>
         <div class="card-subtext">Check the full library</div>
@@ -595,9 +640,6 @@ st.markdown(f"""
 # ─────────────────────────────────────────────
 # SPLIT INTERACTIVE CONTEXT LAYOUT (Chat + Details Panels)
 # ─────────────────────────────────────────────
-if "messages" not in st.session_state:
-    st.session_state.messages = []
- 
 if api_key_input and "chat_session" not in st.session_state:
     model = get_gemini_model(api_key_input)
     st.session_state.chat_session = start_chat_session(model)
@@ -686,22 +728,15 @@ with sidebar_col:
     """, unsafe_allow_html=True)
 
 # ─────────────────────────────────────────────
-# GROUNDED VERIFIED VERIFICATION LIBRARY MATRIX
+# PIXEL-PERFECT VERIFIED SERVICES LIBRARY MATRIX 
 # ─────────────────────────────────────────────
 st.markdown('<div id="verified-library"></div>', unsafe_allow_html=True)
-st.markdown("""
-<style>
-.custom-table tbody tr:hover { background-color: #F8FAFC; }
-.custom-table td { line-height: 1.5 !important; }
-</style>
-""", unsafe_allow_html=True)
-
 st.markdown('<div class="library-wrapper">', unsafe_allow_html=True)
 
-lib_header_left, lib_header_right = st.columns([2, 1])
+lib_header_left, lib_header_right = st.columns([3, 2])
 
 with lib_header_left:
-    st.markdown('<div class="library-title">📚 Verified Services Library (All)</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="library-title">📚 Verified Services Library ({st.session_state.selected_library_filter})</div>', unsafe_allow_html=True)
     st.markdown(
         '<p style="font-size:13px; color:#6B7280; margin-top: 4px; margin-bottom:0;">'
         'Verify criteria, checklists, fee lists, and wait times loaded securely from the agent source.'
@@ -709,35 +744,25 @@ with lib_header_left:
         unsafe_allow_html=True
     )
 
-if "selected_library_filter" not in st.session_state:
-    st.session_state.selected_library_filter = "All"
-
 with lib_header_right:
-    f_col1, f_col2, f_col3, f_col4 = st.columns(4)
-    
-    with f_col1:
-        if st.button("All", key="btn_lib_all", use_container_width=True, 
-                     type="primary" if st.session_state.selected_library_filter == "All" else "secondary"):
-            st.session_state.selected_library_filter = "All"
-            st.rerun()
-            
-    with f_col2:
-        if st.button("Visa Services", key="btn_lib_visa", use_container_width=True,
-                     type="primary" if st.session_state.selected_library_filter == "Visa Services" else "secondary"):
-            st.session_state.selected_library_filter = "Visa Services"
-            st.rerun()
-            
-    with f_col3:
-        if st.button("Driving License", key="btn_lib_drive", use_container_width=True,
-                     type="primary" if st.session_state.selected_library_filter == "Driving License" else "secondary"):
-            st.session_state.selected_library_filter = "Driving License"
-            st.rerun()
-            
-    with f_col4:
-        if st.button("Business License", key="btn_lib_biz", use_container_width=True,
-                     type="primary" if st.session_state.selected_library_filter == "Business License" else "secondary"):
-            st.session_state.selected_library_filter = "Business License"
-            st.rerun()
+    # Inline drop select grouping following the exact alignment structure of your sketch
+    st.markdown('<div class="select-filter-label-group">🔍 Filter Dataset Directory:</div>', unsafe_allow_html=True)
+    filter_options = ["All", "Visa Services", "Driving License", "Business License"]
+    try:
+        current_index = filter_options.index(st.session_state.selected_library_filter)
+    except ValueError:
+        current_index = 0
+        
+    selected_option = st.selectbox(
+        label="Filter Dataset Directory",
+        options=filter_options,
+        index=current_index,
+        label_visibility="collapsed",
+        key="directory_filter_dropdown"
+    )
+    if selected_option != st.session_state.selected_library_filter:
+        st.session_state.selected_library_filter = selected_option
+        st.rerun()
 
 st.markdown("<br>", unsafe_allow_html=True)
 
@@ -746,9 +771,9 @@ all_library_items = [
         "category": "Visa Services",
         "title": "Student Visa Residency Guide",
         "badge": "Residency",
-        "badge_bg": "#FFEDD5", "badge_color": "#C2410C",
+        "badge_bg": "#EFF6FF", "badge_color": "#1D4ED8",
         "eligibility": "Students who are at least 18 years old and studying in an accredited UAE university, college, or academic institution, sponsored by their parent or the educational institution itself.",
-        "checklist": "<strong>Primary documents:</strong><br>Official admission letter from the university, passport with at least 6 months validity, passport-size photographs, medical fitness certificate, health insurance, and sponsor's direct approval.",
+        "checklist": "<strong>Primary documents:</strong><br>• Official admission letter<br>• Valid passport copy<br>• Medical fitness certificate<br>• Health insurance card details",
         "timeline": "🕒 10 to 15 working days.",
         "fees": "Registration fee is AED 150. Residency visa issuance fee is AED 100 per year of study. Medical test fee is AED 250."
     },
@@ -756,9 +781,9 @@ all_library_items = [
         "category": "Driving License",
         "title": "Convert Foreign Driving License to UAE License",
         "badge": "Conversions",
-        "badge_bg": "#FFEDD5", "badge_color": "#C2410C",
+        "badge_bg": "#ECFDF5", "badge_color": "#047857",
         "eligibility": "Holders of a valid national driving license from approved countries (including GCC, UK, US, Canada, EU nations, Japan, Singapore, Australia) who possess a valid UAE residence visa.",
-        "checklist": "<strong>Primary documents:</strong><br>Valid original foreign driving license, official translation if not in English or Arabic, valid Emirates ID, certified eye test report from an approved optician, and passport copy with residency page.",
+        "checklist": "<strong>Primary documents:</strong><br>• Valid foreign driving license<br>• Certified legal translation<br>• Valid Emirates ID card<br>• Optical test clearance slip",
         "timeline": "🕒 Same-day service (immediate printing).",
         "fees": "File opening fee: AED 200, License issuance fee: AED 600, Knowledge and innovation fee: AED 20."
     },
@@ -766,9 +791,9 @@ all_library_items = [
         "category": "Visa Services",
         "title": "UAE Golden Visa Options and Eligibility",
         "badge": "Golden Visa",
-        "badge_bg": "#FFEDD5", "badge_color": "#C2410C",
+        "badge_bg": "#F5F3FF", "badge_color": "#6D28D9",
         "eligibility": "Real estate investors (property worth AED 2 million or more), entrepreneurs (with capital of AED 500k+), highly talented professionals, scientists, researchers, doctors, and exceptional outstanding students.",
-        "checklist": "<strong>Primary documents:</strong><br>Property title deed of AED 2 million+, accredited university degree certificate, professional recommendation letters, active business registration documents, and full health insurance coverage details.",
+        "checklist": "<strong>Primary documents:</strong><br>• Property title deed proof<br>• Accredited degree certificate<br>• Professional recommendation letters<br>• Complete active audit reports",
         "timeline": "🕒 7 to 10 working days.",
         "fees": "Nomination request fee: AED 150, 10-year Golden Visa fee: AED 2,800, Emirates ID charge: AED 1,000."
     },
@@ -776,19 +801,19 @@ all_library_items = [
         "category": "Driving License",
         "title": "UAE Driving License Renewal Process",
         "badge": "Renewals",
-        "badge_bg": "#FFEDD5", "badge_color": "#C2410C",
+        "badge_bg": "#FFFBEB", "badge_color": "#B45309",
         "eligibility": "All residents and citizens holding an active or expired UAE driving license. Active licenses can be renewed up to 1 year prior to expiry.",
-        "checklist": "<strong>Primary documents:</strong><br>Valid Emirates ID, old driving license copy, and an eye test certificate from an authorized optical testing center.",
+        "checklist": "<strong>Primary documents:</strong><br>• Valid Emirates ID card<br>• Expired driving license log<br>• Registered eye test record",
         "timeline": "🕒 3 to 5 working days for delivery; digital version available immediately.",
         "fees": "Renewal fee for age 21+: AED 300, Fee for under 21: AED 100, Eye test: AED 150-180, Courier charge: AED 25."
     },
     {
         "category": "Business License",
         "title": "Dubai Virtual Company License Guide",
-        "badge": "Company Formation",
-        "badge_bg": "#FFEDD5", "badge_color": "#C2410C",
+        "badge": "Formation",
+        "badge_bg": "#FEF2F2", "badge_color": "#B91C1C",
         "eligibility": "Global business owners and non-residents from over 100 approved countries, for sectors including creative, technology, and services.",
-        "checklist": "<strong>Primary documents:</strong><br>Valid passport copy, proof of address, personal background history check forms, and a passport-size photograph.",
+        "checklist": "<strong>Primary documents:</strong><br>• Valid passport identification<br>• Global residency verification<br>• Corporate background screening",
         "timeline": "🕒 25 to 30 working days.",
         "fees": "1-year virtual license: USD 233 (AED 850), Registry fee: USD 100."
     }
@@ -803,32 +828,34 @@ table_body_html = ""
 for item in filtered_items:
     table_body_html += f"""
     <tr>
-        <td style="width: 20%; padding: 24px 12px;">
-            <strong style="color: #111827; font-size: 14px;">{item['title']}</strong><br><br>
-            <span class="table-badge" style="background:{item['badge_bg']}; color:{item['badge_color']}; font-weight: 600; padding: 4px 10px; border-radius: 12px; font-size: 11px;">{item['badge']}</span>
+        <td style="width: 22%;">
+            <strong style="color: #111827; font-size: 14.5px; display: block; margin-bottom: 8px;">{item['title']}</strong>
+            <span class="table-badge" style="background:{item['badge_bg']}; color:{item['badge_color']};">{item['badge']}</span>
         </td>
-        <td style="width: 22%; color:#374151; font-size: 13.5px; padding: 24px 12px;">{item['eligibility']}</td>
-        <td style="width: 25%; color:#374151; font-size: 13.5px; padding: 24px 12px;">{item['checklist']}</td>
-        <td style="width: 15%; color:#4B5563; font-size: 13.5px; padding: 24px 12px;">{item['timeline']}</td>
-        <td style="width: 18%; color:#000000; font-weight: 600; font-size: 13.5px; text-align:right; padding: 24px 12px;">{item['fees']}</td>
+        <td style="width: 23%; color:#374151;">{item['eligibility']}</td>
+        <td style="width: 23%; color:#374151;">{item['checklist']}</td>
+        <td style="width: 14%; color:#4B5563; font-weight: 500;">{item['timeline']}</td>
+        <td style="width: 18%; color:#111827; font-weight: 600; text-align:right;">{item['fees']}</td>
     </tr>
     """
 
 st.markdown(f"""
-    <table class="custom-table" style="width:100%; border-collapse:collapse; margin-top:10px;">
-        <thead>
-            <tr style="border-bottom: 1px solid #E5E7EB;">
-                <th style="width: 20%; text-transform: uppercase; font-size: 11px; color: #6B7280; letter-spacing: 0.5px; padding: 12px;">Service Title</th>
-                <th style="width: 22%; text-transform: uppercase; font-size: 11px; color: #6B7280; letter-spacing: 0.5px; padding: 12px;">Typical Eligibility Criteria</th>
-                <th style="width: 25%; text-transform: uppercase; font-size: 11px; color: #6B7280; letter-spacing: 0.5px; padding: 12px;">Required Checklists</th>
-                <th style="width: 15%; text-transform: uppercase; font-size: 11px; color: #6B7280; letter-spacing: 0.5px; padding: 12px;">Processing Timeline</th>
-                <th style="width: 18%; text-transform: uppercase; font-size: 11px; color: #6B7280; letter-spacing: 0.5px; padding: 12px; text-align:right;">Standard Fees</th>
-            </tr>
-        </thead>
-        <tbody>
-            {table_body_html if table_body_html else "<tr><td colspan='5' style='text-align:center; padding:30px; color:#9CA3AF;'>No records available for this filter group.</td></tr>"}
-        </tbody>
-    </table>
+    <div class="custom-table-container">
+        <table class="custom-table">
+            <thead>
+                <tr>
+                    <th style="width: 22%;">Service Title / Tag</th>
+                    <th style="width: 23%;">Typical Eligibility Criteria</th>
+                    <th style="width: 23%;">Required Checklists</th>
+                    <th style="width: 14%;">Processing Timeline</th>
+                    <th style="width: 18%; text-align:right;">Standard Fees</th>
+                </tr>
+            </thead>
+            <tbody>
+                {table_body_html if table_body_html else "<tr><td colspan='5' style='text-align:center; padding:40px; color:#9CA3AF;'>No records available for this filter group.</td></tr>"}
+            </tbody>
+        </table>
+    </div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -900,5 +927,3 @@ st.markdown("""
     </div>
 </div>
 """, unsafe_allow_html=True)
-
-
