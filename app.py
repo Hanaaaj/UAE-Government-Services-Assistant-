@@ -190,32 +190,61 @@ else:
     }
 
     /* UNIFIED HERO CONTAINER SYSTEM */
+    
     .hero-wrapper {
-        background: radial-gradient(circle at 80% 20%, #115E46 0%, #063728 100%);
         border-radius: 24px;
-        padding: 48px;
-        color: white;
+        height: 420px;
         position: relative;
         box-shadow: 0 10px 30px rgba(10, 60, 44, 0.15);
         margin-bottom: 40px;
+        overflow: hidden;
+    }
+    
+    /* Sliding Engine (3 Images example) */
+    .hero-slideshow {
+        position: absolute;
+        width: 300%; /* 100% * number of slides */
+        height: 100%;
+        display: flex;
+        animation: heroSlider 15s infinite ease-in-out;
+    }
+    
+    .hero-slide {
+        width: 33.333%; /* 100% / number of slides */
+        height: 100%;
+        background-size: cover;
+        background-position: center;
+    }
+    
+    /* Animation Keyframes for Automatic Smooth Sliding */
+    @keyframes heroSlider {
+        0%, 28% { transform: translateX(0%); }
+        33%, 61% { transform: translateX(-33.333%); }
+        66%, 95% { transform: translateX(-66.666%); }
+        100% { transform: translateX(0%); }
+    }
+
+    /* Cinematic Dark Tint Gradient to Guarantee Overlay Text Contrast */
+    .hero-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to right, rgba(4, 47, 34, 0.95) 40%, rgba(4, 47, 34, 0.5) 70%, rgba(4, 47, 34, 0.2) 100%);
+        z-index: 2;
+    }
+    
+    /* Text Overlay Layout Base Container */
+    .hero-content-container {
+        position: absolute;
+        inset: 0;
+        z-index: 3;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        overflow: hidden;
+        padding: 48px;
     }
-    .hero-wrapper::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        opacity: 0.08;
-        background-image: linear-gradient(to right, rgba(255,255,255,0.4) 1px, transparent 1px), 
-                          linear-gradient(to bottom, rgba(255,255,255,0.4) 1px, transparent 1px);
-        background-size: 32px 32px;
-        z-index: 1;
-    }
+    
     .hero-left-content { 
-        max-width: 58%; 
-        z-index: 2; 
+        max-width: 55%; 
         display: flex; 
         flex-direction: column;
         align-items: flex-start;
@@ -231,10 +260,44 @@ else:
     .hero-description {
         font-size: 15px;
         line-height: 1.6;
-        color: #A7F3D0;
+        color: #E2FBF0;
         margin-bottom: 32px;
     }
 
+    /* Button Layout Array Group */
+    .hero-btn-group {
+        display: flex;
+        gap: 16px;
+    }
+    .btn-dynamic-chat {
+        background-color: #10B981;
+        color: #042F22 !important;
+        font-weight: 700;
+        font-size: 14px;
+        padding: 12px 24px;
+        border-radius: 12px;
+        text-decoration: none !important;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+    }
+    .btn-browse-library {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: #FFFFFF !important;
+        font-weight: 600;
+        font-size: 14px;
+        padding: 12px 24px;
+        border-radius: 12px;
+        text-decoration: none !important;
+        backdrop-filter: blur(4px);
+    }
+
+    .hero-right-dashboard {
+        width: 380px;
+    }
+    
     /* Button Layout Array Group */
     .hero-btn-group {
         display: flex;
@@ -476,33 +539,47 @@ else:
             })
         st.rerun()
 
-    # ─────────────────────────────────────────────
+# ─────────────────────────────────────────────
     # HERO BANNER LAYOUT
     # ─────────────────────────────────────────────
     hero_raw_html = f"""
     <div class="hero-wrapper">
-        <div class="hero-left-content">
-            <div class="hero-main-title">UAE Government<br><span>Services Assistant</span></div>
-            <div class="hero-description">
-                Get instant, reliable guidance on visas, residency rules, driving conversions, step checklists, and company registrations. Handled via fully private server-side retrieval and secure grounded AI.
-            </div>
-            <div class="hero-btn-group">
-                <a href="?action=start_chat" target="_self" class="btn-dynamic-chat">Start Dynamic Chat &nbsp;➔</a>
-                <a href="#verified-library" class="btn-browse-library">Browse Verification Library</a>
-            </div>
+        <!-- 1. Automated Background Animation Track -->
+        <div class="hero-slideshow">
+            <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1582730147233-ac81125906bf?q=80&w=1200');"></div>
+            <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=1200');"></div>
+            <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1578894381163-e72c17f2d45f?q=80&w=1200');"></div>
         </div>
-        <div class="hero-right-dashboard">
-            <div class="system-health-card-unified">
-                <div class="health-header-unified">
-                    <div class="health-title-text">SYSTEM HEALTH</div>
-                    <div class="health-badge-secure">SECURE</div>
+        
+        <!-- 2. Cinematic Gradient Guard for Text Legibility -->
+        <div class="hero-overlay"></div>
+        
+        <!-- 3. Absolute Positioned Content Overlays -->
+        <div class="hero-content-container">
+            <div class="hero-left-content">
+                <div class="hero-main-title">UAE Government<br><span>Services Assistant</span></div>
+                <div class="hero-description">
+                    Get instant, reliable guidance on visas, residency rules, driving conversions, step checklists, and company registrations. Handled via fully private server-side retrieval and secure grounded AI.
                 </div>
-                <div class="health-skeleton-line l1"></div>
-                <div class="health-skeleton-line l2"></div>
-                <div class="health-skeleton-line l3"></div>
-                <div class="health-footer-unified">
-                    <span style="color:#64748B;">Server-side retrieval:</span>
-                    <span style="color:#FBBF24; font-family:monospace; font-weight:700;">TF-IDF Vectorizer</span>
+                <div class="hero-btn-group">
+                    <a href="?action=start_chat" target="_self" class="btn-dynamic-chat">Start Dynamic Chat &nbsp;➔</a>
+                    <a href="#verified-library" class="btn-browse-library">Browse Verification Library</a>
+                </div>
+            </div>
+            
+            <div class="hero-right-dashboard">
+                <div class="system-health-card-unified">
+                    <div class="health-header-unified">
+                        <div class="health-title-text">SYSTEM HEALTH</div>
+                        <div class="health-badge-secure">SECURE</div>
+                    </div>
+                    <div class="health-skeleton-line l1"></div>
+                    <div class="health-skeleton-line l2"></div>
+                    <div class="health-skeleton-line l3"></div>
+                    <div class="health-footer-unified">
+                        <span style="color:#A4B5CD;">Server-side retrieval:</span>
+                        <span style="color:#FBBF24; font-family:monospace; font-weight:700;">TF-IDF Vectorizer</span>
+                    </div>
                 </div>
             </div>
         </div>
