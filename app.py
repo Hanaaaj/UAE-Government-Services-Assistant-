@@ -542,9 +542,14 @@ with chat_col:
         st.rerun()
 
     # Chat Log interface box
-    st.markdown('<div style="background:white; border:1px solid #E5E7EB; border-radius:16px; padding:20px; margin-top:10px;">', unsafe_allow_html=True)
     for msg in st.session_state.messages:
-        with st.chat_message(msg["role"]):
+    with st.chat_message(msg["role"]):
+        if msg["role"] == "assistant":
+            st.markdown(
+                f"<div style='color:black;'>{msg['content']}</div>",
+                unsafe_allow_html=True
+            )
+        else:
             st.write(msg["content"])
     st.markdown('</div>', unsafe_allow_html=True)
 
