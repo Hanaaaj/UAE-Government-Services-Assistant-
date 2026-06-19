@@ -745,7 +745,6 @@ with lib_header_left:
     )
 
 with lib_header_right:
-    # Inline drop select grouping following the exact alignment structure of your sketch
     st.markdown('<div class="select-filter-label-group">🔍 Filter Dataset Directory:</div>', unsafe_allow_html=True)
     filter_options = ["All", "Visa Services", "Driving License", "Business License"]
     try:
@@ -824,9 +823,10 @@ filtered_items = [
     if st.session_state.selected_library_filter == "All" or item["category"] == st.session_state.selected_library_filter
 ]
 
-table_body_html = ""
+# Generate rows dynamically
+table_rows_html = ""
 for item in filtered_items:
-    table_body_html += f"""
+    table_rows_html += f"""
     <tr>
         <td style="width: 22%;">
             <strong style="color: #111827; font-size: 14.5px; display: block; margin-bottom: 8px;">{item['title']}</strong>
@@ -839,7 +839,11 @@ for item in filtered_items:
     </tr>
     """
 
-st.markdown(f"""
+if not table_rows_html:
+    table_rows_html = "<tr><td colspan='5' style='text-align:center; padding:40px; color:#9CA3AF;'>No records available for this filter group.</td></tr>"
+
+# Combine layout frame logic safely inside a singular markdown evaluation container
+full_matrix_html = f"""
     <div class="custom-table-container">
         <table class="custom-table">
             <thead>
@@ -852,12 +856,14 @@ st.markdown(f"""
                 </tr>
             </thead>
             <tbody>
-                {table_body_html if table_body_html else "<tr><td colspan='5' style='text-align:center; padding:40px; color:#9CA3AF;'>No records available for this filter group.</td></tr>"}
+                {table_rows_html}
             </tbody>
         </table>
     </div>
 </div>
-""", unsafe_allow_html=True)
+"""
+
+st.markdown(full_matrix_html, unsafe_allow_html=True)
 
 # ─────────────────────────────────────────────
 # PROTOTYPE DARK BOTTOM FOOTER BAR
