@@ -567,18 +567,7 @@ else:
         <!-- 2. Cinematic Gradient Guard for Text Legibility -->
         <div class="hero-overlay"></div>
 
-        {navbar_html}
         
-        <div class="hero-left-content" style="margin-top: auto; margin-bottom: auto;">
-            <div class="hero-main-title">UAE Government<br><span>Services Assistant</span></div>
-            <div class="hero-description">
-                Get instant, reliable guidance on visas, residency rules, driving conversions, step checklists, and company registrations. Handled via fully private server-side retrieval and secure grounded AI.
-            </div>
-            <div class="hero-btn-group">
-                <a href="?action=start_chat" target="_self" class="btn-dynamic-chat">Start Dynamic Chat &nbsp;➔</a>
-                <a href="#verified-library" class="btn-browse-library">Browse Verification Library</a>
-            </div>
-        </div>
         
         <!-- 3. Absolute Positioned Content Overlays -->
         <div class="hero-content-container">
@@ -601,36 +590,36 @@ else:
     # ─────────────────────────────────────────────
     # SERVICE CARDS STRIP
     # ─────────────────────────────────────────────
-    st.html(f"""
-    <div class="cards-row">
-        <div class="target-card {'active-card' if current_filter == 'Visa Services' else ''}">
-            <div class="card-icon">🛂</div>
-            <div class="card-title">{t["svc_visa"]}</div>
-            <div class="card-subtext">Golden, Student, Resident</div>
-        </div>
-        <div class="target-card {'active-card' if current_filter == 'Driving License' else ''}">
-            <div class="card-icon">🚗</div>
-            <div class="card-title">{t["svc_driving"]}</div>
-            <div class="card-subtext">Convert, Renew, Eye Tests</div>
-        </div>
-        <div class="target-card {'active-card' if current_filter == 'Business License' else ''}">
-            <div class="card-icon">🏢</div>
-            <div class="card-title">{t["svc_business"]}</div>
-            <div class="card-subtext">Freezone, Virtual Licenses</div>
-        </div>
-        <div class="target-card">
-            <div class="card-icon">🔄</div>
-            <div class="card-title">{t["svc_renewals"]}</div>
-            <div class="card-subtext">Emirates ID, Fine Clearance</div>
-        </div>
-        <div class="target-card {'active-card' if current_filter == 'All' else ''}">
-            <div class="card-icon">❓</div>
-            <div class="card-title">Full Directory</div>
-            <div class="card-subtext">Check the full library</div>
-        </div>
+    # Locate your hero_raw_html string block and update it like this:
+hero_raw_html = f"""
+<div class="hero-wrapper">
+    <div class="hero-slideshow">
+        <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1582730147233-ac81125906bf?q=80&w=1200');"></div>
+        <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=1200');"></div>
+        <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1578894381163-e72c17f2d45f?q=80&w=1200');"></div>
     </div>
-    """)
-     
+    
+    <div class="hero-overlay"></div>
+    
+    <div class="hero-content-container">
+        
+        {navbar_html}
+        
+        <div class="hero-left-content" style="margin-top: auto; margin-bottom: auto;">
+            <div class="hero-main-title">UAE Government<br><span>Services Assistant</span></div>
+            <div class="hero-description">
+                Get instant, reliable guidance on visas, residency rules, driving conversions, step checklists, and company registrations. Handled via fully private server-side retrieval and secure grounded AI.
+            </div>
+            <div class="hero-btn-group">
+                <a href="?action=start_chat" target="_self" class="btn-dynamic-chat">Start Dynamic Chat &nbsp;➔</a>
+                <a href="#verified-library" class="btn-browse-library">Browse Verification Library</a>
+            </div>
+        </div>
+        
+    </div>
+</div>
+"""
+st.html(hero_raw_html)
     # ─────────────────────────────────────────────
     # SPLIT CHAT INTERFACE WINDOW
     # ─────────────────────────────────────────────
