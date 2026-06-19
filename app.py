@@ -18,13 +18,6 @@ from agent import (
 )
 
 from welcome import show_welcome_screen
-def get_local_img_base64(file_path):
-    """Reads a local image file and returns its base64 data URI string."""
-    if os.path.exists(file_path):
-        with open(file_path, "rb") as image_file:
-            encoded_string = base64.b64encode(image_file.read()).decode()
-        return f"data:image/jpeg;base64,{encoded_string}"
-    return ""
 
 # ─────────────────────────────────────────────
 # PAGE CONFIG
@@ -547,31 +540,17 @@ else:
     # ─────────────────────────────────────────────
     # HERO BANNER LAYOUT
     # ─────────────────────────────────────────────
-    
-    # 1. Fetch your local repo images (assuming an 'assets' folder in your root)
-img1 = get_local_img_base64("hero_images/slide1.jpg")
-img2 = get_local_img_base64("hero_images/slide2.jpg")
-img3 = get_local_img_base64("hero_images/slide3.jpg")
-
-hero_raw_html = f"""
-<div class="hero-wrapper">
-    <div class="hero-slideshow">
-        <div class="hero-slide" style="background-image: url('{img1}');"></div>
-        <div class="hero-slide" style="background-image: url('{img2}');"></div>
-        <div class="hero-slide" style="background-image: url('{img3}');"></div>
-    </div>
-    
-    <div class="hero-overlay"></div>
-    
-    <div class="hero-content-container">
-        ...
-    </div>
-</div>
-"""
-st.html(hero_raw_html)
+    hero_raw_html = f"""
+    <div class="hero-wrapper">
+        <!-- 1. Automated Background Animation Track -->
+        <div class="hero-slideshow">
+            <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1582730147233-ac81125906bf?q=80&w=1200');"></div>
+            <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=1200');"></div>
+            <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1578894381163-e72c17f2d45f?q=80&w=1200');"></div>
+        </div>
         
-<!-- 2. Cinematic Gradient Guard for Text Legibility -->
-<div class="hero-overlay"></div>
+        <!-- 2. Cinematic Gradient Guard for Text Legibility -->
+        <div class="hero-overlay"></div>
         
         <!-- 3. Absolute Positioned Content Overlays -->
         <div class="hero-content-container">
@@ -581,7 +560,7 @@ st.html(hero_raw_html)
                     Get instant, reliable guidance on visas, residency rules, driving conversions, step checklists, and company registrations. Handled via fully private server-side retrieval and secure grounded AI.
                 </div>
                 <div class="hero-btn-group">
-                    <a href="?action=start_chat" target="_self" class="btn-dynamic-chat">Start Dynamic Chat &nbsp;&rarr;</a>
+                    <a href="?action=start_chat" target="_self" class="btn-dynamic-chat">Start Dynamic Chat &nbsp;➔</a>
                     <a href="#verified-library" class="btn-browse-library">Browse Verification Library</a>
                 </div>
             </div>
