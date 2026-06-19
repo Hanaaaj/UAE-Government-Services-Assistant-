@@ -45,8 +45,8 @@ if not st.session_state.started:
 
 else:
  API_KEYS_POOL = []
- for secret_key in ["GEMINI_API_KEY", "GEMINI_API_KEY_MEMBER_1", "GEMINI_API_KEY_MEMBER_2", "GEMINI_API_KEY_MEMBER_3"]:
-  try:
+for secret_key in ["GEMINI_API_KEY", "GEMINI_API_KEY_MEMBER_1", "GEMINI_API_KEY_MEMBER_2", "GEMINI_API_KEY_MEMBER_3"]:
+    try:
         if secret_key in st.secrets and st.secrets[secret_key]:
             API_KEYS_POOL.append(st.secrets[secret_key])
     except Exception:
@@ -554,7 +554,7 @@ active_driving = "active" if current_filter == "Driving License" else ""
 active_business = "active" if current_filter == "Business License" else ""
 
 navbar_html = f"""
-<div style="display: flex; justify-content: space-between; align-items: center; padding: 65px 0 5px 0; margin-bottom: 20px; width: 100%;">
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 25px 0 15px 0; margin-bottom: 20px; width: 100%;">
     
     <div class="brand-block" style="flex: 1; display: flex; justify-content: flex-start;">
         <div class="brand-badge">AE</div>
@@ -991,13 +991,3 @@ st.html("""
     </div>
 </div>
 """)
-
-#######
-
-
-
-
-
- 
-# ─────────────────────────────────────────────
-c
