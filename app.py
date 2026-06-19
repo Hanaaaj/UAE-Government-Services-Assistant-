@@ -161,7 +161,7 @@ html, body, [class*="css"], .stApp {
 }
 
 /* ─────────────────────────────────────────────
-   UNIFIED HERO CONTAINER SYSTEM (Matches image_48a267.jpg)
+   UNIFIED HERO CONTAINER SYSTEM
    ───────────────────────────────────────────── */
 .hero-wrapper {
     background: radial-gradient(circle at 80% 20%, #115E46 0%, #063728 100%);
@@ -527,7 +527,6 @@ if url_params.get("action") == "start_chat":
 hero_raw_html = f"""
 <div class="hero-wrapper">
     <div class="hero-left-content">
-        <div class="hero-badge-top">ae Powered by Gemini AI & Grounded Retrieval</div>
         <div class="hero-main-title">UAE Government<br><span>Services Assistant</span></div>
         <div class="hero-description">
             Get instant, reliable guidance on visas, residency rules, driving conversions, step checklists, and company registrations. Handled via fully private server-side retrieval and secure grounded AI.
