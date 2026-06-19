@@ -580,48 +580,146 @@ with sidebar_col:
     """, unsafe_allow_html=True)
 
 # ─────────────────────────────────────────────
-# GROUNDED VERIFIED VERIFICATION LIBRARY MATRIX
+# GROUNDED VERIFIED VERIFICATION LIBRARY MATRIX (With Dynamic Filter Buttons)
 # ─────────────────────────────────────────────
+
+# Custom CSS layer to add pill styling matching image_4b5fdf.png
 st.markdown("""
-<div class="library-wrapper">
-    <div class="library-header-row">
-        <div class="library-title">📚 Verified Services Library (All)</div>
-    </div>
-    <p style="font-size:12px; color:#6B7280; margin-bottom:20px; margin-top:-10px;">
-        Verify criteria, checklists, fee lists, and wait times loaded securely from the agent source.
-    </p>
+<style>
+/* Style the filter buttons container */
+.filter-container {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+/* Base style for custom table rows */
+.custom-table tbody tr:hover {
+    background-color: #F8FAFC;
+}
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown('<div class="library-wrapper">', unsafe_allow_html=True)
+
+# Create a layout split: Title on the left, filter pill buttons on the right
+lib_header_left, lib_header_right = st.columns([2, 1])
+
+with lib_header_left:
+    st.markdown('<div class="library-title">📚 Verified Services Library (All)</div>', unsafe_allow_html=True)
+    st.markdown(
+        '<p style="font-size:13px; color:#6B7280; margin-top: 4px; margin-bottom:0;">'
+        'Verify criteria, checklists, fee lists, and wait times loaded securely from the agent source.'
+        '</p>', 
+        unsafe_allow_html=True
+    )
+
+# Session state to track which category is currently selected for the table view
+if "selected_library_filter" not in st.session_state:
+    st.session_state.selected_library_filter = "All"
+
+with lib_header_right:
+    # Render horizontal filter selectors using st.columns or native segment widgets
+    # To get the exact inline visual spacing from image_4b5fdf.png:
+    f_col1, f_col2, f_col3, f_col4 = st.columns(4)
+    
+    with f_col1:
+        if st.button("All", key="btn_lib_all", use_container_width=True, 
+                     type="primary" if st.session_state.selected_library_filter == "All" else "secondary"):
+            st.session_state.selected_library_filter = "All"
+            st.rerun()
+            
+    with f_col2:
+        if st.button("Visa", key="btn_lib_visa", use_container_width=True,
+                     type="primary" if st.session_state.selected_library_filter == "Visa Services" else "secondary"):
+            st.session_state.selected_library_filter = "Visa Services"
+            st.rerun()
+            
+    with f_col3:
+        if st.button("Driving", key="btn_lib_drive", use_container_width=True,
+                     type="primary" if st.session_state.selected_library_filter == "Driving License" else "secondary"):
+            st.session_state.selected_library_filter = "Driving License"
+            st.rerun()
+            
+    with f_col4:
+        if st.button("Business", key="btn_lib_biz", use_container_width=True,
+                     type="primary" if st.session_state.selected_library_filter == "Business License" else "secondary"):
+            st.session_state.selected_library_filter = "Business License"
+            st.rerun()
+
+st.markdown("<br>", unsafe_allow_html=True)
+
+# ─── DATA RENDERING LAYER ───
+# Define raw rows (You can replace this array with a dynamic loop over your kb_data if preferred!)
+all_library_items = [
+    {
+        "category": "Visa Services",
+        "title": "Student Visa Residency Guide",
+        "badge": "Residency",
+        "badge_bg": "#E0F2FE", "badge_color": "#0369A1",
+        "eligibility": "Students who are at least 18 years old and studying in an accredited UAE university, college, or academic institution, sponsored by their parent or the educational institution itself.",
+        "checklist": "<strong>Primary documents:</strong><br>Official admission letter from the university, passport with at least 6 months validity, passport-size photographs, medical fitness certificate, health insurance, and sponsor's direct approval.",
+        "timeline": "🕒 10 to 15 working days.",
+        "fees": "Registration fee is AED 150. Residency visa issuance fee is AED 100 per year of study. Medical test fee is AED 250."
+    },
+    {
+        "category": "Driving License",
+        "title": "Convert Foreign Driving License to UAE License",
+        "badge": "Conversions",
+        "badge_bg": "#FEF3C7", "badge_color": "#D97706",
+        "eligibility": "Holders of a valid national driving license from approved countries (including GCC, UK, US, Canada, EU nations, Japan, Singapore, Australia) who possess a valid UAE residence visa.",
+        "checklist": "<strong>Primary documents:</strong><br>Valid original foreign driving license, official translation if not in English or Arabic, valid Emirates ID, certified eye test report from an approved optician, and passport copy with residency page.",
+        "timeline": "🕒 Same-day service (immediate printing).",
+        "fees": "File opening fee: AED 200, License issuance fee: AED 600, Knowledge and innovation fee: AED 20."
+    },
+    {
+        "category": "Visa Services",
+        "title": "UAE Golden Visa Options and Eligibility",
+        "badge": "Golden Visa",
+        "badge_bg": "#ECFDF5", "badge_color": "#047857",
+        "eligibility": "Real estate investors (property worth AED 2 million or more), entrepreneurs (with capital of AED 500k+), highly talented professionals, scientists, researchers, doctors, and exceptional outstanding students.",
+        "checklist": "<strong>Primary documents:</strong><br>Property title deed of AED 2 million+, accredited university degree certificate, professional recommendation letters, active business registration documents, and full health insurance coverage details.",
+        "timeline": "🕒 7 to 10 working days.",
+        "fees": "Nomination request fee: AED 150, 10-year Golden Visa fee: AED 2,800, Emirates ID charge: AED 1,000."
+    }
+]
+
+# Filter items dynamically based on button selection state
+filtered_items = [
+    item for item in all_library_items 
+    if st.session_state.selected_library_filter == "All" or item["category"] == st.session_state.selected_library_filter
+]
+
+# Build table layout 
+table_body_html = ""
+for item in filtered_items:
+    table_body_html += f"""
+    <tr>
+        <td style="width: 20%;">
+            <strong>{item['title']}</strong><br><br>
+            <span class="table-badge" style="background:{item['badge_bg']}; color:{item['badge_color']};">{item['badge']}</span>
+        </td>
+        <td style="width: 22%; color:#374151; line-height:1.4;">{item['eligibility']}</td>
+        <td style="width: 25%; color:#374151; line-height:1.4;">{item['checklist']}</td>
+        <td style="width: 15%; color:#374151; font-weight:500;">{item['timeline']}</td>
+        <td style="width: 18%; color:#000000; font-weight:600; text-align:right; line-height:1.4;">{item['fees']}</td>
+    </tr>
+    """
+
+# Render dynamic data frame mockup frame verbatim
+st.markdown(f"""
     <table class="custom-table">
         <thead>
             <tr>
-                <th>Service Title</th>
-                <th>Typical Eligibility Criteria</th>
-                <th>Required Checklists</th>
-                <th>Processing Timeline</th>
-                <th>Standard Fees</th>
+                <th style="width: 20%;">Service Title</th>
+                <th style="width: 22%;">Typical Eligibility Criteria</th>
+                <th style="width: 25%;">Required Checklists</th>
+                <th style="width: 15%;">Processing Timeline</th>
+                <th style="width: 18%; text-align:right;">Standard Fees</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td><strong>Student Visa Residency Guide</strong><br><span class="table-badge" style="background:#E0F2FE; color:#0369A1;">Residency</span></td>
-                <td>Students who are at least 18 years old and studying in an accredited UAE university or college.</td>
-                <td><strong>Primary documents:</strong><br>Official admission letter, passport with 6 months validity, medical certificate, health insurance.</td>
-                <td>🕒 10 to 15 working days.</td>
-                <td>Registration fee: AED 150.<br>Issuance fee: AED 100/year.<br>Medical test: AED 250.</td>
-            </tr>
-            <tr>
-                <td><strong>Convert Foreign Driving License</strong><br><span class="table-badge">Conversions</span></td>
-                <td>Holders of a valid national driving license from approved countries (GCC, UK, US, Canada, EU, Japan, etc.).</td>
-                <td><strong>Primary documents:</strong><br>Valid original license, official translation, Emirates ID, passport copy, eye test.</td>
-                <td>🕒 Same-day service.</td>
-                <td>File opening: AED 200.<br>License issuance: AED 600.</td>
-            </tr>
-            <tr>
-                <td><strong>UAE Golden Visa Options</strong><br><span class="table-badge" style="background:#ECFDF5; color:#047857;">Golden Visa</span></td>
-                <td>Real estate investors (AED 2M+), entrepreneurs, exceptional talents, and outstanding students.</td>
-                <td><strong>Primary documents:</strong><br>Property title deed or university degree certificate, health insurance.</td>
-                <td>🕒 7 to 10 working days.</td>
-                <td>Nomination request: AED 150.<br>10-year visa fee: AED 2,800.</td>
-            </tr>
+            {table_body_html if table_body_html else "<tr><td colspan='5' style='text-align:center; color:#9CA3AF;'>No verified templates found for this filter scope.</td></tr>"}
         </tbody>
     </table>
 </div>
