@@ -18,13 +18,12 @@ from agent import (
 )
 
 from welcome import show_welcome_screen
-
- def get_local_img_base64(file_path):
+def get_local_img_base64(file_path):
     """Reads a local image file and returns its base64 data URI string."""
     if os.path.exists(file_path):
         with open(file_path, "rb") as image_file:
             encoded_string = base64.b64encode(image_file.read()).decode()
-        return f"data:image/jpeg;base64,{encoded_string}" # Change jpeg to png if needed
+        return f"data:image/jpeg;base64,{encoded_string}"
     return ""
 
 # ─────────────────────────────────────────────
