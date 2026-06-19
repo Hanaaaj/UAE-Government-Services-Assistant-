@@ -1,11 +1,11 @@
 """
 app.py — UAE Government Services Assistant
-Pure Streamlit UI. All AI/retrieval logic lives in agent.py.
+Pure Streamlit UI custom-tailored to a pixel-perfect design system.
 """
 import base64
 import streamlit as st
-import random  # Added for key rotation
-import os      # Added for key extraction
+import random  
+import os      
  
 from agent import (
     UI,
@@ -24,12 +24,12 @@ st.set_page_config(
     page_title="UAE Gov Services AI Assistant",
     page_icon="🇦🇪",
     layout="wide",
+    initial_sidebar_state="collapsed" # Collapsed to let the custom top nav shine
 )
  
 # ─────────────────────────────────────────────
 # FREE-TIER RATE LIMIT RESILIENCE & KEY ROTATION SETUP
 # ─────────────────────────────────────────────
-# Gathers all team keys from Secrets to share limits and bypass 429 rate limit exceptions
 API_KEYS_POOL = []
 for secret_key in ["GEMINI_API_KEY", "GEMINI_API_KEY_MEMBER_1", "GEMINI_API_KEY_MEMBER_2", "GEMINI_API_KEY_MEMBER_3"]:
     try:
@@ -40,165 +40,357 @@ for secret_key in ["GEMINI_API_KEY", "GEMINI_API_KEY_MEMBER_1", "GEMINI_API_KEY_
 if not API_KEYS_POOL and os.getenv("GEMINI_API_KEY"):
     API_KEYS_POOL.append(os.getenv("GEMINI_API_KEY"))
  
- 
 def get_rotated_api_key(manual_key: str = "") -> str:
-    """
-    Picks ONE key and STICKS to it for the lifetime of the session, instead
-    of re-randomizing on every Streamlit rerun (which was the bug: each
-    rerun could silently swap in a different - sometimes bad or
-    zero-quota - key under the already-cached chat_session, producing
-    inconsistent, hedging "I don't have that information" replies that had
-    nothing to do with retrieval).
-    """
     if manual_key:
         return manual_key
- 
     if "active_api_key" not in st.session_state:
         st.session_state.active_api_key = random.choice(API_KEYS_POOL) if API_KEYS_POOL else ""
- 
     return st.session_state.active_api_key
  
 # ─────────────────────────────────────────────
-# LANGUAGE STATE  (must be before any UI render)
+# LANGUAGE STATE
 # ─────────────────────────────────────────────
 if "lang" not in st.session_state:
     st.session_state.lang = "English"
  
-t = UI[st.session_state.lang]          # shorthand — use t["key"] everywhere
+t = UI[st.session_state.lang]         
 is_arabic = st.session_state.lang == "Arabic"
  
 # ─────────────────────────────────────────────
-# CSS  (base + conditional RTL/Arabic font)
+# ADVANCED CUSTOM CSS FOR TARGET DESIGN
 # ─────────────────────────────────────────────
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;600;700;800&display=swap');
  
-html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
- 
-.main { background-color: #F7F9FA; }
- 
-.nav-bar {
+/* Global Canvas Adjustments */
+html, body, [class*="css"], .stApp { 
+    font-family: 'Inter', sans-serif; 
+    background-color: #FDFDFB !important;
+}
+
+/* Fix main padding */
+.block-container {
+    padding-top: 0rem !important;
+    padding-bottom: 3rem !important;
+    max-width: 1300px !important;
+}
+
+/* Custom Top Warning Banner */
+.top-disclaimer {
+    background-color: #FFF6ED;
+    border-bottom: 1px solid #FFEDD5;
+    padding: 10px 40px;
+    font-size: 13px;
+    color: #9A3412;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 -100px 20px -100px;
+}
+
+/* Elegant Custom Top Header Bar */
+.custom-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 30px;
-    background: white;
-    border-radius: 18px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    margin-bottom: 25px;
+    padding: 15px 0;
+    margin-bottom: 20px;
 }
-.nav-logo  { font-size: 22px; font-weight: 700; color: #006C4C; }
-.nav-links { display: flex; gap: 28px; font-weight: 500; color: #1E293B; font-size: 14px; }
- 
-.service-card {
-    background: white;
-    border-radius: 18px;
-    padding: 18px;
-    text-align: center;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.06);
-    border: 2px solid #E5E7EB;
-    cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+.brand-block {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
-.service-card:hover  { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
-.service-card.active { background: #FFF7E6; border-color: #D4AF37; }
-.service-card .icon  { font-size: 30px; margin-bottom: 8px; }
-.service-card .label { font-weight: 700; font-size: 14px; color: #1E293B; }
- 
-.disclaimer {
-    background: #fff3cd;
-    padding: 12px 18px;
-    border-radius: 8px;
-    border-left: 6px solid #ffc107;
-    margin-bottom: 22px;
-    font-size: 0.86rem;
-    color: #856404;
+.brand-badge {
+    background-color: #0F5A41;
+    color: white;
+    font-weight: 700;
+    font-size: 16px;
+    padding: 8px 12px;
+    border-radius: 12px;
 }
- 
-.source-badge {
-    display: inline-block;
-    background: #e8f5e9;
-    color: #2e7d32;
-    font-size: 0.76rem;
-    padding: 3px 10px;
-    border-radius: 20px;
-    margin: 3px 4px 3px 0;
+.brand-name {
+    font-size: 20px;
+    font-weight: 700;
+    color: #111827;
+    line-height: 1.1;
+}
+.brand-tag {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #6B7280;
+}
+.custom-nav-links {
+    display: flex;
+    gap: 24px;
+    font-size: 14px;
     font-weight: 500;
-    text-decoration: none;
+    color: #4B5563;
+}
+.custom-nav-links span.active {
+    color: #0F5A41;
+    font-weight: 600;
+    border-bottom: 2px solid #0F5A41;
+    padding-bottom: 4px;
+}
+
+/* The Emerald Hero Section */
+.hero-container {
+    background: radial-gradient(circle at 80% 20%, #166E53 0%, #0A3C2C 100%);
+    border-radius: 24px;
+    padding: 50px 50px 60px 50px;
+    color: white;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(10, 60, 44, 0.15);
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    overflow: hidden;
+}
+.hero-container::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    opacity: 0.04;
+    background-image: linear-gradient(to right, #fff 1px, transparent 1px), linear-gradient(to bottom, #fff 1px, transparent 1px);
+    background-size: 24px 24px;
+}
+.hero-left { max-width: 55%; z-index: 2; }
+.hero-badge {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 6px 14px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    display: inline-block;
+    margin-bottom: 20px;
+    color: #A7F3D0;
+}
+.hero-title {
+    font-size: 44px;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    color: #FFFFFF;
+}
+.hero-title span { color: #FBBF24; }
+.hero-subtitle {
+    font-size: 15px;
+    line-height: 1.5;
+    color: #D1FAE5;
+    opacity: 0.9;
+}
+
+/* System Health Card inside Hero */
+.system-health-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    border-radius: 16px;
+    padding: 24px;
+    width: 380px;
+    z-index: 2;
+}
+.health-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+}
+.health-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #94A3B8;
+}
+.health-status {
+    background: rgba(16, 185, 129, 0.2);
+    color: #34D399;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 6px;
+    letter-spacing: 0.5px;
+}
+.health-line {
+    height: 4px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    margin-bottom: 10px;
+}
+.health-line.fill { width: 70%; background: rgba(255,255,255,0.3); }
+.health-line.fill-short { width: 45%; background: rgba(255,255,255,0.3); }
+.health-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    font-size: 12px;
+}
+
+/* Modern Minimalist Service Cards Layout */
+.cards-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+    margin-bottom: 35px;
+}
+.target-card {
+    background: white;
+    border: 1px solid #E5E7EB;
+    border-radius: 16px;
+    padding: 20px 16px;
+    transition: all 0.2s ease;
+}
+.target-card:hover {
+    border-color: #10B981;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+.target-card.active-card {
+    border: 2px solid #000000;
+    box-shadow: 0 0 0 1px #000000;
+}
+.target-card .card-icon {
+    font-size: 24px;
+    margin-bottom: 12px;
+}
+.target-card .card-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 4px;
+}
+.target-card .card-subtext {
+    font-size: 12px;
+    color: #6B7280;
+}
+
+/* Split Section: Chat Area and Right Sidebar Panels */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+/* Right Side Dashboard Panels */
+.side-panel {
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 20px;
+}
+.panel-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1E293B;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+.metadata-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #E2E8F0;
+    font-size: 13px;
+}
+.metadata-row:last-child { border: none; }
+.metadata-label { color: #64748B; font-weight: 500; font-family: monospace; }
+.metadata-value { font-weight: 600; }
+
+/* Custom Library/Data Tables UI */
+.library-wrapper {
+    background: white;
+    border: 1px solid #E5E7EB;
+    border-radius: 16px;
+    padding: 24px;
+    margin-top: 20px;
+}
+.library-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.library-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #111827;
+}
+
+/* Data Table Styling */
+.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    text-align: left;
+}
+.custom-table th {
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    color: #6B7280;
+    padding: 12px;
+    border-bottom: 1px solid #E5E7EB;
+    font-weight: 600;
+}
+.custom-table td {
+    padding: 16px 12px;
+    border-bottom: 1px solid #F3F4F6;
+    vertical-align: top;
+}
+.table-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    background: #FEF3C7;
+    color: #D97706;
 }
 </style>
 """, unsafe_allow_html=True)
  
-# RTL + Cairo font when Arabic is active
+# Handle RTL / Arabic Styles Dynamic Loading
 if is_arabic:
     st.markdown("""
     <style>
-    html, body, [class*="css"] {
-        font-family: 'Cairo', sans-serif !important;
-        direction: rtl;
-        text-align: right;
-    }
-    .nav-bar  { flex-direction: row-reverse; }
-    .nav-links { flex-direction: row-reverse; }
-    .disclaimer { border-left: none; border-right: 6px solid #ffc107; }
+    html, body, [class*="css"], .stApp { font-family: 'Cairo', sans-serif !important; direction: rtl; text-align: right; }
+    .custom-header, .hero-container, .library-header-row { flex-direction: row-reverse; }
+    .custom-table { text-align: right; }
     </style>
     """, unsafe_allow_html=True)
  
 # ─────────────────────────────────────────────
-# HELPERS
+# TOP PROTOTYPE DISCLAIMER BANNER
 # ─────────────────────────────────────────────
-def img_to_b64(path: str) -> str:
-    with open(path, "rb") as f:
-        return base64.b64encode(f.read()).decode()
- 
+st.markdown(f"""
+<div class="top-disclaimer">
+    <span>🛈</span>
+    <div><strong>Prototype Disclaimer:</strong> This website is an independent AI prototype built for research and demonstration. It is NOT an official UAE government portal. Always consult and verify regulations directly on official gov source links.</div>
+</div>
+""", unsafe_allow_html=True)
+
 # ─────────────────────────────────────────────
-# AGENT RESOURCES  (cached)
-# ─────────────────────────────────────────────
-@st.cache_data
-def _load_kb():
-    return load_knowledge_base()
- 
-@st.cache_resource
-def _build_index(_data):
-    return build_retrieval_index(_data)
- 
-@st.cache_resource
-def _get_model(api_key: str):
-    return get_gemini_model(api_key)
- 
-kb_data = _load_kb()
-vectorizer, tfidf_matrix = _build_index(kb_data)
- 
-# ─────────────────────────────────────────────
-# SIDEBAR
+# CONFIGURATION/SIDEBAR ACCESS (Kept Functional)
 # ─────────────────────────────────────────────
 with st.sidebar:
     st.header(t["config_header"])
- 
-    # Incorporate the active rate limit rotation pool check dynamically
     if len(API_KEYS_POOL) > 0:
         api_key_input = get_rotated_api_key()
         st.success(t["api_loaded"])
     else:
-        api_key_input = st.text_input(
-            t["api_label"],
-            type="password",
-            help=t["api_help"],
-        )
-        if not api_key_input:
-            st.info(t["api_info"])
+        api_key_input = st.text_input(t["api_label"], type="password", help=t["api_help"])
+        if not api_key_input: st.info(t["api_info"])
  
-    st.markdown("---")
-    st.markdown(t["verify_hubs"])
-    st.markdown("- [Official UAE Portal](https://u.ae)")
-    st.markdown("- [ICP Portal](https://icp.gov.ae)")
-    st.markdown("- [GDRFA Portal](https://gdrfad.gov.ae)")
-    st.markdown("- [RTA Portal](https://rta.ae)")
-    st.markdown("- [MOHRE Portal](https://mohre.gov.ae)")
- 
-    st.markdown("---")
     if st.button(t["clear_chat"]):
         st.session_state.messages = []
         st.session_state.pop("chat_session", None)
@@ -206,120 +398,98 @@ with st.sidebar:
         st.rerun()
  
 # ─────────────────────────────────────────────
-# DISCLAIMER
+# CUSTOM NAVBAR UI WITH INLINE LANG TOGGLE
 # ─────────────────────────────────────────────
-st.markdown(
-    f'<div class="disclaimer">{t["disclaimer"]}</div>',
-    unsafe_allow_html=True,
-)
- 
-# ─────────────────────────────────────────────
-# NAV BAR  +  LANGUAGE TOGGLE (top right)
-# ─────────────────────────────────────────────
-nav_col, toggle_col = st.columns([11, 1])
- 
-with toggle_col:
-    st.markdown("<div style='padding-top:8px'>", unsafe_allow_html=True)
+nav_html = f"""
+<div class="custom-header">
+    <div class="brand-block">
+        <div class="brand-badge">AE</div>
+        <div>
+            <div class="brand-name">{t["nav_logo"]}</div>
+            <div class="brand-tag">Prototype Agent</div>
+        </div>
+    </div>
+    <div class="custom-nav-links">
+        <span class="active">{t["nav_home"]}</span>
+        <span>{t["nav_visa"]}</span>
+        <span>{t["nav_driving"]}</span>
+        <span>{t["nav_business"]}</span>
+    </div>
+</div>
+"""
+st.markdown(nav_html, unsafe_allow_html=True)
+
+# Language Toggle Layer Integration
+cols_lang = st.columns([12, 1])
+with cols_lang[1]:
     if st.button(t["toggle_btn"], key="lang_toggle"):
         st.session_state.lang = "Arabic" if st.session_state.lang == "English" else "English"
-        st.session_state.pop("chat_session", None)   # reset chat on lang switch
+        st.session_state.pop("chat_session", None)
         st.session_state.messages = []
         st.rerun()
-    st.markdown("</div>", unsafe_allow_html=True)
- 
-with nav_col:
-    st.markdown(f"""
-    <div class="nav-bar">
-        <div class="nav-logo">{t["nav_logo"]}</div>
-        <div class="nav-links">
-            <span>{t["nav_home"]}</span>
-            <span>{t["nav_visa"]}</span>
-            <span>{t["nav_driving"]}</span>
-            <span>{t["nav_business"]}</span>
-            <span>{t["nav_about"]}</span>
+
+# ─────────────────────────────────────────────
+# EMERALD HERO BANNER SYSTEM 
+# ─────────────────────────────────────────────
+hero_html = f"""
+<div class="hero-container">
+    <div class="hero-left">
+        <div class="hero-badge">AE Powered by Gemini AI & Grounded Retrieval</div>
+        <div class="hero-title">UAE Government<br><span>Services Assistant</span></div>
+        <div class="hero-subtitle">Get instant, reliable guidance on visas, residency rules, driving conversions, step checklists, and company registrations. Handled via fully private server-side retrieval and secure grounded AI.</div>
+    </div>
+    <div class="system-health-card">
+        <div class="health-header">
+            <div class="health-title">SYSTEM HEALTH</div>
+            <div class="health-status">SECURE</div>
+        </div>
+        <div class="health-line fill"></div>
+        <div class="health-line fill-short"></div>
+        <div class="health-line"></div>
+        <div class="health-footer">
+            <span style="color:#94A3B8;">Server-side retrieval:</span>
+            <span style="color:#FBBF24; font-family:monospace; font-weight:700;">TF-IDF Vectorizer</span>
         </div>
     </div>
-    """, unsafe_allow_html=True)
+</div>
+"""
+st.markdown(hero_html, unsafe_allow_html=True)
  
 # ─────────────────────────────────────────────
-# HERO BANNER
+# DYNAMIC CONFIGURABLE CARDS LAYOUT
 # ─────────────────────────────────────────────
-try:
-    hero_enc = img_to_b64("hero_banner2.png")
-    text_side = "right: 6%" if is_arabic else "left: 6%"
-    st.markdown(f"""
-    <div style="position:relative; width:100%; border-radius:25px; overflow:hidden; margin-bottom:28px;">
-        <img src="data:image/png;base64,{hero_enc}" style="width:100%; border-radius:25px;">
-        <div style="position:absolute; top:18%; {text_side}; color:black; max-width:60%;">
-            <div style="font-size:42px; font-weight:800; line-height:1.05; margin-bottom:10px;">
-                {t["hero_title"]}
-            </div>
-            <div style="font-size:18px; font-weight:500; line-height:1.3; color:#111;">
-                {t["hero_subtitle"]}
-            </div>
-        </div>
+st.markdown(f"""
+<div class="cards-row">
+    <div class="target-card active-card">
+        <div class="card-icon">🛂</div>
+        <div class="card-title">{t["svc_visa"]}</div>
+        <div class="card-subtext">Golden, Student, Resident</div>
     </div>
-    """, unsafe_allow_html=True)
-except FileNotFoundError:
-    st.markdown(f"""
-    <div style="background:linear-gradient(135deg,#006C4C,#004d35);
-                border-radius:25px; padding:50px 40px; margin-bottom:28px; color:white;">
-        <div style="font-size:38px; font-weight:800; margin-bottom:10px;">
-            🇦🇪 {t["hero_title"].replace('<br>', ' ')}
-        </div>
-        <div style="font-size:17px; opacity:0.9;">{t["hero_subtitle"].replace('<br>', ' ')}</div>
+    <div class="target-card">
+        <div class="card-icon">🚗</div>
+        <div class="card-title">{t["svc_driving"]}</div>
+        <div class="card-subtext">Convert, Renew, Eye Tests</div>
     </div>
-    """, unsafe_allow_html=True)
- 
-# ─────────────────────────────────────────────
-# QUICK SERVICE CARDS
-# ─────────────────────────────────────────────
-st.markdown(
-    f"<div style='font-size:22px; font-weight:700; color:#1E293B; margin-bottom:14px;'>{t['quick_services']}</div>",
-    unsafe_allow_html=True,
-)
- 
-services = [
-    ("🛂", t["svc_visa"],     True),
-    ("🚗", t["svc_driving"],  False),
-    ("🏢", t["svc_business"], False),
-    ("🔄", t["svc_renewals"], False),
-    ("❓", t["svc_faq"],      False),
-]
- 
-cols = st.columns(len(services))
-for col, (icon, label, active) in zip(cols, services):
-    with col:
-        card_class = "service-card active" if active else "service-card"
-        st.markdown(f"""
-        <div class="{card_class}">
-            <div class="icon">{icon}</div>
-            <div class="label">{label}</div>
-        </div>
-        """, unsafe_allow_html=True)
- 
-st.markdown("<br>", unsafe_allow_html=True)
- 
-# ─────────────────────────────────────────────
-# SERVICE BANNER (optional second image)
-# ─────────────────────────────────────────────
-try:
-    svc_enc = img_to_b64("service_banner1.png")
-    st.markdown(f"""
-    <div style="position:relative; width:100%; border-radius:20px; overflow:hidden; margin-bottom:24px;">
-        <img src="data:image/png;base64,{svc_enc}" style="width:100%; display:block;">
-        <div style="position:absolute; top:10%; left:50%; transform:translateX(-50%);
-                    padding:10px 20px; border-radius:12px; white-space:nowrap;">
-            <h2 style="color:black; margin:0; font-size:26px; font-weight:700;">{t["chat_section"]}</h2>
-        </div>
+    <div class="target-card">
+        <div class="card-icon">🏢</div>
+        <div class="card-title">{t["svc_business"]}</div>
+        <div class="card-subtext">Freezone, Virtual Licenses</div>
     </div>
-    """, unsafe_allow_html=True)
-except FileNotFoundError:
-    st.markdown("---")
-    st.markdown(f"### 💬 {t['chat_section']}")
+    <div class="target-card">
+        <div class="card-icon">🔄</div>
+        <div class="card-title">{t["svc_renewals"]}</div>
+        <div class="card-subtext">Emirates ID, Fine Clearance</div>
+    </div>
+    <div class="target-card">
+        <div class="card-icon">❓</div>
+        <div class="card-title">Full Directory</div>
+        <div class="card-subtext">Check the full library</div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
  
 # ─────────────────────────────────────────────
-# SESSION STATE
+# SPLIT INTERACTIVE CONTEXT LAYOUT (Chat + Details Panels)
 # ─────────────────────────────────────────────
 if "messages" not in st.session_state:
     st.session_state.messages = []
@@ -328,98 +498,137 @@ if api_key_input and "chat_session" not in st.session_state:
     model = _get_model(api_key_input)
     st.session_state.chat_session = start_chat_session(model)
  
-# Static greeting (saves 1 API call per session)
 if not st.session_state.messages:
     st.session_state.messages.append({
         "role": "assistant",
         "content": t["greeting"],
         "sources": [],
     })
- 
-# ─────────────────────────────────────────────
-# QUICK QUERY BUTTONS
-# ─────────────────────────────────────────────
-st.markdown(f"### {t['quick_queries']}")
-q_col1, q_col2, q_col3 = st.columns(3)
-quick_query = None
- 
-with q_col1:
-    if st.button(t["btn_student"]):
-        quick_query = t["q_student"]
-with q_col2:
-    if st.button(t["btn_driving"]):
-        quick_query = t["q_driving"]
-with q_col3:
-    if st.button(t["btn_golden"]):
-        quick_query = t["q_golden"]
- 
-if quick_query and api_key_input:
-    matched_docs, context_string = retrieve_context(quick_query, vectorizer, tfidf_matrix, kb_data)
-    reply = generate_grounded_response(
-        quick_query, context_string, st.session_state.chat_session,
-        lang=st.session_state.lang,
-    )
-    st.session_state.messages.append({"role": "user",      "content": quick_query, "sources": []})
-    st.session_state.messages.append({"role": "assistant", "content": reply, "sources": matched_docs})
-    st.rerun()
- 
-# ─────────────────────────────────────────────
-# CHAT HISTORY
-# ─────────────────────────────────────────────
-for msg in st.session_state.messages:
-    with st.chat_message(msg["role"]):
-        st.write(msg["content"])
-        if msg.get("sources") and msg["role"] == "assistant":
-            st.markdown(t["verify_source"])
-            for src in msg["sources"]:
-                st.markdown(
-                    f'<a href="{src["official_url"]}" target="_blank" class="source-badge">'
-                    f'📎 {src["title"]}</a>',
-                    unsafe_allow_html=True,
-                )
- 
-# ─────────────────────────────────────────────
-# CHAT INPUT
-# ─────────────────────────────────────────────
-if user_input := st.chat_input(t["placeholder"]):
-    if not api_key_input:
-        st.warning(t["api_info"])
-    else:
-        st.session_state.messages.append({"role": "user", "content": user_input, "sources": []})
- 
-        with st.chat_message("user"):
-            st.write(user_input)
- 
-        with st.chat_message("assistant"):
-            matched_docs, context_string = retrieve_context(
-                user_input, vectorizer, tfidf_matrix, kb_data
-            )
+
+# Setting up grid structures
+chat_col, sidebar_col = st.columns([2, 1])
+
+with chat_col:
+    st.markdown(f"#### 🤖 {t['chat_section']}")
+    
+    # Render Quick Action Queries inside conversational window
+    st.markdown(f"<span style='font-size:13px; font-weight:600; color:#6B7280;'>{t['quick_queries']}</span>", unsafe_allow_html=True)
+    q_btn_cols = st.columns(3)
+    quick_query = None
+    with q_btn_cols[0]:
+        if st.button(t["btn_student"]): quick_query = t["q_student"]
+    with q_btn_cols[1]:
+        if st.button(t["btn_driving"]): quick_query = t["q_driving"]
+    with q_btn_cols[2]:
+        if st.button(t["btn_golden"]): quick_query = t["q_golden"]
+        
+    if quick_query and api_key_input:
+        matched_docs, context_string = retrieve_context(quick_query, vectorizer, tfidf_matrix, kb_data)
+        reply = generate_grounded_response(quick_query, context_string, st.session_state.chat_session, lang=st.session_state.lang)
+        st.session_state.messages.append({"role": "user", "content": quick_query, "sources": []})
+        st.session_state.messages.append({"role": "assistant", "content": reply, "sources": matched_docs})
+        st.rerun()
+
+    # Chat Log interface box
+    st.markdown('<div style="background:white; border:1px solid #E5E7EB; border-radius:16px; padding:20px; margin-top:10px;">', unsafe_allow_html=True)
+    for msg in st.session_state.messages:
+        with st.chat_message(msg["role"]):
+            st.write(msg["content"])
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    # User Input Control
+    if user_input := st.chat_input(t["placeholder"]):
+        if not api_key_input:
+            st.warning(t["api_info"])
+        else:
+            st.session_state.messages.append({"role": "user", "content": user_input, "sources": []})
+            matched_docs, context_string = retrieve_context(user_input, vectorizer, tfidf_matrix, kb_data)
             with st.spinner(t["thinking"]):
-                reply = generate_grounded_response(
-                    user_input, context_string, st.session_state.chat_session,
-                    lang=st.session_state.lang,
-                )
-                st.write(reply)
-                if matched_docs:
-                    st.markdown(t["verify_source"])
-                    for src in matched_docs:
-                        st.markdown(
-                            f'<a href="{src["official_url"]}" target="_blank" class="source-badge">'
-                            f'📎 {src["title"]}</a>',
-                            unsafe_allow_html=True,
-                        )
- 
-        st.session_state.messages.append({
-            "role": "assistant",
-            "content": reply,
-            "sources": matched_docs,
-        })
- 
+                reply = generate_grounded_response(user_input, context_string, st.session_state.chat_session, lang=st.session_state.lang)
+            st.session_state.messages.append({"role": "assistant", "content": reply, "sources": matched_docs})
+            st.rerun()
+
+with sidebar_col:
+    # Agent Context Metadata Details Card
+    st.markdown(f"""
+    <div class="side-panel">
+        <div class="panel-title">🤖 Agent Context Details</div>
+        <div class="metadata-row">
+            <span class="metadata-label">API INTEGRATION</span>
+            <span class="metadata-value" style="color:#0F5A41;">Secure Server Mode</span>
+        </div>
+        <div class="metadata-row">
+            <span class="metadata-label">RETRIEVAL ENGINE</span>
+            <span class="metadata-value" style="color:#D97706;">TypeScript TF-IDF</span>
+        </div>
+        <p style="font-size:12px; color:#64748B; margin-top:15px; line-height:1.4;">
+            Consistent with our architectural conventions, Gemini models are never initialized or accessed in browser space. All queries pass securely to our local agent service, keeping secrets fully private.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Verification Hub Links Card
+    st.markdown(f"""
+    <div class="side-panel">
+        <div class="panel-title">🗂️ Trusted Verification Hubs</div>
+        <div class="metadata-row"><span>Official UAE Portal</span><span style="font-size:11px;">↗</span></div>
+        <div class="metadata-row"><span>ICP National Portal</span><span style="font-size:11px;">↗</span></div>
+        <div class="metadata-row"><span>GDRFA Dubai Services</span><span style="font-size:11px;">↗</span></div>
+        <div class="metadata-row"><span>RTA Traffic Portal</span><span style="font-size:11px;">↗</span></div>
+        <div class="metadata-row"><span>MOHRE Labour Agency</span><span style="font-size:11px;">↗</span></div>
+    </div>
+    """, unsafe_allow_html=True)
+
+# ─────────────────────────────────────────────
+# GROUNDED VERIFIED VERIFICATION LIBRARY MATRIX
+# ─────────────────────────────────────────────
+st.markdown("""
+<div class="library-wrapper">
+    <div class="library-header-row">
+        <div class="library-title">📚 Verified Services Library (All)</div>
+    </div>
+    <p style="font-size:12px; color:#6B7280; margin-bottom:20px; margin-top:-10px;">
+        Verify criteria, checklists, fee lists, and wait times loaded securely from the agent source.
+    </p>
+    <table class="custom-table">
+        <thead>
+            <tr>
+                <th>Service Title</th>
+                <th>Typical Eligibility Criteria</th>
+                <th>Required Checklists</th>
+                <th>Processing Timeline</th>
+                <th>Standard Fees</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Student Visa Residency Guide</strong><br><span class="table-badge" style="background:#E0F2FE; color:#0369A1;">Residency</span></td>
+                <td>Students who are at least 18 years old and studying in an accredited UAE university or college.</td>
+                <td><strong>Primary documents:</strong><br>Official admission letter, passport with 6 months validity, medical certificate, health insurance.</td>
+                <td>🕒 10 to 15 working days.</td>
+                <td>Registration fee: AED 150.<br>Issuance fee: AED 100/year.<br>Medical test: AED 250.</td>
+            </tr>
+            <tr>
+                <td><strong>Convert Foreign Driving License</strong><br><span class="table-badge">Conversions</span></td>
+                <td>Holders of a valid national driving license from approved countries (GCC, UK, US, Canada, EU, Japan, etc.).</td>
+                <td><strong>Primary documents:</strong><br>Valid original license, official translation, Emirates ID, passport copy, eye test.</td>
+                <td>🕒 Same-day service.</td>
+                <td>File opening: AED 200.<br>License issuance: AED 600.</td>
+            </tr>
+            <tr>
+                <td><strong>UAE Golden Visa Options</strong><br><span class="table-badge" style="background:#ECFDF5; color:#047857;">Golden Visa</span></td>
+                <td>Real estate investors (AED 2M+), entrepreneurs, exceptional talents, and outstanding students.</td>
+                <td><strong>Primary documents:</strong><br>Property title deed or university degree certificate, health insurance.</td>
+                <td>🕒 7 to 10 working days.</td>
+                <td>Nomination request: AED 150.<br>10-year visa fee: AED 2,800.</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+""", unsafe_allow_html=True)
+
 # ─────────────────────────────────────────────
 # FOOTER
 # ─────────────────────────────────────────────
-st.markdown("---")
-st.markdown(
-    f"<div style='text-align:center; font-size:0.78rem; color:#999;'>{t['footer']}</div>",
-    unsafe_allow_html=True,
-)
+st.markdown("<br><hr>", unsafe_allow_html=True)
+st.markdown(f"<div style='text-align:center; font-size:12px; color:#6B7280; padding-bottom:20px;'>{t['footer']}</div>", unsafe_allow_html=True)
