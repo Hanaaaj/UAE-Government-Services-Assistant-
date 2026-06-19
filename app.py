@@ -61,7 +61,6 @@ is_arabic = st.session_state.lang == "Arabic"
 # ─────────────────────────────────────────────
 @st.cache_resource
 def initialize_agent_backend():
-    # Safely load the dataset, using fallback defaults inside agent.py if missing
     kb_data = load_knowledge_base()
     vectorizer, tfidf_matrix = build_retrieval_index(kb_data)
     return kb_data, vectorizer, tfidf_matrix
@@ -73,7 +72,7 @@ kb_data, vectorizer, tfidf_matrix = initialize_agent_backend()
 # ─────────────────────────────────────────────
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght=300;400;500;600;700;800&family=Cairo:wght=300;400;600;700;800&display=swap');
  
 /* Global Canvas Adjustments */
 html, body, [class*="css"], .stApp { 
@@ -88,22 +87,30 @@ html, body, [class*="css"], .stApp {
 
 /* Fix main padding */
 .block-container {
-    padding-top: 0rem !important;
+    padding-top: 2rem !important;
     padding-bottom: 0rem !important;
     max-width: 1300px !important;
 }
 
-/* Custom Top Warning Banner */
-.top-disclaimer {
+/* Custom Side Disclaimer Panel Style */
+.side-disclaimer {
     background-color: #FFF6ED;
-    border-bottom: 1px solid #FFEDD5;
-    padding: 10px 40px;
+    border: 1px solid #FFEDD5;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 12px;
+}
+.side-disclaimer-icon {
+    font-size: 18px;
+    color: #C2410C;
+    font-weight: bold;
+}
+.side-disclaimer-text {
     font-size: 13px;
     color: #9A3412;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 0 -100px 20px -100px;
+    line-height: 1.5;
 }
 
 /* Elegant Custom Top Header Bar */
@@ -287,14 +294,6 @@ html, body, [class*="css"], .stApp {
     color: #6B7280;
 }
 
-/* Split Section: Chat Area and Right Sidebar Panels */
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 30px;
-    margin-bottom: 40px;
-}
-
 /* Right Side Dashboard Panels */
 .side-panel {
     background: #F8FAFC;
@@ -312,16 +311,6 @@ html, body, [class*="css"], .stApp {
     gap: 8px;
     margin-bottom: 16px;
 }
-.metadata-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 12px 0;
-    border-bottom: 1px solid #E2E8F0;
-    font-size: 13px;
-}
-.metadata-row:last-child { border: none; }
-.metadata-label { color: #64748B; font-weight: 500; font-family: monospace; }
-.metadata-value { font-weight: 600; }
 
 /* Styled Links for the Verification Hub */
 .hub-link-item {
@@ -340,7 +329,7 @@ html, body, [class*="css"], .stApp {
     border-bottom: none;
 }
 .hub-link-item:hover {
-    color: #0F5A41 !important; /* Changes to theme emerald green on hover */
+    color: #0F5A41 !important; 
 }
 .hub-link-arrow {
     font-size: 11px;
@@ -408,21 +397,12 @@ if is_arabic:
     .custom-header, .hero-container, .library-header-row { flex-direction: row-reverse; }
     .custom-table { text-align: right; }
     .hub-link-item { flex-direction: row-reverse; }
+    .side-disclaimer { flex-direction: row-reverse; }
     </style>
     """, unsafe_allow_html=True)
- 
-# ─────────────────────────────────────────────
-# TOP PROTOTYPE DISCLAIMER BANNER
-# ─────────────────────────────────────────────
-st.markdown(f"""
-<div class="top-disclaimer">
-    <span>🛈</span>
-    <div><strong>Prototype Disclaimer:</strong> This website is an independent AI prototype built for research and demonstration. It is NOT an official UAE government portal. Always consult and verify regulations directly on official gov source links.</div>
-</div>
-""", unsafe_allow_html=True)
 
 # ─────────────────────────────────────────────
-# CONFIGURATION/SIDEBAR ACCESS (Kept Functional)
+# CONFIGURATION/SIDEBAR ACCESS
 # ─────────────────────────────────────────────
 with st.sidebar:
     st.header(t["config_header"])
@@ -547,7 +527,7 @@ if not st.session_state.messages:
         "sources": [],
     })
 
-# Setting up grid structures
+# Setting up layout columns
 chat_col, sidebar_col = st.columns([2, 1])
 
 with chat_col:
@@ -591,21 +571,13 @@ with chat_col:
             st.rerun()
 
 with sidebar_col:
-    # Agent Context Metadata Details Card
+    # Prototype Disclaimer Card (Replaces Agent Context details)
     st.markdown(f"""
-    <div class="side-panel">
-        <div class="panel-title">🤖 Agent Context Details</div>
-        <div class="metadata-row">
-            <span class="metadata-label">API INTEGRATION</span>
-            <span class="metadata-value" style="color:#0F5A41;">Secure Server Mode</span>
+    <div class="side-disclaimer">
+        <div class="side-disclaimer-icon">🛈</div>
+        <div class="side-disclaimer-text">
+            <strong>Prototype Disclaimer:</strong> This website is an independent AI prototype built for research and demonstration. It is NOT an official UAE government portal. Always consult and verify regulations directly on official gov source links.
         </div>
-        <div class="metadata-row">
-            <span class="metadata-label">RETRIEVAL ENGINE</span>
-            <span class="metadata-value" style="color:#D97706;">TypeScript TF-IDF</span>
-        </div>
-        <p style="font-size:12px; color:#64748B; margin-top:15px; line-height:1.4;">
-            Consistent with our architectural conventions, Gemini models are never initialized or accessed in browser space. All queries pass securely to our local agent service, keeping secrets fully private.
-        </p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -634,22 +606,15 @@ with sidebar_col:
 # ─────────────────────────────────────────────
 # GROUNDED VERIFIED VERIFICATION LIBRARY MATRIX
 # ─────────────────────────────────────────────
-
-# Custom CSS for table text alignment and row hover effects
 st.markdown("""
 <style>
-.custom-table tbody tr:hover {
-    background-color: #F8FAFC;
-}
-.custom-table td {
-    line-height: 1.5 !important;
-}
+.custom-table tbody tr:hover { background-color: #F8FAFC; }
+.custom-table td { line-height: 1.5 !important; }
 </style>
 """, unsafe_allow_html=True)
 
 st.markdown('<div class="library-wrapper">', unsafe_allow_html=True)
 
-# Layout Split: Title on the left, filter pills on the right
 lib_header_left, lib_header_right = st.columns([2, 1])
 
 with lib_header_left:
@@ -661,7 +626,6 @@ with lib_header_left:
         unsafe_allow_html=True
     )
 
-# Track selected tab state
 if "selected_library_filter" not in st.session_state:
     st.session_state.selected_library_filter = "All"
 
@@ -694,7 +658,6 @@ with lib_header_right:
 
 st.markdown("<br>", unsafe_allow_html=True)
 
-# ─── FULL DATASET MAPPED VERBATIM FROM IMAGES ───
 all_library_items = [
     {
         "category": "Visa Services",
@@ -748,13 +711,11 @@ all_library_items = [
     }
 ]
 
-# Filtering execution logic
 filtered_items = [
     item for item in all_library_items 
     if st.session_state.selected_library_filter == "All" or item["category"] == st.session_state.selected_library_filter
 ]
 
-# Generate markup strings
 table_body_html = ""
 for item in filtered_items:
     table_body_html += f"""
