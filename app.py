@@ -173,12 +173,13 @@ html, body, [class*="css"], .stApp {
    ───────────────────────────────────────────── */
 .hero-wrapper {
     background: radial-gradient(circle at 80% 20%, #115E46 0%, #063728 100%);
-    border-radius: 24px;
+    border-radius: 24px 24px 0 0; /* Flat bottom border radius to look premium paired with navbar */
     padding: 48px;
     color: white;
     position: relative;
     box-shadow: 0 10px 30px rgba(10, 60, 44, 0.15);
-    margin-bottom: 40px;
+    margin-top: 30px; /* Gives the total unit breathing room from the top edge */
+    margin-bottom: 0px !important; /* Forces total snap to navbar */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -527,67 +528,6 @@ with st.sidebar:
         st.session_state.pop("chat_session", None)
         st.session_state.pop("active_api_key", None)
         st.rerun()
- 
-# ─────────────────────────────────────────────
-# UNIFIED NAV BAR WITH TOP PADDING SHIFT
-# ─────────────────────────────────────────────
-lang_toggle_text = "English" if is_arabic else "العربية"
-current_filter = st.session_state.selected_library_filter
-
-active_all = "active" if current_filter == "All" else ""
-active_visa = "active" if current_filter == "Visa Services" else ""
-active_driving = "active" if current_filter == "Driving License" else ""
-active_business = "active" if current_filter == "Business License" else ""
-
-navbar_html = f"""
-<div style="display: flex; justify-content: space-between; align-items: center; padding: 25px 0 15px 0; margin-bottom: 20px; width: 100%;">
-    
-    <div class="brand-block" style="flex: 1; display: flex; justify-content: flex-start;">
-        <div class="brand-badge">AE</div>
-        <div>
-            <div class="brand-name">{t["nav_logo"]}</div>
-            <div class="brand-tag">Prototype Agent</div>
-        </div>
-    </div>
-    
-    <div style="flex: 2; display: flex; justify-content: center; align-items: center;">
-        <div class="custom-nav-links" style="gap: 32px; font-size: 14.5px; display: flex; align-items: center;">
-            <a href="?filter=All#verified-library" target="_self">
-                <span class="{active_all}">{t["nav_home"]}</span>
-            </a>
-            <a href="?filter=Visa+Services#verified-library" target="_self">
-                <span class="{active_visa}">{t["nav_visa"]}</span>
-            </a>
-            <a href="?filter=Driving+License#verified-library" target="_self">
-                <span class="{active_driving}">{t["nav_driving"]}</span>
-            </a>
-            <a href="?filter=Business+License#verified-library" target="_self">
-                <span class="{active_business}">{t["nav_business"]}</span>
-            </a>
-        </div>
-    </div>
-    
-    <div style="flex: 1; display: flex; justify-content: flex-end; align-items: center;">
-        <a href="?click=lang_toggle" target="_self" style="
-            text-decoration: none; 
-            color: #0F5A41; 
-            font-weight: 600; 
-            font-size: 15px; 
-            padding: 6px 14px; 
-            border: 1px solid #E5E7EB; 
-            border-radius: 10px; 
-            background-color: #FFFFFF;
-            box-shadow: 0px 1px 2px rgba(0,0,0,0.05);
-            transition: background 0.2s;
-        " onmouseover="this.style.backgroundColor='#F9FAFB'" onmouseout="this.style.backgroundColor='#FFFFFF'">
-            {lang_toggle_text}
-        </a>
-    </div>
-    
-</div>
-<div style="margin-bottom: 25px;"></div>
-"""
-st.html(navbar_html)
 
 # ─────────────────────────────────────────────
 # PARSE ACTION & LANGUAGE HOOKS FROM URL PARAMS
@@ -656,6 +596,66 @@ hero_raw_html = f"""
 """
 st.html(hero_raw_html)
  
+# ─────────────────────────────────────────────
+# UNIFIED NAV BAR — NOW BELOW HERO WITH NO GAP
+# ─────────────────────────────────────────────
+lang_toggle_text = "English" if is_arabic else "العربية"
+current_filter = st.session_state.selected_library_filter
+
+active_all = "active" if current_filter == "All" else ""
+active_visa = "active" if current_filter == "Visa Services" else ""
+active_driving = "active" if current_filter == "Driving License" else ""
+active_business = "active" if current_filter == "Business License" else ""
+
+navbar_html = f"""
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 18px 48px; margin-bottom: 40px; width: 100%; background: #FFFFFF; border-left: 1px solid #E5E7EB; border-right: 1px solid #E5E7EB; border-bottom: 1px solid #E5E7EB; border-radius: 0 0 24px 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.02); box-sizing: border-box;">
+    
+    <div class="brand-block" style="display: flex; align-items: center; gap: 12px;">
+        <div class="brand-badge">AE</div>
+        <div>
+            <div class="brand-name" style="font-size: 18px;">{t["nav_logo"]}</div>
+            <div class="brand-tag">Prototype Agent</div>
+        </div>
+    </div>
+    
+    <div style="display: flex; justify-content: center; align-items: center;">
+        <div class="custom-nav-links" style="gap: 32px; font-size: 14.5px; display: flex; align-items: center;">
+            <a href="?filter=All#verified-library" target="_self">
+                <span class="{active_all}">{t["nav_home"]}</span>
+            </a>
+            <a href="?filter=Visa+Services#verified-library" target="_self">
+                <span class="{active_visa}">{t["nav_visa"]}</span>
+            </a>
+            <a href="?filter=Driving+License#verified-library" target="_self">
+                <span class="{active_driving}">{t["nav_driving"]}</span>
+            </a>
+            <a href="?filter=Business+License#verified-library" target="_self">
+                <span class="{active_business}">{t["nav_business"]}</span>
+            </a>
+        </div>
+    </div>
+    
+    <div style="display: flex; justify-content: flex-end; align-items: center;">
+        <a href="?click=lang_toggle" target="_self" style="
+            text-decoration: none; 
+            color: #0F5A41; 
+            font-weight: 600; 
+            font-size: 14px; 
+            padding: 6px 14px; 
+            border: 1px solid #E5E7EB; 
+            border-radius: 10px; 
+            background-color: #FFFFFF;
+            box-shadow: 0px 1px 2px rgba(0,0,0,0.05);
+            transition: background 0.2s;
+        " onmouseover="this.style.backgroundColor='#F9FAFB'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+            {lang_toggle_text}
+        </a>
+    </div>
+    
+</div>
+"""
+st.html(navbar_html)
+
 # ─────────────────────────────────────────────
 # DYNAMIC CONFIGURABLE CARDS LAYOUT
 # ─────────────────────────────────────────────
