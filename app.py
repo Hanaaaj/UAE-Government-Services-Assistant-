@@ -441,7 +441,6 @@ if is_arabic:
     """)
 
 
-
     # ─────────────────────────────────────────────
     # CONFIGURATION/SIDEBAR ACCESS (UI elements removed)
     # ─────────────────────────────────────────────
