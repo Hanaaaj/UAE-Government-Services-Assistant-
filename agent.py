@@ -84,7 +84,7 @@ UI = {
         # Disclaimer
         "disclaimer":        "⚠️ <strong>Prototype Disclaimer:</strong> This application is an independent prototype. It is <strong>NOT</strong> an official government portal. Always confirm details at the official source links provided.",
         # Nav
-        "nav_logo":          "Daleel",
+        "nav_logo":          "daleel",
         "nav_home":          "Home",
         "nav_visa":          "Visa Services",
         "nav_driving":       "Driving License",
