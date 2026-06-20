@@ -29,7 +29,6 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-#--------------
 st.markdown("""
 <style>
 /* Fix toggle button width so it never shifts layout */
@@ -38,9 +37,24 @@ div[data-testid="column"]:last-child .stButton button {
     text-align: center !important;
     white-space: nowrap !important;
 }
+
+/* Custom Navbar Button Styling to make Streamlit buttons look like clean links */
+div[data-testid="column"] button[key^="nav_btn_"] {
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    color: #4B5563 !important;
+    font-size: 14.5px !important;
+    font-weight: 500 !important;
+    box-shadow: none !important;
+    transition: color 0.2s ease;
+}
+div[data-testid="column"] button[key^="nav_btn_"]:hover {
+    color: #0F5A41 !important;
+    background: none !important;
+}
 </style>
 """, unsafe_allow_html=True)
-#---------------
 
 # ─────────────────────────────────────────────
 # STATE TRACKING INITIALIZATION (Must be done first)
@@ -183,17 +197,6 @@ else:
         text-transform: uppercase;
         letter-spacing: 1px;
         color: #6B7280;
-    }
-    .custom-nav-links {
-        display: flex;
-        gap: 24px;
-        font-size: 14.5px;
-        font-weight: 500;
-        color: #4B5563;
-    }
-    .custom-nav-links a {
-        text-decoration: none !important;
-        color: inherit !important;
     }
 
     /* UNIFIED HERO CONTAINER SYSTEM - SLIDESHOW VERSION */
@@ -388,26 +391,17 @@ else:
             api_key_input = st.text_input(t["api_label"], type="password", help=t["api_help"])
 
     # ─────────────────────────────────────────────
-    # UNIFIED NAV BAR (Indented properly into else block)
+    # UNIFIED NAV BAR (With dynamic filtering integration)
     # ─────────────────────────────────────────────
     lang_toggle_text = "English" if is_arabic else "العربية"
     current_filter = st.session_state.selected_library_filter
 
-    # Split nav and toggle into columns
-    nav_col, toggle_col = st.columns([17, 1])
+    # High fidelity container framework splitting logo layout vs interactive route tabs
+    nav_left, nav_right, toggle_col = st.columns([8, 10, 2])
 
-    with toggle_col:
-        st.markdown("<div style='padding-top: 65px;'>", unsafe_allow_html=True)
-        if st.button("English" if is_arabic else "العربية", key="lang_toggle"):
-            st.session_state.lang = "Arabic" if st.session_state.lang == "English" else "English"
-            st.session_state.pop("chat_session", None)
-            st.session_state.messages = []
-            st.rerun()
-        st.markdown("</div>", unsafe_allow_html=True)
-
-    with nav_col:
+    with nav_left:
         st.html(f"""
-        <div style="display:flex; justify-content:space-between; align-items:center; padding:65px 0 15px 0; margin-bottom:20px;">
+        <div style="padding-top: 65px; margin-bottom:20px;">
             <div class="brand-block" style="display:flex; align-items:center; gap:12px;">
                 <div class="brand-badge">AE</div>
                 <div>
@@ -415,14 +409,39 @@ else:
                     <div class="brand-tag">Prototype Agent</div>
                 </div>
             </div>
-            <div class="custom-nav-links" style="gap:32px; font-size:14.5px; display:flex; align-items:center;">
-                <span>{t["nav_home"]}</span>
-                <span>{t["nav_visa"]}</span>
-                <span>{t["nav_driving"]}</span>
-                <span>{t["nav_business"]}</span>
-            </div>
         </div>
         """)
+
+    with nav_right:
+        # Align layout column nodes structurally horizontally matching old layout metrics
+        st.markdown("<div style='padding-top: 78px; display: flex; justify-content: flex-end; gap: 4px;'>", unsafe_allow_html=True)
+        c1, c2, c3, c4 = st.columns(4)
+        with c1:
+            if st.button(t["nav_home"], key="nav_btn_home"):
+                st.session_state.selected_library_filter = "All"
+                st.rerun()
+        with c2:
+            if st.button(t["nav_visa"], key="nav_btn_visa"):
+                st.session_state.selected_library_filter = "Visa Services"
+                st.rerun()
+        with c3:
+            if st.button(t["nav_driving"], key="nav_btn_driving"):
+                st.session_state.selected_library_filter = "Driving License"
+                st.rerun()
+        with c4:
+            if st.button(t["nav_business"], key="nav_btn_business"):
+                st.session_state.selected_library_filter = "Business License"
+                st.rerun()
+        st.markdown("</div>", unsafe_allow_html=True)
+
+    with toggle_col:
+        st.markdown("<div style='padding-top: 72px; text-align: right;'>", unsafe_allow_html=True)
+        if st.button(lang_toggle_text, key="lang_toggle"):
+            st.session_state.lang = "Arabic" if st.session_state.lang == "English" else "English"
+            st.session_state.pop("chat_session", None)
+            st.session_state.messages = []
+            st.rerun()
+        st.markdown("</div>", unsafe_allow_html=True)
 
     # ─────────────────────────────────────────────
     # PARSE ACTION & LANGUAGE HOOKS
@@ -664,5 +683,3 @@ else:
         © 2026 Engineering Prototype Framework Platform Assembly. Developed for Research Sandbox Evaluations.
     </div>
     """)
-
-
