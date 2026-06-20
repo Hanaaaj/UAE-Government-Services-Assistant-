@@ -422,7 +422,7 @@ else:
                 <div class="hero-main-title">{hero_title}</div>
                 <div class="hero-description">{hero_desc}</div>
                 <div class="hero-btn-group">
-                    <a href="?action=start_chat#chat-anchor" target="_self" class="btn-dynamic-chat">{hero_btn1}</a>
+                    <a href="?action=start_chat" target="_self" class="btn-dynamic-chat">{hero_btn1}</a>
                     <a href="#verified-library" class="btn-browse-library">{hero_btn2}</a>
                 </div>
             </div>
@@ -438,16 +438,27 @@ else:
     if api_key_input and "chat_session" not in st.session_state:
         model = get_gemini_model(api_key_input)
         st.session_state.chat_session = start_chat_session(model)
+   if "action" in st.query_params and st.query_params["action"] == "start_chat":
+    st.html("""
+    <div id="chat-anchor"></div>
+    <script>
+        setTimeout(() => {
+            const element = document.getElementById("chat-anchor");
+            if (element) {
+                element.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+        }, 300); // 300ms delay gives Streamlit enough time to build the layout
+    </script>
+    """)
+   else:
     st.html('<div id="chat-anchor"></div>')
-
-    if not st.session_state.messages:
-        st.session_state.messages.append({
+   if not st.session_state.messages:
+    st.session_state.messages.append({
             "role": "assistant",
             "content": t["greeting"],
             "sources": [],
         })
-
-    chat_col, sidebar_col = st.columns([2, 1])
+   chat_col, sidebar_col = st.columns([2, 1])
 
     with chat_col:
         for msg in st.session_state.messages:
