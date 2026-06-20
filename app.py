@@ -328,8 +328,6 @@ else:
         align-items: center;
     }
 
-    
-
     /* Modern Minimalist Service Cards Layout */
     .cards-row {
         display: grid;
@@ -411,24 +409,24 @@ else:
         .hero-btn-group { flex-direction: row-reverse; }
         </style>
         """)
-# ─────────────────────────────────────────────
-    # CONFIGURATION/SIDEBAR ACCESS
+
     # ─────────────────────────────────────────────
-    with st.sidebar:
-        st.header(t["config_header"])
-        api_key_input = get_rotated_api_key()
-        if len(API_KEYS_POOL) > 0:
-            st.success(t["api_loaded"])
-        else:
+    # CONFIGURATION/SIDEBAR ACCESS (UI elements removed)
+    # ─────────────────────────────────────────────
+    # Fetch key to ensure backend pipeline runs continuously
+    api_key_input = get_rotated_api_key()
+    if len(API_KEYS_POOL) == 0 and not api_key_input:
+        # Fallback in case no server-side keys exist to allow manual testing
+        with st.sidebar:
             api_key_input = st.text_input(t["api_label"], type="password", help=t["api_help"])
-            if not api_key_input: st.info(t["api_info"])
-     
+
+    # Clear chat utility option remains hosted cleanly within the collapsible tray
+    with st.sidebar:
         if st.button(t["clear_chat"]):
             st.session_state.messages = []
             st.session_state.pop("chat_session", None)
             st.session_state.pop("active_api_key", None)
             st.rerun()
-  
      
     # ─────────────────────────────────────────────
     # UNIFIED NAV BAR
@@ -502,17 +500,14 @@ else:
     # ─────────────────────────────────────────────
     hero_raw_html = f"""
     <div class="hero-wrapper">
-        <!-- 1. Automated Background Animation Track -->
         <div class="hero-slideshow">
             <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1579930700019-f5f6ba3db867?q=80&w=1176');"></div>
             <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=1200');"></div>
             <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1687754715959-41fed2161528?q=80&w=1221');"></div>
         </div>
         
-        <!-- 2. Cinematic Gradient Guard for Text Legibility -->
         <div class="hero-overlay"></div>
         
-        <!-- 3. Absolute Positioned Content Overlays -->
         <div class="hero-content-container">
             <div class="hero-left-content">
                 <div class="hero-main-title">UAE Government<br><span>Services Assistant</span></div>
@@ -524,8 +519,6 @@ else:
                     <a href="#verified-library" class="btn-browse-library">Browse Verification Library</a>
                 </div>
             </div>
-            
-            
         </div>
     </div>
     """
