@@ -84,7 +84,7 @@ UI = {
         # Disclaimer
         "disclaimer":        "⚠️ <strong>Prototype Disclaimer:</strong> This application is an independent prototype. It is <strong>NOT</strong> an official government portal. Always confirm details at the official source links provided.",
         # Nav
-        "nav_logo":          "🇦🇪 UAE Gov Assistant",
+        "nav_logo":          "daleel",
         "nav_home":          "Home",
         "nav_visa":          "Visa Services",
         "nav_driving":       "Driving License",
@@ -92,7 +92,7 @@ UI = {
         "nav_about":         "About",
         "toggle_btn":        "🌐 العربية",
         # Hero
-        "hero_title":        "UAE Government<br>Services Assistant",
+        "hero_title":        "Public<br>Services Assistant",
         "hero_subtitle":     "AI-Powered Guidance for Visas, Licenses,<br>and Government Services",
         # Service cards
         "quick_services":    "Quick Services",
