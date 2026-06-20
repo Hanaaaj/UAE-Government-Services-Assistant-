@@ -623,6 +623,6 @@ else:
     # ─────────────────────────────────────────────
     st.html("""
     <div class="custom-footer-bar">
-        © 2026 UAE Government Services Assistant · Hackathon Prototype · Not affiliated with any UAE government authority
+        © 2026 Public Services Assistant · Hackathon Prototype · Not affiliated with any UAE government authority
     </div>
     """)
