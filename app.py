@@ -411,7 +411,7 @@ else:
     # ─────────────────────────────────────────────
     # HERO BANNER — SLIDESHOW
     # ─────────────────────────────────────────────
-    hero_title    = "مساعد الخدمات<br>الحكومية الإماراتية" if is_arabic else "Public Service<br><span>AI Services Assistant</span>"
+    hero_title    = "المدعوم بالذكاء الاصطناع<br>مساعد الخدمات العامة" if is_arabic else "Public Service<br><span>AI Services Assistant</span>"
     hero_desc     = "احصل على إرشادات فورية وموثوقة حول التأشيرات وقواعد الإقامة وتحويل رخص القيادة والشركات." if is_arabic else "Get instant, reliable guidance on visas, residency rules, driving conversions, step checklists, and company registrations."
     hero_btn1     = "ابدأ المحادثة ←" if is_arabic else "Start Dynamic Chat &nbsp;➔"
     hero_btn2     = "تصفح المكتبة" if is_arabic else "Browse Verification Library"
