@@ -368,22 +368,18 @@ else:
     """)
      
     # Handle RTL / Arabic Styles Dynamic Loading
-if is_arabic:
-    st.html("""
-    <style>
-    html, body, [class*="css"], .stApp { font-family: 'Cairo', sans-serif !important; direction: rtl; text-align: right; }
-    .custom-header, .library-header-row { flex-direction: row-reverse; }
-    .custom-table { text-align: right; }
-    .custom-table th { text-align: right; }
-    .hub-link-item { flex-direction: row-reverse; }
-    .side-disclaimer { flex-direction: row-reverse; }
-    .hero-btn-group { flex-direction: row-reverse; }
-    .hero-wrapper, .hero-slideshow, .hero-slide { direction: ltr !important; unicode-bidi: isolate !important; }
-    .hero-overlay { background: linear-gradient(to left, rgba(4,47,34,0.95) 40%, rgba(4,47,34,0.5) 70%, rgba(4,47,34,0.2) 100%) !important; }
-    .hero-content-container { direction: rtl !important; }
-    .hero-left-content { align-items: flex-end !important; }
-    </style>
-    """)
+    if is_arabic:
+        st.html("""
+        <style>
+        html, body, [class*="css"], .stApp { font-family: 'Cairo', sans-serif !important; direction: rtl; text-align: right; }
+        .custom-header, .hero-wrapper, .library-header-row { flex-direction: row-reverse; }
+        .custom-table { text-align: right; }
+        .custom-table th { text-align: right; }
+        .hub-link-item { flex-direction: row-reverse; }
+        .side-disclaimer { flex-direction: row-reverse; }
+        .hero-btn-group { flex-direction: row-reverse; }
+        </style>
+        """)
 
     # Fetch key to ensure backend pipeline runs continuously
     api_key_input = get_rotated_api_key()
