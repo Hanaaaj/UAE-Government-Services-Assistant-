@@ -574,11 +574,6 @@ else:
     chat_col, sidebar_col = st.columns([2, 1])
 
     with chat_col:
-        st.markdown(f"#### 🤖 {t['chat_section']}")
-        st.markdown(f"<span style='font-size:13px; font-weight:600; color:#6B7280;'>{t['quick_queries']}</span>", unsafe_allow_html=True)
-        
-
-        st.markdown('<div style="background:white; border:1px solid #E5E7EB; border-radius:16px; padding:20px; margin-top:10px;">', unsafe_allow_html=True)
         for msg in st.session_state.messages:
             with st.chat_message(msg["role"]):
                 st.write(msg["content"])
