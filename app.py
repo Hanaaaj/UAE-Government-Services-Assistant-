@@ -453,7 +453,7 @@ else:
     active_business = "active" if current_filter == "Business License" else ""
 
     # Split nav and toggle into columns
-nav_col, toggle_col = st.columns([11,2])
+nav_col, toggle_col = st.columns([17,2])
 
 with toggle_col:
     st.markdown("<div style='padding-top: 65px;'>", unsafe_allow_html=True)
