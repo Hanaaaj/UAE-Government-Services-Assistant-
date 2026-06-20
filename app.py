@@ -108,7 +108,7 @@ else:
     # ─────────────────────────────────────────────
     st.html("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght=300;400;500;600;700;800&family=Cairo:wght=300;400;600;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;600;700;800&display=swap');
      
     /* Global Canvas Adjustments */
     html, body, [class*="css"], .stApp { 
@@ -195,12 +195,6 @@ else:
         text-decoration: none !important;
         color: inherit !important;
     }
-    .custom-nav-links span.active {
-        color: #0F5A41;
-        font-weight: 600;
-        border-bottom: 2px solid #0F5A41;
-        padding-bottom: 4px;
-    }
 
     /* UNIFIED HERO CONTAINER SYSTEM - SLIDESHOW VERSION */
     .hero-wrapper {
@@ -215,14 +209,14 @@ else:
     /* Sliding Engine (3 Images example) */
     .hero-slideshow {
         position: absolute;
-        width: 300%; /* 100% * number of slides */
+        width: 300%; 
         height: 100%;
         display: flex;
         animation: heroSlider 15s infinite ease-in-out;
     }
     
     .hero-slide {
-        width: 33.333%; /* 100% / number of slides */
+        width: 33.333%; 
         height: 100%;
         background-size: cover;
         background-position: center;
@@ -293,39 +287,6 @@ else:
         align-items: center;
         gap: 8px;
         box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
-    }
-    .btn-browse-library {
-        background: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        color: #FFFFFF !important;
-        font-weight: 600;
-        font-size: 14px;
-        padding: 12px 24px;
-        border-radius: 12px;
-        text-decoration: none !important;
-        backdrop-filter: blur(4px);
-    }
-
-    .hero-right-dashboard {
-        width: 380px;
-    }
-    /* Button Layout Array Group */
-    .hero-btn-group {
-        display: flex;
-        gap: 16px;
-    }
-    .btn-dynamic-chat {
-        background-color: #10B981;
-        color: #042F22 !important;
-        font-weight: 700;
-        font-size: 14px;
-        padding: 12px 24px;
-        border-radius: 12px;
-        text-decoration: none !important;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
         border: none;
     }
     .btn-browse-library {
@@ -353,9 +314,6 @@ else:
         border: 1px solid #E5E7EB;
         border-radius: 16px;
         padding: 20px 16px;
-    }
-    .target-card.active-card {
-        border: 2px solid #000000;
     }
     .target-card .card-icon { font-size: 24px; margin-bottom: 12px; }
     .target-card .card-title { font-size: 15px; font-weight: 700; color: #111827; }
@@ -423,59 +381,48 @@ else:
         </style>
         """)
 
-    # ─────────────────────────────────────────────
-    # CONFIGURATION/SIDEBAR ACCESS (UI elements removed)
-    # ─────────────────────────────────────────────
     # Fetch key to ensure backend pipeline runs continuously
     api_key_input = get_rotated_api_key()
     if len(API_KEYS_POOL) == 0 and not api_key_input:
-        # Fallback in case no server-side keys exist to allow manual testing
         with st.sidebar:
             api_key_input = st.text_input(t["api_label"], type="password", help=t["api_help"])
 
-
-     
     # ─────────────────────────────────────────────
-    # UNIFIED NAV BAR
+    # UNIFIED NAV BAR (Indented properly into else block)
     # ─────────────────────────────────────────────
     lang_toggle_text = "English" if is_arabic else "العربية"
     current_filter = st.session_state.selected_library_filter
 
-    active_all = "active" if current_filter == "All" else ""
-    active_visa = "active" if current_filter == "Visa Services" else ""
-    active_driving = "active" if current_filter == "Driving License" else ""
-    active_business = "active" if current_filter == "Business License" else ""
-
     # Split nav and toggle into columns
-nav_col, toggle_col = st.columns([17,1])
+    nav_col, toggle_col = st.columns([17, 1])
 
-with toggle_col:
-    st.markdown("<div style='padding-top: 65px;'>", unsafe_allow_html=True)
-    if st.button("English" if is_arabic else "العربية", key="lang_toggle"):
-        st.session_state.lang = "Arabic" if st.session_state.lang == "English" else "English"
-        st.session_state.pop("chat_session", None)
-        st.session_state.messages = []
-        st.rerun()
-    st.markdown("</div>", unsafe_allow_html=True)
+    with toggle_col:
+        st.markdown("<div style='padding-top: 65px;'>", unsafe_allow_html=True)
+        if st.button("English" if is_arabic else "العربية", key="lang_toggle"):
+            st.session_state.lang = "Arabic" if st.session_state.lang == "English" else "English"
+            st.session_state.pop("chat_session", None)
+            st.session_state.messages = []
+            st.rerun()
+        st.markdown("</div>", unsafe_allow_html=True)
 
-with nav_col:
-    st.html(f"""
-    <div style="display:flex; justify-content:space-between; align-items:center; padding:65px 0 15px 0; margin-bottom:20px;">
-        <div class="brand-block" style="display:flex; align-items:center; gap:12px;">
-            <div class="brand-badge">AE</div>
-            <div>
-                <div class="brand-name">{t["nav_logo"]}</div>
-                <div class="brand-tag">Prototype Agent</div>
+    with nav_col:
+        st.html(f"""
+        <div style="display:flex; justify-content:space-between; align-items:center; padding:65px 0 15px 0; margin-bottom:20px;">
+            <div class="brand-block" style="display:flex; align-items:center; gap:12px;">
+                <div class="brand-badge">AE</div>
+                <div>
+                    <div class="brand-name">{t["nav_logo"]}</div>
+                    <div class="brand-tag">Prototype Agent</div>
+                </div>
+            </div>
+            <div class="custom-nav-links" style="gap:32px; font-size:14.5px; display:flex; align-items:center;">
+                <span>{t["nav_home"]}</span>
+                <span>{t["nav_visa"]}</span>
+                <span>{t["nav_driving"]}</span>
+                <span>{t["nav_business"]}</span>
             </div>
         </div>
-        <div class="custom-nav-links" style="gap:32px; font-size:14.5px; display:flex; align-items:center;">
-            <span>{t["nav_home"]}</span>
-            <span>{t["nav_visa"]}</span>
-            <span>{t["nav_driving"]}</span>
-            <span>{t["nav_business"]}</span>
-        </div>
-    </div>
-    """)
+        """)
 
     # ─────────────────────────────────────────────
     # PARSE ACTION & LANGUAGE HOOKS
@@ -488,8 +435,6 @@ with nav_col:
             st.session_state.selected_library_filter = requested_filter
         st.query_params.clear()
         st.rerun()
-
-    
 
     if url_params.get("action") == "start_chat":
         st.query_params.clear()
@@ -530,7 +475,6 @@ with nav_col:
     """
     st.html(hero_raw_html)
      
-     
     # ─────────────────────────────────────────────
     # SPLIT CHAT INTERFACE WINDOW
     # ─────────────────────────────────────────────
@@ -551,7 +495,6 @@ with nav_col:
         for msg in st.session_state.messages:
             with st.chat_message(msg["role"]):
                 st.write(msg["content"])
-        st.markdown('</div>', unsafe_allow_html=True)
 
         if user_input := st.chat_input(t["placeholder"]):
             if not api_key_input:
@@ -709,9 +652,9 @@ with nav_col:
         "</tbody>"
         "</table>"
         "</div>"
-        "</div>"
     )
     st.html(full_matrix_html)
+    st.html('</div>')  # Securely close library-wrapper container
 
     # ─────────────────────────────────────────────
     # PROTOTYPE BOTTOM FOOTER BAR
