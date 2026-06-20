@@ -495,6 +495,8 @@ else:
     # VERIFIED SERVICES LIBRARY
     # ─────────────────────────────────────────────
     st.html('<div id="verified-library"></div>')
+    
+    # Combined wrapper definition and column layout initialization inside a safe structural hierarchy
     st.html('<div class="library-wrapper">')
 
     lib_header_left, lib_header_right = st.columns([3, 2])
@@ -619,5 +621,3 @@ else:
         © 2026 Public Services Assistant · Hackathon Prototype · Not affiliated with any UAE government authority
     </div>
     """)
-
-
