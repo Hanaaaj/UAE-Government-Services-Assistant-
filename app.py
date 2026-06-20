@@ -437,40 +437,7 @@ else:
     </div>
     """)
 
-    # ─────────────────────────────────────────────
-    # SERVICE CARDS
-    # ─────────────────────────────────────────────
-    current_filter = st.session_state.selected_library_filter
-
-    st.html(f"""
-    <div class="cards-row">
-        <div class="target-card {'active-card' if current_filter == 'Visa Services' else ''}">
-            <div class="card-icon">🛂</div>
-            <div class="card-title">{t["svc_visa"]}</div>
-            <div class="card-subtext">Golden, Student, Resident</div>
-        </div>
-        <div class="target-card {'active-card' if current_filter == 'Driving License' else ''}">
-            <div class="card-icon">🚗</div>
-            <div class="card-title">{t["svc_driving"]}</div>
-            <div class="card-subtext">Convert, Renew, Eye Tests</div>
-        </div>
-        <div class="target-card {'active-card' if current_filter == 'Business License' else ''}">
-            <div class="card-icon">🏢</div>
-            <div class="card-title">{t["svc_business"]}</div>
-            <div class="card-subtext">Freezone, Virtual Licenses</div>
-        </div>
-        <div class="target-card">
-            <div class="card-icon">🔄</div>
-            <div class="card-title">{t["svc_renewals"]}</div>
-            <div class="card-subtext">Emirates ID, Fine Clearance</div>
-        </div>
-        <div class="target-card {'active-card' if current_filter == 'All' else ''}">
-            <div class="card-icon">❓</div>
-            <div class="card-title">{t["svc_faq"]}</div>
-            <div class="card-subtext">Check the full library</div>
-        </div>
-    </div>
-    """)
+  
 
     # ─────────────────────────────────────────────
     # CHAT + SIDEBAR PANEL
@@ -487,25 +454,6 @@ else:
         })
 
     chat_col, sidebar_col = st.columns([2, 1])
-
-    with chat_col:
-        st.markdown(f"#### 🤖 {t['chat_section']}")
-
-        q_btn_cols = st.columns(3)
-        quick_query = None
-        with q_btn_cols[0]:
-            if st.button(t["btn_student"]): quick_query = t["q_student"]
-        with q_btn_cols[1]:
-            if st.button(t["btn_driving"]): quick_query = t["q_driving"]
-        with q_btn_cols[2]:
-            if st.button(t["btn_golden"]):  quick_query = t["q_golden"]
-
-        if quick_query and api_key_input:
-            matched_docs, context_string = retrieve_context(quick_query, vectorizer, tfidf_matrix, kb_data)
-            reply = generate_grounded_response(quick_query, context_string, st.session_state.chat_session, lang=st.session_state.lang)
-            st.session_state.messages.append({"role": "user",      "content": quick_query, "sources": []})
-            st.session_state.messages.append({"role": "assistant", "content": reply,       "sources": matched_docs})
-            st.rerun()
 
         for msg in st.session_state.messages:
             with st.chat_message(msg["role"]):
