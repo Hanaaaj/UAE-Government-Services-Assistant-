@@ -52,8 +52,8 @@ def show_welcome_screen():
 
     /* ── MAX FORCED LOGO CLASSES ── */
     .logo-large {
-        width: 360px !important;
-        height: 360px !important;
+        width: 560px !important;
+        height: 560px !important;
         min-width: 360px !important;
         min-height: 360px !important;
         object-fit: contain !important;
@@ -88,12 +88,12 @@ def show_welcome_screen():
     """, unsafe_allow_html=True)
 
     try:
-        with open("LOGO1.png", "rb") as f:
+        with open("LOGO.jpeg", "rb") as f:
             data = f.read()
             encoded_image = base64.b64encode(data).decode()
         image_src = f"data:image/png;base64,{encoded_image}"
     except FileNotFoundError:
-        image_src = "LOGO1.png"
+        image_src = "LOGO.jpeg"
 
     container_placeholder = st.empty()
     title = "Welcome to Daleel — دليل "
