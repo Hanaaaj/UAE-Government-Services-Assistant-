@@ -74,7 +74,6 @@ If the user thinks this is an official government tool, clarify: "I'm Daleel, a 
 UI = {
     "English": {
         # Sidebar
-       "config_header":     "🔑 Configuration",
         "api_label":          "Enter Google Gemini API Key",
         "api_help":           "Free-tier key from Google AI Studio.",
         "api_loaded":         "🔒 API key loaded from secrets.",
@@ -123,7 +122,7 @@ UI = {
     },
     "Arabic": {
         # Sidebar
-        "config_header":     "🔑 الإعدادات",
+      
         "api_label":          "أدخل مفتاح Google Gemini API",
         "api_help":           "مفتاح مجاني من Google AI Studio.",
         "api_loaded":         "🔒 تم تحميل مفتاح API من الأسرار.",
