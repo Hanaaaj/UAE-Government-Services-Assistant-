@@ -328,47 +328,7 @@ else:
         align-items: center;
     }
 
-    /* Right Floating Card Dashboard */
-    .hero-right-dashboard {
-        width: 380px;
-    }
-    .system-health-card-unified {
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border-radius: 16px;
-        padding: 24px;
-    }
-    .health-header-unified {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-    }
-    .health-title-text {
-        font-size: 11px;
-        font-weight: 700;
-        letter-spacing: 1px;
-        color: #94A3B8;
-    }
-    .health-badge-secure {
-        background: rgba(16, 185, 129, 0.15);
-        color: #34D399;
-        font-size: 11px;
-        font-weight: 700;
-        padding: 4px 10px;
-        border-radius: 8px;
-    }
-    .health-skeleton-line {
-        height: 6px;
-        background: rgba(255, 255, 255, 0.06);
-        border-radius: 4px;
-        margin-bottom: 12px;
-    }
-    .health-skeleton-line.l1 { width: 60%; }
-    .health-skeleton-line.l2 { width: 85%; }
-    .health-skeleton-line.l3 { width: 68%; }
+    
 
     /* Modern Minimalist Service Cards Layout */
     .cards-row {
