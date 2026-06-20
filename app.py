@@ -29,6 +29,19 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
+#--------------
+st.markdown("""
+<style>
+/* Fix toggle button width so it never shifts layout */
+div[data-testid="column"]:last-child .stButton button {
+    width: 90px !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+}
+</style>
+""", unsafe_allow_html=True)
+#---------------
+
 # ─────────────────────────────────────────────
 # STATE TRACKING INITIALIZATION (Must be done first)
 # ─────────────────────────────────────────────
