@@ -202,6 +202,7 @@ else:
         height: 420px;
         position: relative;
         box-shadow: 0 10px 30px rgba(10, 60, 44, 0.15);
+        margin-top: -30px; /* REMOVES GAP BETWEEN NAVBAR AND HERO */
         margin-bottom: 40px;
         overflow: hidden;
     }
@@ -388,7 +389,7 @@ else:
             api_key_input = st.text_input(t["api_label"], type="password", help=t["api_help"])
 
     # ─────────────────────────────────────────────
-    # UNIFIED NAV BAR (Indented properly into else block)
+    # UNIFIED NAV BAR
     # ─────────────────────────────────────────────
     lang_toggle_text = "English" if is_arabic else "العربية"
     current_filter = st.session_state.selected_library_filter
@@ -397,7 +398,7 @@ else:
     nav_col, toggle_col = st.columns([17, 1])
 
     with toggle_col:
-        st.markdown("<div style='padding-top: 65px;'>", unsafe_allow_html=True)
+        st.markdown("<div style='padding-top: 45px;'>", unsafe_allow_html=True)
         if st.button("English" if is_arabic else "العربية", key="lang_toggle"):
             st.session_state.lang = "Arabic" if st.session_state.lang == "English" else "English"
             st.session_state.pop("chat_session", None)
@@ -407,7 +408,7 @@ else:
 
     with nav_col:
         st.html(f"""
-        <div style="display:flex; justify-content:space-between; align-items:center; padding:65px 0 15px 0; margin-bottom:20px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; padding:45px 0 0px 0; margin-bottom:10px;">
             <div class="brand-block" style="display:flex; align-items:center; gap:12px;">
                 <div class="brand-badge">AE</div>
                 <div>
@@ -612,7 +613,7 @@ else:
     ]
 
     filtered_items = [
-        item for item in all_library_items 
+        item for item in all_library_items \
         if st.session_state.selected_library_filter == "All" or item["category"] == st.session_state.selected_library_filter
     ]
 
@@ -664,5 +665,3 @@ else:
         © 2026 Engineering Prototype Framework Platform Assembly. Developed for Research Sandbox Evaluations.
     </div>
     """)
-
-
