@@ -422,9 +422,9 @@ else:
                 <div class="hero-main-title">{hero_title}</div>
                 <div class="hero-description">{hero_desc}</div>
                 <div class="hero-btn-group">
-                    <button onclick="document.getElementById('chat-section-target').scrollIntoView({ behavior: 'smooth', block: 'start' });" class="btn-dynamic-chat" style="border: none; cursor: pointer;">
+                    <a href="javascript:void(0);" onclick="document.getElementById('chat-section-target').scrollIntoView({ behavior: 'smooth', block: 'start' });" class="btn-dynamic-chat">
                     {hero_btn1}
-                    </button>
+                    </a>
                     <a href="#verified-library" class="btn-browse-library">{hero_btn2}</a>
                 </div>
             </div>
