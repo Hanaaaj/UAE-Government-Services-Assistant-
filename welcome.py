@@ -46,7 +46,7 @@ def show_welcome_screen():
         object-fit: contain;
         background-color: #FFFFFF;
         border-radius: 50%;
-        border: 3px solid rgba(255, 255, 255, 0.9);
+        border: 3px solid rgba(555, 555, 555, 0.9);
         margin: 0 auto 20px auto;
         display: block;
         padding: 15px;
