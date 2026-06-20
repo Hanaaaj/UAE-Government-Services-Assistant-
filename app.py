@@ -376,14 +376,7 @@ else:
                     <div class="brand-tag">Prototype Agent</div>
                 </div>
             </div>
-            <div class="custom-nav-links" style="gap:32px; font-size:14.5px;
-                                                 display:flex; align-items:center;">
-                <span>{t["nav_home"]}</span>
-                <span>{t["nav_visa"]}</span>
-                <span>{t["nav_driving"]}</span>
-                <span>{t["nav_business"]}</span>
-            </div>
-        </div>
+            
         """)
 
     # ─────────────────────────────────────────────
