@@ -507,8 +507,10 @@ else:
     with btn_col1:
         st.markdown("<div class='hero-chat-btn'>", unsafe_allow_html=True)
         if st.button("Start Dynamic Chat ➔", key="hero_chat_trigger"):
-            # Quietly script-scroll to the conversation block without risking raw routing variables reset
+            # FIX: Ensure it is set to True so it loads the main layout instead of crashing back to welcome page
+            st.session_state.started = True
             st.html("<script>window.location.hash = '#chat-anchor';</script>")
+            st.rerun()
         st.markdown("</div>", unsafe_allow_html=True)
         
     with btn_col2:
