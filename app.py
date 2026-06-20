@@ -1,6 +1,3 @@
-bash
-
-cat > /mnt/user-data/outputs/uae-assistant/app.py << 'ENDOFFILE'
 """
 app.py — UAE Government Services Assistant
 Pure Streamlit UI custom-tailored to a pixel-perfect design system.
