@@ -437,6 +437,28 @@ if is_arabic:
     .hub-link-item { flex-direction: row-reverse; }
     .side-disclaimer { flex-direction: row-reverse; }
     .hero-btn-group { flex-direction: row-reverse; }
+
+    /* Force slideshow to always animate LTR regardless of page direction */
+    .hero-slideshow,
+    .hero-slide {
+        direction: ltr !important;
+        unicode-bidi: isolate !important;
+    }
+    
+    /* Override the animation with an identical one using positive translateX for RTL */
+    @keyframes heroSliderRTL {
+        0%        { transform: translateX(0%); }
+        28%       { transform: translateX(0%); }
+        33%       { transform: translateX(-33.333%); }
+        61%       { transform: translateX(-33.333%); }
+        66%       { transform: translateX(-66.666%); }
+        94%       { transform: translateX(-66.666%); }
+        100%      { transform: translateX(0%); }
+    }
+    .hero-slideshow {
+        animation-name: heroSliderRTL !important;
+    }
+
     </style>
     """)
 
