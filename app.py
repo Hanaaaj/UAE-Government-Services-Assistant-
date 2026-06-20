@@ -110,6 +110,11 @@ else:
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;600;700;800&display=swap');
      
+    /* Enable Smooth Scrolling Canvas Wide */
+    html {
+        scroll-behavior: smooth;
+    }
+
     /* Global Canvas Adjustments */
     html, body, [class*="css"], .stApp { 
         font-family: 'Inter', sans-serif; 
@@ -438,6 +443,7 @@ else:
 
     if url_params.get("action") == "start_chat":
         st.query_params.clear()
+        # Ensure greeting isn't duplicated, append initialization notice
         if len(st.session_state.messages) <= 1:
             st.session_state.messages.append({
                 "role": "assistant",
@@ -466,7 +472,7 @@ else:
                     Get instant, reliable guidance on visas, residency rules, driving conversions, step checklists, and company registrations. Handled via fully private server-side retrieval and secure grounded AI.
                 </div>
                 <div class="hero-btn-group">
-                    <a href="?action=start_chat" target="_self" class="btn-dynamic-chat">Start Dynamic Chat &nbsp;➔</a>
+                    <a href="?action=start_chat#chat-section" target="_self" class="btn-dynamic-chat">Start Dynamic Chat &nbsp;➔</a>
                     <a href="#verified-library" class="btn-browse-library">Browse Verification Library</a>
                 </div>
             </div>
@@ -489,6 +495,8 @@ else:
             "sources": [],
         })
 
+    # Added HTML anchor mapping targets for dynamic URL routing
+    st.html('<div id="chat-section" style="padding-top: 20px;"></div>')
     chat_col, sidebar_col = st.columns([2, 1])
 
     with chat_col:
@@ -528,7 +536,7 @@ else:
     # ─────────────────────────────────────────────
     # VERIFIED SERVICES LIBRARY MATRIX 
     # ─────────────────────────────────────────────
-    st.html('<div id="verified-library"></div>')
+    st.html('<div id="verified-library" style="padding-top: 20px;"></div>')
     st.html('<div class="library-wrapper">')
 
     lib_header_left, lib_header_right = st.columns([3, 2])
