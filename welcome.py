@@ -56,7 +56,7 @@ def show_welcome_screen():
     .typed-title {
         color: white;
         font-size: 2.5rem;
-        font-weight: 900;
+        font-weight: 700;
         margin-top: 10px;
         margin-bottom: 20px;
         min-height: 80px;
