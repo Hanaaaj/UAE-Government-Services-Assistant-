@@ -443,7 +443,7 @@ else:
 nav_col, toggle_col = st.columns([11, 1])
 
 with toggle_col:
-    st.markdown("<div style='padding-top: 28px;'>", unsafe_allow_html=True)
+    st.markdown("<div style='padding-top: 65px;'>", unsafe_allow_html=True)
     if st.button("English" if is_arabic else "العربية", key="lang_toggle"):
         st.session_state.lang = "Arabic" if st.session_state.lang == "English" else "English"
         st.session_state.pop("chat_session", None)
