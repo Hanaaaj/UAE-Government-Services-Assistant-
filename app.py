@@ -30,15 +30,8 @@ st.set_page_config(
 )
 
 # ─────────────────────────────────────────────
-# STATE TRACKING & URL INTERCEPTION
+# STATE TRACKING INITIALIZATION
 # ─────────────────────────────────────────────
-# 1. INTERCEPT CHAT ACTION IMMEDIATELY BEFORE ANY RENDERING
-if st.query_params.get("action") == "start_chat":
-    st.session_state.started = True
-    st.query_params.clear()  # Clear query parameter to avoid infinite loops
-    st.rerun()               # Halt execution immediately and rebuild state as True
-
-# 2. DEFAULT FALLBACK INITIALIZATIONS
 if "started" not in st.session_state:
     st.session_state.started = False
 
@@ -148,10 +141,8 @@ else:
     }
     .brand-name { font-size: 20px; font-weight: 700; color: #111827; line-height: 1.1; }
     .brand-tag { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #6B7280; }
-    .custom-nav-links { display: flex; gap: 24px; font-size: 14.5px; font-weight: 500; color: #4B5563; }
-    .custom-nav-links a { text-decoration: none !important; color: inherit !important; }
 
-    /* ── HERO WRAPPER ── */
+    /* ── HERO ENGINE WRAPPER ── */
     .hero-wrapper {
         border-radius: 24px;
         height: 420px;
@@ -159,19 +150,15 @@ else:
         box-shadow: 0 10px 30px rgba(10, 60, 44, 0.15);
         margin-bottom: 40px;
         overflow: hidden;
-        direction: ltr !important;
     }
 
-    /* ── SLIDESHOW ENGINE ── */
     .hero-slideshow {
         position: absolute;
         width: 300%;
         height: 100%;
         display: flex;
-        direction: ltr !important;
-        unicode-bidi: isolate !important;
         animation: heroSlider 15s infinite ease-in-out;
-        animation-direction: normal !important;
+        z-index: 1;
     }
 
     .hero-slide {
@@ -179,9 +166,6 @@ else:
         height: 100%;
         background-size: cover;
         background-position: center;
-        flex-shrink: 0;
-        direction: ltr !important;
-        unicode-bidi: isolate !important;
     }
 
     @keyframes heroSlider {
@@ -191,35 +175,26 @@ else:
         100%      { transform: translateX(0%); }
     }
 
-    /* ── HERO OVERLAY ── */
     .hero-overlay {
         position: absolute;
         inset: 0;
-        background: linear-gradient(to right, rgba(4,47,34,0.95) 40%, rgba(4,47,34,0.5) 70%, rgba(4,47,34,0.2) 100%);
+        background: linear-gradient(to right, rgba(4,47,34,0.95) 40%, rgba(4,47,34,0.6) 70%, rgba(4,47,34,0.3) 100%);
         z-index: 2;
     }
 
-    /* ── HERO TEXT CONTENT ── */
-    .hero-content-container {
+    /* Absolute placement container to stack Streamlit components cleanly over raw CSS layers */
+    .hero-interactive-layer {
         position: absolute;
         inset: 0;
         z-index: 3;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
         padding: 48px;
     }
-    .hero-left-content {
-        max-width: 55%;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-    }
+
     .hero-main-title {
         font-size: 42px;
         font-weight: 800;
         line-height: 1.15;
-        margin-bottom: 20px;
+        margin-bottom: 16px;
         color: #FFFFFF;
     }
     .hero-main-title span { color: #FBBF24; }
@@ -227,51 +202,22 @@ else:
         font-size: 15px;
         line-height: 1.6;
         color: #E2FBF0;
-        margin-bottom: 32px;
-    }
-    .hero-btn-group { display: flex; gap: 16px; }
-    .btn-dynamic-chat {
-        background-color: #10B981;
-        color: #042F22 !important;
-        font-weight: 700;
-        font-size: 14px;
-        padding: 12px 24px;
-        border-radius: 12px;
-        text-decoration: none !important;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        box-shadow: 0 4px 12px rgba(16,185,129,0.2);
-    }
-    .btn-browse-library {
-        background: rgba(255,255,255,0.05);
-        border: 1px solid rgba(255,255,255,0.2);
-        color: #FFFFFF !important;
-        font-weight: 600;
-        font-size: 14px;
-        padding: 12px 24px;
-        border-radius: 12px;
-        text-decoration: none !important;
-        display: inline-flex;
-        align-items: center;
+        margin-bottom: 24px;
     }
 
-    /* ── SERVICE CARDS ── */
-    .cards-row {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 16px;
-        margin-bottom: 35px;
+    /* Native button design system override overrides */
+    div.stButton > button.start-chat-native {
+        background-color: #10B981 !important;
+        color: #042F22 !important;
+        font-weight: 700 !important;
+        padding: 12px 28px !important;
+        border-radius: 12px !important;
+        border: none !important;
+        box-shadow: 0 4px 14px rgba(16,185,129,0.3) !important;
     }
-    .target-card {
-        background: white;
-        border: 1px solid #E5E7EB;
-        border-radius: 16px;
-        padding: 20px 16px;
+    div.stButton > button.start-chat-native:hover {
+        background-color: #059669 !important;
     }
-    .target-card .card-icon { font-size: 24px; margin-bottom: 12px; }
-    .target-card .card-title { font-size: 15px; font-weight: 700; color: #111827; }
-    .target-card .card-subtext { font-size: 12px; color: #6B7280; }
 
     /* ── SIDE PANEL ── */
     .side-panel {
@@ -312,7 +258,7 @@ else:
     """)
 
     # ─────────────────────────────────────────────
-    # ARABIC RTL CSS  (only added when Arabic)
+    # ARABIC RTL CSS
     # ─────────────────────────────────────────────
     if is_arabic:
         st.html("""
@@ -322,31 +268,13 @@ else:
             direction: rtl;
             text-align: right;
         }
-        .custom-header, .library-header-row { flex-direction: row-reverse; }
         .custom-table { text-align: right; }
         .custom-table th { text-align: right; }
         .hub-link-item { flex-direction: row-reverse; }
         .side-disclaimer { flex-direction: row-reverse; }
-        .hero-btn-group { flex-direction: row-reverse; }
-
-        /* Slideshow: fully isolated from RTL */
-        .hero-wrapper   { direction: ltr !important; unicode-bidi: isolate !important; }
-        .hero-slideshow { direction: ltr !important; unicode-bidi: isolate !important; animation-direction: normal !important; }
-        .hero-slide     { direction: ltr !important; unicode-bidi: isolate !important; }
-
-        /* Flip overlay gradient for Arabic (dark on right side) */
         .hero-overlay {
-            background: linear-gradient(
-                to left,
-                rgba(4,47,34,0.95) 40%,
-                rgba(4,47,34,0.5)  70%,
-                rgba(4,47,34,0.2)  100%
-            ) !important;
+            background: linear-gradient(to left, rgba(4,47,34,0.95) 40%, rgba(4,47,34,0.6) 70%, rgba(4,47,34,0.3) 100%) !important;
         }
-
-        /* Flip text to right side */
-        .hero-content-container { direction: rtl !important; justify-content: flex-end !important; }
-        .hero-left-content      { align-items: flex-end !important; text-align: right !important; }
         </style>
         """)
 
@@ -374,23 +302,21 @@ else:
 
     with nav_col:
         st.html(f"""
-        <div style="display:flex; justify-content:space-between; align-items:center;
-                    padding:65px 0 15px 0; margin-bottom:20px;">
-            <div class="brand-block" style="display:flex; align-items:center; gap:12px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; padding:65px 0 15px 0; margin-bottom:20px;">
+            <div class="brand-block">
                 <div class="brand-badge">AE</div>
                 <div>
                     <div class="brand-name">{t["nav_logo"]}</div>
                     <div class="brand-tag">Prototype Agent</div>
                 </div>
             </div>
-            
+        </div>
         """)
 
     # ─────────────────────────────────────────────
     # FILTER PARAM HOOKS
     # ─────────────────────────────────────────────
     url_params = st.query_params
-
     if "filter" in url_params:
         requested_filter = url_params.get("filter")
         if requested_filter in ["All", "Visa Services", "Driving License", "Business License"]:
@@ -399,33 +325,39 @@ else:
         st.rerun()
 
     # ─────────────────────────────────────────────
-    # HERO BANNER — SLIDESHOW
+    # HERO BANNER WITH INSTANT STATE STATE RESET
     # ─────────────────────────────────────────────
-    hero_title    = "المدعوم بالذكاء الاصطناعي<br> مساعد الخدمات العامة" if is_arabic else "Public Service<br><span>AI Services Assistant</span>"
-    hero_desc     = "احصل على إرشادات فورية وموثوقة حول التأشيرات وقواعد الإقامة وتحويل رخص القيادة والشركات." if is_arabic else "Get instant, reliable guidance on visas, residency rules, driving conversions, step checklists, and company registrations."
-    hero_btn1     = "ابدأ المحادثة ←" if is_arabic else "Start Dynamic Chat &nbsp;➔"
-    hero_btn2     = "تصفح المكتبة" if is_arabic else "Browse Verification Library"
+    hero_title = "المدعوم بالذكاء الاصطناعي<br> مساعد الخدمات العامة" if is_arabic else "Public Service<br><span>AI Services Assistant</span>"
+    hero_desc  = "احصل على إرشادات فورية وموثوقة حول التأشيرات وقواعد الإقامة وتحويل رخص القيادة والشركات." if is_arabic else "Get instant, reliable guidance on visas, residency rules, driving conversions, step checklists, and company registrations."
+    hero_btn1  = "ابدأ محادثة جديدة" if is_arabic else "Start Clear Chat Session"
 
-    st.html(f"""
-    <div class="hero-wrapper">
+    # Container structure using standard overlays to allow native Streamlit button clicks over the background animation CSS
+    st.markdown('<div class="hero-wrapper">', unsafe_allow_html=True)
+    st.markdown(f"""
         <div class="hero-slideshow">
             <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1579930700019-f5f6ba3db867?q=80&w=1176');"></div>
             <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=1200');"></div>
             <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1687754715959-41fed2161528?q=80&w=1221');"></div>
         </div>
         <div class="hero-overlay"></div>
-        <div class="hero-content-container">
-            <div class="hero-left-content">
-                <div class="hero-main-title">{hero_title}</div>
-                <div class="hero-description">{hero_desc}</div>
-                <div class="hero-btn-group">
-                    <a href="?action=start_chat" target="_self" class="btn-dynamic-chat">{hero_btn1}</a>
-                    <a href="#verified-library" class="btn-browse-library">{hero_btn2}</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    """)
+    """, unsafe_allow_html=True)
+    
+    with st.container():
+        st.markdown('<div class="hero-interactive-layer">', unsafe_allow_html=True)
+        h_col1, h_col2 = st.columns([3, 2])
+        with h_col1:
+            st.markdown(f'<div class="hero-main-title">{hero_title}</div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="hero-description">{hero_desc}</div>', unsafe_allow_html=True)
+            
+            # Use native click intercept to reset messages instantly and pop back to welcome page
+            if st.button(hero_btn1, key="native_reset_chat_btn", help="Clears conversation cache and shows welcome panel", type="primary"):
+                st.session_state.started = False
+                st.session_state.messages = []
+                st.session_state.pop("chat_session", None)
+                st.rerun()
+                
+        st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
     # ─────────────────────────────────────────────
     # CHAT + SIDEBAR PANEL
@@ -451,8 +383,7 @@ else:
                     st.markdown(t["verify_source"])
                     for src in msg["sources"]:
                         st.markdown(
-                            f'<a href="{src.get("official_url","")}" target="_blank" '
-                            f'style="font-size:12px; color:#0F5A41;">📎 {src.get("title","")}</a>',
+                            f'<a href="{src.get("official_url","")}" target="_blank" style="font-size:12px; color:#0F5A41;">📎 {src.get("title","")}</a>',
                             unsafe_allow_html=True,
                         )
 
@@ -604,7 +535,7 @@ else:
         "</table></div>"
     )
 
-    st.html("</div>")  # close library-wrapper
+    st.html("</div>")
 
     # ─────────────────────────────────────────────
     # FOOTER
