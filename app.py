@@ -104,6 +104,13 @@ if "messages" not in st.session_state:
 API_KEYS_POOL = []
 
 # ─────────────────────────────────────────────
+# BUTTON CALLBACK ENGINE
+# ─────────────────────────────────────────────
+def trigger_chat_view():
+    """Forces state parameters to update BEFORE routing blocks evaluate."""
+    st.session_state.started = True
+
+# ─────────────────────────────────────────────
 # CONDITIONAL VIEW ROUTING
 # ─────────────────────────────────────────────
 if not st.session_state.started:
@@ -506,9 +513,8 @@ else:
     btn_col1, btn_col2, _ = st.columns([1.6, 2, 5])
     with btn_col1:
         st.markdown("<div class='hero-chat-btn'>", unsafe_allow_html=True)
-        if st.button("Start Dynamic Chat ➔", key="hero_chat_trigger"):
-            # FIX: Ensure it is set to True so it loads the main layout instead of crashing back to welcome page
-            st.session_state.started = True
+        # CHANGED: Added `on_click=trigger_chat_view` callback parameter
+        if st.button("Start Dynamic Chat ➔", key="hero_chat_trigger", on_click=trigger_chat_view):
             st.html("<script>window.location.hash = '#chat-anchor';</script>")
             st.rerun()
         st.markdown("</div>", unsafe_allow_html=True)
