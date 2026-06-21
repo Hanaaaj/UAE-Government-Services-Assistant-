@@ -16,9 +16,9 @@ from agent import (
     start_chat_session,
     generate_grounded_response,
 )
- 
+
 from welcome import show_welcome_screen
- 
+
 # ─────────────────────────────────────────────
 # PAGE CONFIG
 # ─────────────────────────────────────────────
@@ -28,36 +28,30 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="collapsed"
 )
- 
+
 # ─────────────────────────────────────────────
 # STATE TRACKING INITIALIZATION
 # ─────────────────────────────────────────────
 if "started" not in st.session_state:
     st.session_state.started = False
- 
+
 if "lang" not in st.session_state:
     st.session_state.lang = "English"
- 
+
 if "selected_library_filter" not in st.session_state:
     st.session_state.selected_library_filter = "All"
- 
+
 if "messages" not in st.session_state:
     st.session_state.messages = []
- 
-if "scroll_to_chat" not in st.session_state:
-    st.session_state.scroll_to_chat = False
- 
-if "scroll_to_hero" not in st.session_state:
-    st.session_state.scroll_to_hero = False
- 
+
 API_KEYS_POOL = []
- 
+
 # ─────────────────────────────────────────────
 # CONDITIONAL VIEW ROUTING
 # ─────────────────────────────────────────────
 if not st.session_state.started:
     show_welcome_screen()
- 
+
 else:
     for secret_key in ["GEMINI_API_KEY", "GEMINI_API_KEY_MEMBER_1", "GEMINI_API_KEY_MEMBER_2", "GEMINI_API_KEY_MEMBER_3"]:
         try:
@@ -65,23 +59,23 @@ else:
                 API_KEYS_POOL.append(st.secrets[secret_key])
         except Exception:
             pass
- 
+
     if not API_KEYS_POOL and os.getenv("GEMINI_API_KEY"):
         API_KEYS_POOL.append(os.getenv("GEMINI_API_KEY"))
- 
+
     def get_rotated_api_key(manual_key: str = "") -> str:
         if manual_key:
             return manual_key
         if "active_api_key" not in st.session_state:
             st.session_state.active_api_key = random.choice(API_KEYS_POOL) if API_KEYS_POOL else ""
         return st.session_state.active_api_key
- 
+
     # ─────────────────────────────────────────────
     # LANGUAGE STATE
     # ─────────────────────────────────────────────
     t = UI[st.session_state.lang]
     is_arabic = st.session_state.lang == "Arabic"
- 
+
     # ─────────────────────────────────────────────
     # AGENT BACKEND
     # ─────────────────────────────────────────────
@@ -90,25 +84,25 @@ else:
         kb_data = load_knowledge_base()
         vectorizer, tfidf_matrix = build_retrieval_index(kb_data)
         return kb_data, vectorizer, tfidf_matrix
- 
+
     kb_data, vectorizer, tfidf_matrix = initialize_agent_backend()
- 
+
     # ─────────────────────────────────────────────
     # BASE CSS
     # ─────────────────────────────────────────────
     st.html("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;600;700;800&display=swap');
- 
+
     html, body, [class*="css"], .stApp {
         font-family: 'Inter', sans-serif;
         background-color: #FDFDFB !important;
     }
- 
+
     [data-testid="stChatMessage"], [data-testid="stChatMessage"] p, [data-testid="stChatMessage"] div {
         color: #111827 !important;
     }
- 
+
     .block-container {
         padding-top: 0rem !important;
         padding-bottom: 0rem !important;
@@ -116,14 +110,14 @@ else:
         padding-right: 3rem !important;
         max-width: 100% !important;
     }
- 
+
     /* Toggle button fixed width */
     div[data-testid="column"]:last-child .stButton button {
         width: 90px !important;
         text-align: center !important;
         white-space: nowrap !important;
     }
- 
+
     .side-disclaimer {
         background-color: #FFF6ED;
         border: 1px solid #FFEDD5;
@@ -135,7 +129,7 @@ else:
     }
     .side-disclaimer-icon { font-size: 18px; color: #C2410C; font-weight: bold; }
     .side-disclaimer-text { font-size: 13px; color: #9A3412; line-height: 1.5; }
- 
+
     .brand-block { display: flex; align-items: center; gap: 12px; }
     .brand-badge {
         background-color: #0F5A41;
@@ -149,18 +143,18 @@ else:
     .brand-tag { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #6B7280; }
     .custom-nav-links { display: flex; gap: 24px; font-size: 14.5px; font-weight: 500; color: #4B5563; }
     .custom-nav-links a { text-decoration: none !important; color: inherit !important; }
- 
+
     /* ── HERO WRAPPER ── */
     .hero-wrapper {
         border-radius: 24px;
         height: 420px;
         position: relative;
         box-shadow: 0 10px 30px rgba(10, 60, 44, 0.15);
-        margin-bottom: 20px;
+        margin-bottom: 40px;
         overflow: hidden;
         direction: ltr !important;
     }
- 
+
     /* ── SLIDESHOW ENGINE ── */
     .hero-slideshow {
         position: absolute;
@@ -172,7 +166,7 @@ else:
         animation: heroSlider 15s infinite ease-in-out;
         animation-direction: normal !important;
     }
- 
+
     .hero-slide {
         width: 33.333%;
         height: 100%;
@@ -182,14 +176,14 @@ else:
         direction: ltr !important;
         unicode-bidi: isolate !important;
     }
- 
+
     @keyframes heroSlider {
         0%,  28% { transform: translateX(0%); }
         33%, 61% { transform: translateX(-33.333%); }
         66%, 95% { transform: translateX(-66.666%); }
         100%      { transform: translateX(0%); }
     }
- 
+
     /* ── HERO OVERLAY ── */
     .hero-overlay {
         position: absolute;
@@ -197,7 +191,7 @@ else:
         background: linear-gradient(to right, rgba(4,47,34,0.95) 40%, rgba(4,47,34,0.5) 70%, rgba(4,47,34,0.2) 100%);
         z-index: 2;
     }
- 
+
     /* ── HERO TEXT CONTENT ── */
     .hero-content-container {
         position: absolute;
@@ -226,7 +220,7 @@ else:
         font-size: 15px;
         line-height: 1.6;
         color: #E2FBF0;
-        margin-bottom: 12px;
+        margin-bottom: 32px;
     }
     .hero-btn-group { display: flex; gap: 16px; }
     .btn-dynamic-chat {
@@ -254,7 +248,7 @@ else:
         display: inline-flex;
         align-items: center;
     }
- 
+
     /* ── SERVICE CARDS ── */
     .cards-row {
         display: grid;
@@ -271,7 +265,7 @@ else:
     .target-card .card-icon { font-size: 24px; margin-bottom: 12px; }
     .target-card .card-title { font-size: 15px; font-weight: 700; color: #111827; }
     .target-card .card-subtext { font-size: 12px; color: #6B7280; }
- 
+
     /* ── SIDE PANEL ── */
     .side-panel {
         background: #F8FAFC;
@@ -290,7 +284,7 @@ else:
         color: #1E293B !important;
         text-decoration: none !important;
     }
- 
+
     /* ── LIBRARY TABLE ── */
     .library-wrapper {
         background: white;
@@ -305,22 +299,11 @@ else:
     .custom-table th { background-color: #F8FAFC; color: #1F2937; font-weight: 700; padding: 16px 18px; text-align: left; }
     .custom-table td { padding: 20px 18px; border-bottom: 1px solid #E2E8F0; vertical-align: top; }
     .table-badge { display: inline-block; padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; }
- 
+
     .custom-footer-bar { padding: 20px; text-align: center; color: #6B7280; font-size: 12px; margin-top: 40px; }
- 
-    /* ── HERO CTA BUTTONS (real Streamlit buttons styled to match) ── */
-    div[data-testid="stButton"] button[kind="primary"] {
-        background-color: #10B981 !important;
-        color: #042F22 !important;
-        font-weight: 700 !important;
-        border: none !important;
-        border-radius: 12px !important;
-        padding: 12px 24px !important;
-        box-shadow: 0 4px 12px rgba(16,185,129,0.2) !important;
-    }
     </style>
     """)
- 
+
     # ─────────────────────────────────────────────
     # ARABIC RTL CSS  (only added when Arabic)
     # ─────────────────────────────────────────────
@@ -338,12 +321,12 @@ else:
         .hub-link-item { flex-direction: row-reverse; }
         .side-disclaimer { flex-direction: row-reverse; }
         .hero-btn-group { flex-direction: row-reverse; }
- 
+
         /* Slideshow: fully isolated from RTL */
         .hero-wrapper   { direction: ltr !important; unicode-bidi: isolate !important; }
         .hero-slideshow { direction: ltr !important; unicode-bidi: isolate !important; animation-direction: normal !important; }
         .hero-slide     { direction: ltr !important; unicode-bidi: isolate !important; }
- 
+
         /* Flip overlay gradient for Arabic (dark on right side) */
         .hero-overlay {
             background: linear-gradient(
@@ -353,13 +336,13 @@ else:
                 rgba(4,47,34,0.2)  100%
             ) !important;
         }
- 
+
         /* Flip text to right side */
         .hero-content-container { direction: rtl !important; justify-content: flex-end !important; }
         .hero-left-content      { align-items: flex-end !important; text-align: right !important; }
         </style>
         """)
- 
+
     # ─────────────────────────────────────────────
     # API KEY
     # ─────────────────────────────────────────────
@@ -367,12 +350,12 @@ else:
     if len(API_KEYS_POOL) == 0 and not api_key_input:
         with st.sidebar:
             api_key_input = st.text_input(t["api_label"], type="password", help=t["api_help"])
- 
+
     # ─────────────────────────────────────────────
     # NAV BAR + LANGUAGE TOGGLE
     # ─────────────────────────────────────────────
     nav_col, toggle_col = st.columns([17, 1])
- 
+
     with toggle_col:
         st.markdown("<div style='padding-top: 65px;'>", unsafe_allow_html=True)
         if st.button("English" if is_arabic else "العربية", key="lang_toggle"):
@@ -381,7 +364,7 @@ else:
             st.session_state.messages = []
             st.rerun()
         st.markdown("</div>", unsafe_allow_html=True)
- 
+
     with nav_col:
         st.html(f"""
         <div style="display:flex; justify-content:space-between; align-items:center;
@@ -395,34 +378,37 @@ else:
             </div>
             
         """)
- 
+
     # ─────────────────────────────────────────────
-    # QUERY PARAM HOOKS  (library filter only now —
-    # the chat-start action was moved to a real
-    # in-app Streamlit button below, since a query-
-    # param-triggered <a href> link forces a full page
-    # reload that was losing st.session_state.started
-    # and bouncing the user back to the welcome screen)
+    # QUERY PARAM HOOKS
     # ─────────────────────────────────────────────
     url_params = st.query_params
- 
+
     if "filter" in url_params:
         requested_filter = url_params.get("filter")
         if requested_filter in ["All", "Visa Services", "Driving License", "Business License"]:
             st.session_state.selected_library_filter = requested_filter
         st.query_params.clear()
         st.rerun()
- 
+
+    if url_params.get("action") == "start_chat":
+        st.query_params.clear()
+        if len(st.session_state.messages) <= 1:
+            st.session_state.messages.append({
+                "role": "assistant",
+                "content": t["greeting"],
+                "sources": []
+            })
+        st.rerun()
+
     # ─────────────────────────────────────────────
     # HERO BANNER — SLIDESHOW
     # ─────────────────────────────────────────────
-    st.html('<div id="daleel-hero-anchor"></div>')
- 
     hero_title    = "المدعوم بالذكاء الاصطناعي<br> مساعد الخدمات العامة" if is_arabic else "Public Service<br><span>AI Services Assistant</span>"
     hero_desc     = "احصل على إرشادات فورية وموثوقة حول التأشيرات وقواعد الإقامة وتحويل رخص القيادة والشركات." if is_arabic else "Get instant, reliable guidance on visas, residency rules, driving conversions, step checklists, and company registrations."
-    hero_btn1     = "ابدأ المحادثة" if is_arabic else "Start Dynamic Chat"
+    hero_btn1     = "ابدأ المحادثة ←" if is_arabic else "Start Dynamic Chat &nbsp;➔"
     hero_btn2     = "تصفح المكتبة" if is_arabic else "Browse Verification Library"
- 
+
     st.html(f"""
     <div class="hero-wrapper">
         <div class="hero-slideshow">
@@ -435,76 +421,33 @@ else:
             <div class="hero-left-content">
                 <div class="hero-main-title">{hero_title}</div>
                 <div class="hero-description">{hero_desc}</div>
+                <div class="hero-btn-group">
+                    <a href="?action=start_chat" target="_self" class="btn-dynamic-chat">{hero_btn1}</a>
+                    <a href="#verified-library" class="btn-browse-library">{hero_btn2}</a>
+                </div>
             </div>
         </div>
     </div>
     """)
- 
-    # ─────────────────────────────────────────────
-    # SCROLL TO HERO  (fires once, right after
-    # "Get Started" is clicked on the welcome screen)
-    # ─────────────────────────────────────────────
-    if st.session_state.get("scroll_to_hero"):
-        st.session_state.scroll_to_hero = False
-        st.html("""
-        <script>
-        (function() {
-            function doScroll() {
-                const el = window.parent.document.getElementById('daleel-hero-anchor');
-                if (el) {
-                    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                } else {
-                    setTimeout(doScroll, 100);
-                }
-            }
-            doScroll();
-        })();
-        </script>
-        """)
- 
-    # ─────────────────────────────────────────────
-    # HERO CTA BUTTONS  (real Streamlit buttons —
-    # in-app interaction, no page reload, so
-    # st.session_state.started is never lost)
-    # ─────────────────────────────────────────────
-    hero_btn_col1, hero_btn_col2, hero_btn_spacer = st.columns([1.3, 2, 4])
-    with hero_btn_col1:
-        if st.button(f"{hero_btn1}  ➔", type="primary", use_container_width=True, key="start_chat_btn"):
-            if len(st.session_state.messages) <= 1:
-                st.session_state.messages.append({
-                    "role": "assistant",
-                    "content": t["greeting"],
-                    "sources": []
-                })
-            st.session_state.scroll_to_chat = True
-            st.rerun()
-    with hero_btn_col2:
-        st.html(
-            f'<a href="#verified-library" class="btn-browse-library" '
-            f'style="display:inline-flex; align-items:center; height:38px;">{hero_btn2}</a>'
-        )
- 
-    st.html("<div style='margin-bottom:20px;'></div>")
- 
+
+    
+
     # ─────────────────────────────────────────────
     # CHAT + SIDEBAR PANEL
     # ─────────────────────────────────────────────
     if api_key_input and "chat_session" not in st.session_state:
         model = get_gemini_model(api_key_input)
         st.session_state.chat_session = start_chat_session(model)
- 
+
     if not st.session_state.messages:
         st.session_state.messages.append({
             "role": "assistant",
             "content": t["greeting"],
             "sources": [],
         })
- 
-    # Anchor that the "Start Dynamic Chat" button scrolls to.
-    st.html('<div id="daleel-chat-anchor"></div>')
- 
+
     chat_col, sidebar_col = st.columns([2, 1])
- 
+
     with chat_col:
         for msg in st.session_state.messages:
             with st.chat_message(msg["role"]):
@@ -517,7 +460,7 @@ else:
                             f'style="font-size:12px; color:#0F5A41;">📎 {src.get("title","")}</a>',
                             unsafe_allow_html=True,
                         )
- 
+
         if user_input := st.chat_input(t["placeholder"]):
             if not api_key_input:
                 st.warning(t["api_info"])
@@ -528,7 +471,7 @@ else:
                     reply = generate_grounded_response(user_input, context_string, st.session_state.chat_session, lang=st.session_state.lang)
                 st.session_state.messages.append({"role": "assistant", "content": reply, "sources": matched_docs})
                 st.rerun()
- 
+
     with sidebar_col:
         disclaimer_text = "هذا الموقع نموذج أولي مستقل للذكاء الاصطناعي. إنه ليس بوابة حكومية إماراتية رسمية. تحقق دائماً من المصادر الرسمية." if is_arabic else "This website is an independent AI prototype. It is NOT an official UAE government portal. Always verify regulations on official gov source links."
         st.html(f"""
@@ -547,50 +490,26 @@ else:
             <a href="https://mohre.gov.ae"   target="_blank" class="hub-link-item"><span>{"وزارة الموارد البشرية" if is_arabic else "MOHRE Labour Agency"}</span><span>↗</span></a>
         </div>
         """)
- 
-    # ─────────────────────────────────────────────
-    # SCROLL TO CHAT  (fires once, right after the
-    # "Start Dynamic Chat" button sets the flag, then
-    # consumes the flag so it doesn't re-fire on every
-    # later rerun while the user is just chatting)
-    # ─────────────────────────────────────────────
-    if st.session_state.get("scroll_to_chat"):
-        st.session_state.scroll_to_chat = False
-        st.html("""
-        <script>
-        (function() {
-            function doScroll() {
-                const el = window.parent.document.getElementById('daleel-chat-anchor');
-                if (el) {
-                    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                } else {
-                    setTimeout(doScroll, 100);
-                }
-            }
-            doScroll();
-        })();
-        </script>
-        """)
- 
+
     # ─────────────────────────────────────────────
     # VERIFIED SERVICES LIBRARY
     # ─────────────────────────────────────────────
     st.html('<div id="verified-library"></div>')
     st.html('<div class="library-wrapper">')
- 
+
     lib_header_left, lib_header_right = st.columns([3, 2])
- 
+
     with lib_header_left:
         st.html(f'<div class="library-title">📚 {"مكتبة الخدمات الموثّقة" if is_arabic else "Verified Services Library"} ({st.session_state.selected_library_filter})</div>')
         st.html(f'<p style="font-size:13px; color:#6B7280; margin-top:4px; margin-bottom:0;">{"تحقق من المعايير والقوائم والرسوم وأوقات الانتظار." if is_arabic else "Verify criteria, checklists, fee lists, and wait times."}</p>')
- 
+
     with lib_header_right:
         filter_options = ["All", "Visa Services", "Driving License", "Business License"]
         try:
             current_index = filter_options.index(st.session_state.selected_library_filter)
         except ValueError:
             current_index = 0
- 
+
         selected_option = st.selectbox(
             label="Filter",
             options=filter_options,
@@ -601,9 +520,9 @@ else:
         if selected_option != st.session_state.selected_library_filter:
             st.session_state.selected_library_filter = selected_option
             st.rerun()
- 
+
     st.html("<br>")
- 
+
     all_library_items = [
         {
             "category": "Visa Services",
@@ -656,12 +575,12 @@ else:
             "fees": "1-year license: USD 233 (AED 850). Registry fee: USD 100."
         }
     ]
- 
+
     filtered_items = [
         item for item in all_library_items
         if st.session_state.selected_library_filter == "All" or item["category"] == st.session_state.selected_library_filter
     ]
- 
+
     table_rows = []
     for item in filtered_items:
         table_rows.append(
@@ -674,9 +593,9 @@ else:
             f"<td style='width:18%; color:#111827; font-weight:600; text-align:right;'>{item['fees']}</td>"
             f"</tr>"
         )
- 
+
     table_rows_html = "".join(table_rows) if table_rows else "<tr><td colspan='5' style='text-align:center; padding:40px; color:#9CA3AF;'>No records found.</td></tr>"
- 
+
     st.html(
         "<div class='custom-table-container'>"
         "<table class='custom-table'><thead><tr>"
@@ -689,9 +608,9 @@ else:
         f"<tbody>{table_rows_html}</tbody>"
         "</table></div>"
     )
- 
+
     st.html("</div>")  # close library-wrapper
- 
+
     # ─────────────────────────────────────────────
     # FOOTER
     # ─────────────────────────────────────────────
