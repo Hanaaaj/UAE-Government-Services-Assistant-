@@ -370,7 +370,7 @@ else:
         <div style="display:flex; justify-content:space-between; align-items:center;
                     padding:65px 0 15px 0; margin-bottom:20px;">
             <div class="brand-block" style="display:flex; align-items:center; gap:12px;">
-                <div class="brand-badge">AE</div>
+                
                 <div>
                     <div class="brand-name">{t["nav_logo"]}</div>
                     <div class="brand-tag">Prototype Agent</div>
