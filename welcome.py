@@ -1,3 +1,4 @@
+# welcome.py
 import streamlit as st
 import time
 import base64
@@ -5,20 +6,14 @@ import base64
 def show_welcome_screen():
     st.markdown("""
     <style>
-    /* Fixed curly bracket syntax error and added explicit data-testids for theme override */
-    [data-testid="stAppViewContainer"], .stApp {
+    .stApp 
         background: linear-gradient(
             135deg,
             #022C22 0%,
             #0A5C44 40%,
             #15803D 70%,
             #022C22 100%
-        ) !important;
-    }
-
-    /* Keeps the top top-bar clear so it matches your gradient theme */
-    [data-testid="stHeader"] {
-        background: transparent !important;
+        );
     }
 
     .main-container {
@@ -144,3 +139,4 @@ def show_welcome_screen():
         if st.button(" Get Started", use_container_width=True):
             st.session_state.started = True
             st.rerun()
+
