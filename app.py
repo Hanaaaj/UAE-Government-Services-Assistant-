@@ -422,7 +422,7 @@ else:
                 <div class="hero-main-title">{hero_title}</div>
                 <div class="hero-description">{hero_desc}</div>
                 <div class="hero-btn-group">
-                    <a href="?action=start_chat" target="_self" class="btn-dynamic-chat">{hero_btn1}</a>
+                  
                     <a href="#verified-library" class="btn-browse-library">{hero_btn2}</a>
                 </div>
             </div>
