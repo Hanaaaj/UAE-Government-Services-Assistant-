@@ -6,8 +6,7 @@ import base64
 def show_welcome_screen():
     st.markdown("""
     <style>
-    .stApp
-    {
+    .stApp{
         background: linear-gradient(
             135deg,
             #022C22 0%,
