@@ -1,5 +1,5 @@
 """
-agent.py — UAE Government Services Assistant
+agent.py — Public Service AI Assistant
 All AI logic: knowledge base loading, TF-IDF retrieval, Gemini LLM calls.
 Import this module in app.py — no Streamlit code here.
 """
