@@ -1,5 +1,5 @@
 """
-app.py — UAE Government Services Assistant
+app.py — Public Service AI Assistant
 Pure Streamlit UI custom-tailored to a pixel-perfect design system.
 """
 import base64
