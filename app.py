@@ -1,6 +1,7 @@
 """
 app.py — Public Service AI Assistant
-Pure Streamlit UI custom-tailored to a pixel-perfect design system.
+Pure Streamlit UI custom-tailored to a pixel-perfect design system with
+integrated HTML5/JS audio input recording and native multimodal audio playback.
 """
 import base64
 import streamlit as st
@@ -15,6 +16,8 @@ from agent import (
     get_gemini_model,
     start_chat_session,
     generate_grounded_response,
+    transcribe_audio_bytes,
+    generate_speech_bytes,
 )
 
 from welcome import show_welcome_screen
@@ -23,7 +26,7 @@ from welcome import show_welcome_screen
 # PAGE CONFIG
 # ─────────────────────────────────────────────
 st.set_page_config(
-    page_title=" Public Service AI Assistant",
+    page_title="Public Service AI Assistant",
     page_icon="🇦🇪",
     layout="wide",
     initial_sidebar_state="collapsed"
@@ -111,7 +114,6 @@ else:
         max-width: 100% !important;
     }
 
-    /* Toggle button fixed width */
     div[data-testid="column"]:last-child .stButton button {
         width: 90px !important;
         text-align: center !important;
@@ -141,8 +143,6 @@ else:
     }
     .brand-name { font-size: 20px; font-weight: 700; color: #111827; line-height: 1.1; }
     .brand-tag { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #6B7280; }
-    .custom-nav-links { display: flex; gap: 24px; font-size: 14.5px; font-weight: 500; color: #4B5563; }
-    .custom-nav-links a { text-decoration: none !important; color: inherit !important; }
 
     /* ── HERO WRAPPER ── */
     .hero-wrapper {
@@ -162,9 +162,7 @@ else:
         height: 100%;
         display: flex;
         direction: ltr !important;
-        unicode-bidi: isolate !important;
         animation: heroSlider 15s infinite ease-in-out;
-        animation-direction: normal !important;
     }
 
     .hero-slide {
@@ -173,8 +171,6 @@ else:
         background-size: cover;
         background-position: center;
         flex-shrink: 0;
-        direction: ltr !important;
-        unicode-bidi: isolate !important;
     }
 
     @keyframes heroSlider {
@@ -184,7 +180,6 @@ else:
         100%      { transform: translateX(0%); }
     }
 
-    /* ── HERO OVERLAY ── */
     .hero-overlay {
         position: absolute;
         inset: 0;
@@ -192,7 +187,6 @@ else:
         z-index: 2;
     }
 
-    /* ── HERO TEXT CONTENT ── */
     .hero-content-container {
         position: absolute;
         inset: 0;
@@ -223,19 +217,6 @@ else:
         margin-bottom: 32px;
     }
     .hero-btn-group { display: flex; gap: 16px; }
-    .btn-dynamic-chat {
-        background-color: #10B981;
-        color: #042F22 !important;
-        font-weight: 700;
-        font-size: 14px;
-        padding: 12px 24px;
-        border-radius: 12px;
-        text-decoration: none !important;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        box-shadow: 0 4px 12px rgba(16,185,129,0.2);
-    }
     .btn-browse-library {
         background: rgba(255,255,255,0.05);
         border: 1px solid rgba(255,255,255,0.2);
@@ -248,23 +229,6 @@ else:
         display: inline-flex;
         align-items: center;
     }
-
-    /* ── SERVICE CARDS ── */
-    .cards-row {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 16px;
-        margin-bottom: 35px;
-    }
-    .target-card {
-        background: white;
-        border: 1px solid #E5E7EB;
-        border-radius: 16px;
-        padding: 20px 16px;
-    }
-    .target-card .card-icon { font-size: 24px; margin-bottom: 12px; }
-    .target-card .card-title { font-size: 15px; font-weight: 700; color: #111827; }
-    .target-card .card-subtext { font-size: 12px; color: #6B7280; }
 
     /* ── SIDE PANEL ── */
     .side-panel {
@@ -300,12 +264,26 @@ else:
     .custom-table td { padding: 20px 18px; border-bottom: 1px solid #E2E8F0; vertical-align: top; }
     .table-badge { display: inline-block; padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; }
 
+    /* ── AUDIO PANEL MODULE ── */
+    .voice-control-container {
+        background-color: #F8FAFC;
+        border: 1px dashed #CBD5E1;
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+    }
+    .voice-label { font-size: 13px; font-weight: 600; color: #334155; }
+
     .custom-footer-bar { padding: 20px; text-align: center; color: #6B7280; font-size: 12px; margin-top: 40px; }
     </style>
     """)
 
     # ─────────────────────────────────────────────
-    # ARABIC RTL CSS  (only added when Arabic)
+    # ARABIC RTL CSS
     # ─────────────────────────────────────────────
     if is_arabic:
         st.html("""
@@ -315,36 +293,28 @@ else:
             direction: rtl;
             text-align: right;
         }
-        .custom-header, .library-header-row { flex-direction: row-reverse; }
         .custom-table { text-align: right; }
         .custom-table th { text-align: right; }
         .hub-link-item { flex-direction: row-reverse; }
         .side-disclaimer { flex-direction: row-reverse; }
         .hero-btn-group { flex-direction: row-reverse; }
+        .voice-control-container { flex-direction: row-reverse; }
 
-        /* Slideshow: fully isolated from RTL */
-        .hero-wrapper   { direction: ltr !important; unicode-bidi: isolate !important; }
-        .hero-slideshow { direction: ltr !important; unicode-bidi: isolate !important; animation-direction: normal !important; }
-        .hero-slide     { direction: ltr !important; unicode-bidi: isolate !important; }
+        .hero-wrapper   { direction: ltr !important; }
+        .hero-slideshow { direction: ltr !important; }
+        .hero-slide     { direction: ltr !important; }
 
-        /* Flip overlay gradient for Arabic (dark on right side) */
         .hero-overlay {
-            background: linear-gradient(
-                to left,
-                rgba(4,47,34,0.95) 40%,
-                rgba(4,47,34,0.5)  70%,
-                rgba(4,47,34,0.2)  100%
-            ) !important;
+            background: linear-gradient(to left, rgba(4,47,34,0.95) 40%, rgba(4,47,34,0.5) 70%, rgba(4,47,34,0.2) 100%) !important;
         }
 
-        /* Flip text to right side */
         .hero-content-container { direction: rtl !important; justify-content: flex-end !important; }
         .hero-left-content      { align-items: flex-end !important; text-align: right !important; }
         </style>
         """)
 
     # ─────────────────────────────────────────────
-    # API KEY
+    # API KEY SETUP
     # ─────────────────────────────────────────────
     api_key_input = get_rotated_api_key()
     if len(API_KEYS_POOL) == 0 and not api_key_input:
@@ -367,46 +337,21 @@ else:
 
     with nav_col:
         st.html(f"""
-        <div style="display:flex; justify-content:space-between; align-items:center;
-                    padding:65px 0 15px 0; margin-bottom:20px;">
-            <div class="brand-block" style="display:flex; align-items:center; gap:12px;">
-                
+        <div style="display:flex; justify-content:space-between; align-items:center; padding:65px 0 15px 0; margin-bottom:20px;">
+            <div class="brand-block">
                 <div>
                     <div class="brand-name">{t["nav_logo"]}</div>
                     <div class="brand-tag">Prototype Agent</div>
                 </div>
             </div>
-            
+        </div>
         """)
-
-    # ─────────────────────────────────────────────
-    # QUERY PARAM HOOKS
-    # ─────────────────────────────────────────────
-    url_params = st.query_params
-
-    if "filter" in url_params:
-        requested_filter = url_params.get("filter")
-        if requested_filter in ["All", "Visa Services", "Driving License", "Business License"]:
-            st.session_state.selected_library_filter = requested_filter
-        st.query_params.clear()
-        st.rerun()
-
-    if url_params.get("action") == "start_chat":
-        st.query_params.clear()
-        if len(st.session_state.messages) <= 1:
-            st.session_state.messages.append({
-                "role": "assistant",
-                "content": t["greeting"],
-                "sources": []
-            })
-        st.rerun()
 
     # ─────────────────────────────────────────────
     # HERO BANNER — SLIDESHOW
     # ─────────────────────────────────────────────
     hero_title    = "المدعوم بالذكاء الاصطناعي<br> مساعد الخدمات العامة" if is_arabic else "Public Service<br><span>AI Services Assistant</span>"
     hero_desc     = "احصل على إرشادات فورية وموثوقة حول التأشيرات وقواعد الإقامة وتحويل رخص القيادة والشركات." if is_arabic else "Get instant, reliable guidance on visas, residency rules, driving conversions, step checklists, and company registrations."
-    hero_btn1     = "ابدأ المحادثة ←" if is_arabic else "Start Dynamic Chat &nbsp;➔"
     hero_btn2     = "تصفح المكتبة" if is_arabic else "Browse Verification Library"
 
     st.html(f"""
@@ -422,7 +367,6 @@ else:
                 <div class="hero-main-title">{hero_title}</div>
                 <div class="hero-description">{hero_desc}</div>
                 <div class="hero-btn-group">
-                  
                     <a href="#verified-library" class="btn-browse-library">{hero_btn2}</a>
                 </div>
             </div>
@@ -430,10 +374,8 @@ else:
     </div>
     """)
 
-    
-
     # ─────────────────────────────────────────────
-    # CHAT + SIDEBAR PANEL
+    # CHAT RUNTIME INITIALIZATION
     # ─────────────────────────────────────────────
     if api_key_input and "chat_session" not in st.session_state:
         model = get_gemini_model(api_key_input)
@@ -444,14 +386,21 @@ else:
             "role": "assistant",
             "content": t["greeting"],
             "sources": [],
+            "audio_bytes": None
         })
 
     chat_col, sidebar_col = st.columns([2, 1])
 
     with chat_col:
+        # Display the streaming multi-turn chat records
         for msg in st.session_state.messages:
             with st.chat_message(msg["role"]):
                 st.write(msg["content"])
+                
+                # If the assistant spoke, provide the optional voice playback controls
+                if msg.get("audio_bytes") and msg["role"] == "assistant":
+                    st.audio(msg["audio_bytes"], format="audio/mp3")
+
                 if msg.get("sources") and msg["role"] == "assistant":
                     st.markdown(t["verify_source"])
                     for src in msg["sources"]:
@@ -461,15 +410,51 @@ else:
                             unsafe_allow_html=True,
                         )
 
-        if user_input := st.chat_input(t["placeholder"]):
+        # Voice Input Interface Box
+        st.markdown("<br>", unsafe_allow_html=True)
+        st.html(f"""
+        <div class="voice-control-container">
+            <span class="voice-label">🎤 {"التحدث إلى دليل بدلاً من الكتابة" if is_arabic else "Speak to Daleel instead of typing:"}</span>
+        </div>
+        """)
+        
+        # Native input browser wrapper for recording vocal inputs
+        voice_audio = st.audio_input(label="Voice Microphone Input Recorder", label_visibility="collapsed", key="voice_microphone")
+        
+        processed_input = None
+        
+        if voice_audio is not None:
+            raw_audio_bytes = voice_audio.read()
+            if raw_audio_bytes:
+                with st.spinner("🎙️ " + ("جاري معالجة الصوت..." if is_arabic else "Transcribing voice narration...")):
+                    transcribed_text = transcribe_audio_bytes(raw_audio_bytes, api_key_input)
+                    if transcribed_text and not transcribed_text.startswith("Transcription error:"):
+                        processed_input = transcribed_text
+
+        # Text input fallback fallback
+        user_text_input = st.chat_input(t["placeholder"])
+        if user_text_input:
+            processed_input = user_text_input
+
+        # Unified execution block for text or voice submissions
+        if processed_input:
             if not api_key_input:
                 st.warning(t["api_info"])
             else:
-                st.session_state.messages.append({"role": "user", "content": user_input, "sources": []})
-                matched_docs, context_string = retrieve_context(user_input, vectorizer, tfidf_matrix, kb_data)
+                st.session_state.messages.append({"role": "user", "content": processed_input, "sources": []})
+                matched_docs, context_string = retrieve_context(processed_input, vectorizer, tfidf_matrix, kb_data)
+                
                 with st.spinner(t["thinking"]):
-                    reply = generate_grounded_response(user_input, context_string, st.session_state.chat_session, lang=st.session_state.lang)
-                st.session_state.messages.append({"role": "assistant", "content": reply, "sources": matched_docs})
+                    reply = generate_grounded_response(processed_input, context_string, st.session_state.session_state.get("chat_session") if "chat_session" in st.session_state else st.session_state.chat_session, lang=st.session_state.lang)
+                    # Convert generated text into spoken audio output
+                    out_audio = generate_speech_bytes(reply, api_key_input)
+                    
+                st.session_state.messages.append({
+                    "role": "assistant", 
+                    "content": reply, 
+                    "sources": matched_docs,
+                    "audio_bytes": out_audio if out_audio else None
+                })
                 st.rerun()
 
     with sidebar_col:
