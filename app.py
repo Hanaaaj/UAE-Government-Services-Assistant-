@@ -1,7 +1,7 @@
 """
 app.py — Public Service AI Assistant
 Pure Streamlit UI custom-tailored to a pixel-perfect design system with
-an explicit HTML5 web-audio recording button for voice input and native audio playback.
+cross-version compatible audio input and native audio playback.
 """
 import base64
 import streamlit as st
@@ -93,7 +93,7 @@ else:
     # ─────────────────────────────────────────────
     # BASE CSS
     # ─────────────────────────────────────────────
-    st.html("""
+    st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;600;700;800&display=swap');
 
@@ -112,12 +112,6 @@ else:
         padding-left: 3rem !important;
         padding-right: 3rem !important;
         max-width: 100% !important;
-    }
-
-    div[data-testid="column"]:last-child .stButton button {
-        width: 90px !important;
-        text-align: center !important;
-        white-space: nowrap !important;
     }
 
     .side-disclaimer {
@@ -254,30 +248,33 @@ else:
     .custom-table td { padding: 20px 18px; border-bottom: 1px solid #E2E8F0; vertical-align: top; }
     .table-badge { display: inline-block; padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; }
 
-    /* ── CUSTOM VOICE INTERFACE ── */
-    .voice-card-panel {
-        background-color: #F8FAFC;
-        border: 1px dashed #0F5A41;
+    /* ── COMPATIBLE VOICE INTERFACE PANEL ── */
+    .voice-interactive-box {
+        background-color: #F0FDF4;
+        border: 2px dashed #16A34A;
         border-radius: 16px;
-        padding: 20px;
-        margin-bottom: 25px;
+        padding: 18px;
+        margin-top: 15px;
+        margin-bottom: 15px;
     }
-    .voice-panel-header {
-        font-size: 14px;
+    .voice-box-title {
+        font-size: 15px;
         font-weight: 700;
-        color: #042F22;
-        margin-bottom: 12px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
+        color: #14532D;
+        margin-bottom: 6px;
     }
-    
+    .voice-box-desc {
+        font-size: 13px;
+        color: #166534;
+        margin-bottom: 12px;
+    }
+
     .custom-footer-bar { padding: 20px; text-align: center; color: #6B7280; font-size: 12px; margin-top: 40px; }
     </style>
-    """)
+    """, unsafe_allow_html=True)
 
     if is_arabic:
-        st.html("""
+        st.markdown("""
         <style>
         html, body, [class*="css"], .stApp {
             font-family: 'Cairo', sans-serif !important;
@@ -301,7 +298,7 @@ else:
         .hero-content-container { direction: rtl !important; justify-content: flex-end !important; }
         .hero-left-content      { align-items: flex-end !important; text-align: right !important; }
         </style>
-        """)
+        """, unsafe_allow_html=True)
 
     # ─────────────────────────────────────────────
     # API KEY SETUP
@@ -326,7 +323,7 @@ else:
         st.markdown("</div>", unsafe_allow_html=True)
 
     with nav_col:
-        st.html(f"""
+        st.markdown(f"""
         <div style="display:flex; justify-content:space-between; align-items:center; padding:65px 0 15px 0; margin-bottom:20px;">
             <div class="brand-block">
                 <div>
@@ -335,7 +332,7 @@ else:
                 </div>
             </div>
         </div>
-        """)
+        """, unsafe_allow_html=True)
 
     # ─────────────────────────────────────────────
     # HERO BANNER — SLIDESHOW
@@ -344,7 +341,7 @@ else:
     hero_desc     = "احصل على إرشادات فورية وموثوقة حول التأشيرات وقواعد الإقامة وتحويل رخص القيادة والشركات." if is_arabic else "Get instant, reliable guidance on visas, residency rules, driving conversions, step checklists, and company registrations."
     hero_btn2     = "تصفح المكتبة" if is_arabic else "Browse Verification Library"
 
-    st.html(f"""
+    st.markdown(f"""
     <div class="hero-wrapper">
         <div class="hero-slideshow">
             <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1579930700019-f5f6ba3db867?q=80&w=1176');"></div>
@@ -362,7 +359,7 @@ else:
             </div>
         </div>
     </div>
-    """)
+    """, unsafe_allow_html=True)
 
     # ─────────────────────────────────────────────
     # CHAT RUNTIME INITIALIZATION
@@ -387,7 +384,7 @@ else:
             with st.chat_message(msg["role"]):
                 st.write(msg["content"])
                 
-                # Dynamic audio response playback element
+                # Dynamic vocal playback control row
                 if msg.get("audio_bytes") and msg["role"] == "assistant":
                     st.audio(msg["audio_bytes"], format="audio/mp3")
 
@@ -400,28 +397,35 @@ else:
                             unsafe_allow_html=True,
                         )
 
-        # 2. Dedicated Voice Recording System Button Panel
+        # 2. Universal Version Audio Input Interface Box
         st.markdown("<br>", unsafe_allow_html=True)
         
-        panel_headline = "🎤 تفعيل المدخلات الصوتية" if is_arabic else "🎤 Hands-Free Voice Control Hub"
-        panel_desc = "اضغط على زر التسجيل للتحدث مباشرة بدلاً من الكتابة لوحة المفاتيح:" if is_arabic else "Click record below to talk to your service companion directly instead of typing:"
+        v_title = "🎙️ لوحة التحكم الصوتي المباشر" if is_arabic else "🎙️ Interactive Voice Control Center"
+        v_desc = "استخدم زر التسجيل المدمج أدناه للتحدث مباشرة إلى دليل، وسيقوم النظام بالإجابة صوتياً:" if is_arabic else "Use the cross-compatible input system below to speak directly with Daleel:"
         
-        with st.container():
-            st.markdown(f"""
-            <div class="voice-card-panel">
-                <div class="voice-panel-header">{panel_headline}</div>
-                <p style="font-size:13px; color:#4B5563; margin-bottom:12px;">{panel_desc}</p>
-            </div>
-            """, unsafe_allow_html=True)
-            
-            # Using st.audio_input with clear backup configuration to avoid rendering bugs
+        st.markdown(f"""
+        <div class="voice-interactive-box">
+            <div class="voice-box-title">{v_title}</div>
+            <div class="voice-box-desc">{v_desc}</div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Cross-version safe microphone element via explicit widget definition
+        try:
             recorded_voice_file = st.audio_input(
-                label="Voice Command Mic Controller", 
+                label="Voice Recorder", 
                 label_visibility="collapsed", 
-                key="voice_audio_recorder_widget"
+                key="primary_voice_mic_device"
+            )
+        except AttributeError:
+            # Fallback for older Streamlit installations
+            recorded_voice_file = st.file_uploader(
+                label="🎙️ Older Streamlit Fallback: Upload Audio file (.mp3/.wav/.ogg)", 
+                type=["mp3", "wav", "m4a", "ogg", "oga"],
+                key="backup_audio_file_uploader"
             )
 
-        # 3. Handle Voice Processing & Text Fallback Pipeline
+        # 3. Handle Inputs Transition & Execution Chain
         unified_input = None
         
         if recorded_voice_file is not None:
@@ -458,7 +462,7 @@ else:
 
     with sidebar_col:
         disclaimer_text = "هذا الموقع نموذج أولي مستقل للذكاء الاصطناعي. إنه ليس بوابة حكومية إماراتية رسمية. تحقق دائماً من المصادر الرسمية." if is_arabic else "This website is an independent AI prototype. It is NOT an official UAE government portal. Always verify regulations on official gov source links."
-        st.html(f"""
+        st.markdown(f"""
         <div class="side-disclaimer">
             <div class="side-disclaimer-icon">🛈</div>
             <div class="side-disclaimer-text">
@@ -473,19 +477,19 @@ else:
             <a href="https://rta.ae"         target="_blank" class="hub-link-item"><span>{"هيئة الطرق والمواصلات" if is_arabic else "RTA Traffic Portal"}</span><span>↗</span></a>
             <a href="https://mohre.gov.ae"   target="_blank" class="hub-link-item"><span>{"وزارة الموارد البشرية" if is_arabic else "MOHRE Labour Agency"}</span><span>↗</span></a>
         </div>
-        """)
+        """, unsafe_allow_html=True)
 
     # ─────────────────────────────────────────────
     # VERIFIED SERVICES LIBRARY
     # ─────────────────────────────────────────────
-    st.html('<div id="verified-library"></div>')
-    st.html('<div class="library-wrapper">')
+    st.markdown('<div id="verified-library"></div>', unsafe_allow_html=True)
+    st.markdown('<div class="library-wrapper">', unsafe_allow_html=True)
 
     lib_header_left, lib_header_right = st.columns([3, 2])
 
     with lib_header_left:
-        st.html(f'<div class="library-title">📚 {"مكتبة الخدمات الموثّقة" if is_arabic else "Verified Services Library"} ({st.session_state.selected_library_filter})</div>')
-        st.html(f'<p style="font-size:13px; color:#6B7280; margin-top:4px; margin-bottom:0;">{"تحقق من المعايير والقوائم والرسوم وأوقات الانتظار." if is_arabic else "Verify criteria, checklists, fee lists, and wait times."}</p>')
+        st.markdown(f'<div class="library-title">📚 {"مكتبة الخدمات الموثّقة" if is_arabic else "Verified Services Library"} ({st.session_state.selected_library_filter})</div>', unsafe_allow_html=True)
+        st.markdown(f'<p style="font-size:13px; color:#6B7280; margin-top:4px; margin-bottom:0;">{"تحقق من المعايير والقوائم والرسوم وأوقات الانتظار." if is_arabic else "Verify criteria, checklists, fee lists, and wait times."}</p>', unsafe_allow_html=True)
 
     with lib_header_right:
         filter_options = ["All", "Visa Services", "Driving License", "Business License"]
@@ -505,7 +509,7 @@ else:
             st.session_state.selected_library_filter = selected_option
             st.rerun()
 
-    st.html("<br>")
+    st.markdown("<br>", unsafe_allow_html=True)
 
     all_library_items = [
         {
@@ -577,10 +581,8 @@ else:
             f"<td style='width:18%; color:#111827; font-weight:600; text-align:right;'>{item['fees']}</td>"
             f"</tr>"
         )
-
     table_rows_html = "".join(table_rows) if table_rows else "<tr><td colspan='5' style='text-align:center; padding:40px; color:#9CA3AF;'>No records found.</td></tr>"
-
-    st.html(
+    st.markdown(
         "<div class='custom-table-container'>"
         "<table class='custom-table'><thead><tr>"
         "<th style='width:22%;'>Service Title</th>"
@@ -590,16 +592,17 @@ else:
         "<th style='width:18%; text-align:right;'>Fees</th>"
         "</tr></thead>"
         f"<tbody>{table_rows_html}</tbody>"
-        "</table></div>"
+        "</table></div>",
+        unsafe_allow_html=True
     )
 
-    st.html("</div>")  # close library-wrapper
+    st.markdown("</div>", unsafe_allow_html=True)  # close library-wrapper
 
     # ─────────────────────────────────────────────
     # FOOTER
     # ─────────────────────────────────────────────
-    st.html("""
+    st.markdown("""
     <div class="custom-footer-bar">
         © 2026 Public Services Assistant · Hackathon Prototype · Not affiliated with any UAE government authority
     </div>
-    """)
+    """, unsafe_allow_html=True)
