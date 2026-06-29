@@ -332,3 +332,55 @@ def generate_grounded_response(
                 "- [icp.gov.ae](https://icp.gov.ae)"
             )
         return f"Something went wrong: {error}"
+
+# ─────────────────────────────────────────────
+# VOICE PROCESSING MODULES (NEW)
+# ─────────────────────────────────────────────
+def transcribe_audio_bytes(audio_bytes: bytes, api_key: str, mime_type: str = "audio/wav") -> str:
+    """
+    Accepts raw audio bytes recorded from the browser, passes them to 
+    Gemini, and returns an accurate textual transcription.
+    """
+    try:
+        genai.configure(api_key=api_key)
+        model = genai.GenerativeModel("gemini-2.5-flash")
+        response = model.generate_content([
+            "Transcribe this audio clip word-for-word accurately. "
+            "Do not add any metadata, conversational fillers, or side notes. "
+            "Preserve the spoken language (English or Arabic).",
+            {"mime_type": mime_type, "data": audio_bytes}
+        ])
+        return response.text.strip()
+    except Exception as e:
+        return f"Transcription error: {str(e)}"
+def generate_speech_bytes(text_content: str, api_key: str) -> bytes:
+    """
+    Leverages Gemini's multimodal output engine to render structural 
+    text answers into high-quality, fluent spoken narration bytes (MP3).
+    """
+    try:
+        genai.configure(api_key=api_key)
+        model = genai.GenerativeModel("gemini-2.5-flash")
+        # Strip common markdown formats so that the narrator reads smoothly
+        clean_text = (
+            text_content.replace("**", "")
+            .replace("###", "")
+            .replace("##", "")
+            .replace("*", "")
+            .replace("[", " ")
+            .replace("]", " ")
+        )
+        prompt = (
+            f"Read the following informational text out loud clearly, keeping a professional "
+            f"and helpful tone. Match the language of the text perfectly:\n\n{clean_text}"
+        )
+        response = model.generate_content(
+            prompt,
+            config=genai.types.GenerationConfig(
+                response_mime_type="audio/mp3"
+            )
+        )
+        # Extract and return inline audio payload binary stream
+        return response.candidates[0].content.parts[0].inline_data.data
+    except Exception:
+        return b""
